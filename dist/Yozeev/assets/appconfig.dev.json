@@ -1,5 +1,5 @@
 {
-  "remoteServiceBaseUrl": "http://host.sweii.cn",
+  "remoteServiceBaseUrl": "http://host.dev.sweii.cn",
   "uploadApiUrl": "/api/File/Upload",
   "portalBaseUrl": "http://localhost:38772",
 
