@@ -60,6 +60,8 @@ var ServiceProxyModule = /** @class */ (function () {
                 ApiServiceProxies.FinanceServiceProxy,
                 //游客
                 ApiServiceProxies.CustomerServiceProxy,
+                //游客
+                ApiServiceProxies.OperServiceProxy,
                 //统计报表
                 ApiServiceProxies.OrderSourceServiceProxy,
                 ApiServiceProxies.OtaServiceProxy,

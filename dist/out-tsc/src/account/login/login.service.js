@@ -92,11 +92,6 @@ var ExternalLoginProvider = /** @class */ (function (_super) {
         }
         return providerName;
     };
-    // static readonly FACEBOOK: string = 'Facebook';
-    // static readonly GOOGLE: string = 'Google';
-    // static readonly MICROSOFT: string = 'Microsoft';
-    // static readonly OPENID: string = 'OpenIdConnect';
-    // static readonly WSFEDERATION: string = 'WsFederation';
     ExternalLoginProvider.QQ = 'QQ';
     ExternalLoginProvider.Wechat = 'Wechat';
     ExternalLoginProvider.Microsoft = 'Microsoft';
@@ -140,44 +135,6 @@ var LoginService = /** @class */ (function () {
                             var queryParams;
                             return __generator(this, function (_a) {
                                 queryParams = UrlHelper_1.UrlHelper.getQueryParametersUsingHash();
-                                switch (provider.name) {
-                                    case ExternalLoginProvider.QQ:
-                                        if (QC && QC.Login.check()) {
-                                            // this.qqLoginCallback();
-                                        }
-                                        else {
-                                            // this.redirectToQQLogin();
-                                        }
-                                        break;
-                                    case ExternalLoginProvider.Wechat:
-                                        if (queryParams.code) {
-                                            // this.wechatLoginCallback();
-                                        }
-                                        else {
-                                            // this.redirectToWechatLogin();
-                                        }
-                                        break;
-                                    case ExternalLoginProvider.Microsoft:
-                                        // this.redirectToMicrosoftLogin();
-                                        // if (queryParams.code) {
-                                        //   this.authService.signIn(provider.clientId)
-                                        // } else {
-                                        //   this.redirectToMicrosoftLogin();
-                                        // }
-                                        break;
-                                    // case ExternalLoginProvider.Facebook:
-                                    //   await this.authService.signIn(FacebookLoginProvider.PROVIDER_ID)
-                                    //     .then(user => this.standardLoginCallback(user, ExternalLoginProvider.Facebook))
-                                    //     .catch(ex => console.log(ex))
-                                    //   break;
-                                    // case ExternalLoginProvider.Google:
-                                    //   await this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
-                                    //     .then(user => this.standardLoginCallback(user, ExternalLoginProvider.Google))
-                                    //     .catch(ex => console.log(ex))
-                                    //   break;
-                                    default:
-                                        break;
-                                }
                                 return [2 /*return*/];
                             });
                         }); })];
@@ -207,116 +164,6 @@ var LoginService = /** @class */ (function () {
             _this.login(result.accessToken, result.encryptedAccessToken, result.expireInSeconds);
         });
     };
-    // async redirectToMicrosoftLogin() {
-    //   const redirectUri = new URL(environment.externalLogin.redirectUri);
-    //   redirectUri.searchParams.append('providerName', ExternalLoginProvider.Microsoft);
-    //   const result = await new UserAgentApplication({
-    //     auth: {
-    //       clientId: environment.externalLogin.microsoft.consumerKey, redirectUri: redirectUri.toString(),
-    //     },
-    //   });
-    //   result.acquireTokenPopup({
-    //     scopes: ["https://graph.microsoft.com/User.Read"],
-    //   }).then(user => {
-    //     const model = new ExternalAuthenticateModel();
-    //     model.authProvider = ExternalLoginProvider.Microsoft;
-    //     model.providerAccessCode = user.accessToken;
-    //     model.providerKey = user.uniqueId;
-    //     // model.singleSignIn = UrlHelper.getSingleSignIn();
-    //     this._tokenAuthService
-    //       .externalAuthenticate(model)
-    //       .subscribe((result: ExternalAuthenticateResultModel) => {
-    //         if (result.waitingForActivation) {
-    //           this._router.navigate(['account/activation'], {
-    //             state: result
-    //           });
-    //           return;
-    //         }
-    //         this.login(
-    //           result.accessToken,
-    //           result.encryptedAccessToken,
-    //           result.expireInSeconds
-    //         );
-    //       });
-    //   });
-    // }
-    // redirectToWechatLogin(): any {
-    //   const curUrl = new URL(location.href);
-    //   this._modalService.create({
-    //     nzContent: html`
-    //       <div id="wx_login_container"></div>
-    //     `.getHTML()
-    //   });
-    //   curUrl.searchParams.append('providerName', ExternalLoginProvider.Wechat);
-    //   const wxConfig = environment.externalLogin.wecaht;
-    //   const obj = new WxLogin({
-    //     // self_redirect: true,
-    //     id: 'wx_login_container',
-    //     appid: wxConfig.appId,
-    //     scope: 'snsapi_login',
-    //     redirect_uri: encodeURIComponent(curUrl.toString()),
-    //     // state: '',
-    //     style: 'white'
-    //     // href: ''
-    //   });
-    // }
-    // private wechatLoginCallback() {
-    //   const code = UrlHelper.getQueryParametersUsingHash().code;
-    //   const model = new ExternalAuthenticateModel();
-    //   model.authProvider = ExternalLoginProvider.Wechat;
-    //   model.providerAccessCode = code;
-    //   model.providerKey = undefined;
-    //   // model.singleSignIn = UrlHelper.getSingleSignIn();
-    //   this._tokenAuthService
-    //     .externalAuthenticate(model)
-    //     .subscribe((result: ExternalAuthenticateResultModel) => {
-    //       if (result.waitingForActivation) {
-    //         this._router.navigate(['account/activation'], {
-    //           state: result
-    //         });
-    //         return;
-    //       }
-    //       this.login(
-    //         result.accessToken,
-    //         result.encryptedAccessToken,
-    //         result.expireInSeconds
-    //       );
-    //     });
-    // }
-    // private redirectToQQLogin() {
-    //   const redirectURI = new URL(environment.externalLogin.redirectUri);
-    //   redirectURI.searchParams.append('providerName', ExternalLoginProvider.QQ);
-    //   QC.Login.showPopup({
-    //     ...environment.externalLogin.qq,
-    //     redirectURI: redirectURI.toString()
-    //   });
-    // }
-    // private qqLoginCallback(): any {
-    //   QC.Login.getMe((openId, accessToken) => {
-    //     // angular 的 bug, 外部js中的异步回调回跑出zone, 需要手动同步, 参考issue: https://github.com/angular/angular/issues/20290
-    //     this.zone.run(async () => {
-    //       const model = new ExternalAuthenticateModel();
-    //       model.authProvider = ExternalLoginProvider.QQ;
-    //       model.providerAccessCode = JSON.stringify({ accessToken, openId });
-    //       model.providerKey = openId;
-    //       // model.singleSignIn = UrlHelper.getSingleSignIn();
-    //       const authResult = await this._tokenAuthService
-    //         .externalAuthenticate(model)
-    //         .toPromise();
-    //       if (authResult.waitingForActivation) {
-    //         this._router.navigate(['account/activation'], {
-    //           state: authResult
-    //         });
-    //       } else {
-    //         this.login(
-    //           authResult.accessToken,
-    //           authResult.encryptedAccessToken,
-    //           authResult.expireInSeconds
-    //         );
-    //       }
-    //     });
-    //   });
-    // }
     LoginService.prototype.initExternalLoginProviders = function (callback) {
         return __awaiter(this, void 0, void 0, function () {
             var providers;
@@ -339,33 +186,6 @@ var LoginService = /** @class */ (function () {
     LoginService.prototype.ensureExternalLoginProviderInitialized = function (loginProvider, callback) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                switch (loginProvider.name) {
-                    // case ExternalLoginProvider.QQ:
-                    //   await new ScriptLoaderService()
-                    //     .load('//connect.qq.com/qc_jssdk.js')
-                    //     .then(() => {
-                    //       loginProvider.initialized = true;
-                    //     });
-                    //   break;
-                    // case ExternalLoginProvider.Wechat:
-                    //   await new ScriptLoaderService()
-                    //     .load('//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js')
-                    //     .then(() => {
-                    //       loginProvider.initialized = true;
-                    //     });
-                    //   break;
-                    // case ExternalLoginProvider.Microsoft:
-                    //   loginProvider.initialized = false;
-                    //   break;
-                    // case ExternalLoginProvider.Facebook:
-                    //   loginProvider.initialized = false;
-                    //   break;
-                    // case ExternalLoginProvider.Google:
-                    //   loginProvider.initialized = false;
-                    //   break;
-                    // default:
-                    //   break;
-                }
                 if (loginProvider && loginProvider.initialized) {
                     callback();
                     return [2 /*return*/];
@@ -408,10 +228,14 @@ var LoginService = /** @class */ (function () {
         this._tokenService.setToken(accessToken, tokenExpireDate);
         this._utilsService.setCookieValue(AppConsts_1.AppConsts.authorization.encrptedAuthTokenName, encryptedAccessToken, tokenExpireDate, abp.appPath);
         var initialUrl = UrlHelper_1.UrlHelper.initialUrl;
+        console.log(1);
         if (initialUrl.indexOf('/login') > 0) {
             initialUrl = AppConsts_1.AppConsts.appBaseUrl;
         }
+        console.log(2);
+        consolelog();
         location.href = initialUrl;
+        console.log(3);
     };
     LoginService.twoFactorRememberClientTokenName = 'TwoFactorRememberClientToken';
     LoginService = __decorate([

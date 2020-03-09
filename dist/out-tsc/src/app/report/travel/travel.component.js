@@ -38,6 +38,10 @@ var TravelComponent = /** @class */ (function (_super) {
                 logic: "and"
             }];
         _this.travelList = [];
+        _this.orderlist = [];
+        _this.ticketlist = [];
+        _this.visible = false;
+        _this.childvisible = false;
         return _this;
     }
     TravelComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -58,6 +62,24 @@ var TravelComponent = /** @class */ (function (_super) {
         });
         this.getlist();
     };
+    TravelComponent.prototype.open = function (id) {
+        var _this = this;
+        this._travelAgencyService.orderSourceStatDetail(id)
+            .subscribe(function (result) {
+            _this.visible = true;
+            _this.orderlist = result;
+        });
+    };
+    TravelComponent.prototype.close = function () {
+        this.visible = false;
+    };
+    TravelComponent.prototype.openchild = function (tickets) {
+        this.childvisible = true;
+        this.ticketlist = tickets;
+    };
+    TravelComponent.prototype.closechild = function () {
+        this.childvisible = false;
+    };
     TravelComponent.prototype.getlist = function () {
         var _this = this;
         var formdata = new service_proxies_1.GetTravelAgencysInput();
@@ -68,20 +90,6 @@ var TravelComponent = /** @class */ (function (_super) {
         this._travelAgencyService.getPagedForPost(formdata)
             .subscribe(function (result) {
             _this.travelList = result.items;
-            _this.showPaging(result);
-        });
-    };
-    TravelComponent.prototype.search = function () {
-        var _this = this;
-        var arr = [];
-        for (var i = 0; i < this.queryData.length; i++) {
-            if (this.queryData[i].value) {
-                arr.push(new service_proxies_1.QueryData(this.queryData[i]));
-            }
-        }
-        this._travelAgencyService.getPagedStat(arr, null, 999, 0)
-            .subscribe(function (result) {
-            _this.dataList = result.items;
             _this.showPaging(result);
         });
     };

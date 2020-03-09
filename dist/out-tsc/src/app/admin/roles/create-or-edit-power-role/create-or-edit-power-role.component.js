@@ -82,9 +82,13 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
                         });
                     }
                 }
+                if (hadmenu == 1) {
+                    hadmenu = 0;
+                }
                 if (items[i].isEnabled && items[i].isCheck) {
                     _this.powerIdList.push(items[i].id);
                 }
+                // console.log(hadmenu)
             }
             ;
             // console.log(powerList)
@@ -96,12 +100,11 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
         console.log(a);
         for (var i = 0; i < a.length; i++) {
             if (a[i].checked) {
-                if (this.powerIdList.indexOf(a[i].value) == -1) {
-                    this.powerIdList.push(a[i].value);
-                }
-            }
-            else {
-                this.powerIdList.splice(this.powerIdList.indexOf(a[i].value), 1);
+                // if(this.powerIdList.indexOf(a[i].value)==-1){
+                this.powerIdList.push(a[i].value);
+                // }
+                // }else{
+                //   this.powerIdList.splice(this.powerIdList.indexOf(a[i].value),1)
             }
         }
     };

@@ -39,6 +39,10 @@ var OtaComponent = /** @class */ (function (_super) {
                 logic: "and"
             }];
         _this.sourceList = [];
+        _this.orderlist = [];
+        _this.ticketlist = [];
+        _this.visible = false;
+        _this.childvisible = false;
         return _this;
     }
     OtaComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -59,26 +63,30 @@ var OtaComponent = /** @class */ (function (_super) {
         });
         this.getsource();
     };
-    OtaComponent.prototype.search = function () {
-        var _this = this;
-        var arr = [];
-        for (var i = 0; i < this.queryData.length; i++) {
-            if (this.queryData[i].value) {
-                arr.push(new service_proxies_1.QueryData(this.queryData[i]));
-            }
-        }
-        this._otaService.getPagedStat(arr, null, 999, 0)
-            .subscribe(function (result) {
-            _this.dataList = result.items;
-            _this.showPaging(result);
-        });
-    };
     OtaComponent.prototype.getsource = function () {
         var _this = this;
         this._sourceService.getPaged(null, 999, 0)
             .subscribe(function (result) {
             _this.sourceList = result.items;
         });
+    };
+    OtaComponent.prototype.open = function (id) {
+        var _this = this;
+        this._otaService.orderSourceStatDetail(id)
+            .subscribe(function (result) {
+            _this.visible = true;
+            _this.orderlist = result;
+        });
+    };
+    OtaComponent.prototype.close = function () {
+        this.visible = false;
+    };
+    OtaComponent.prototype.openchild = function (tickets) {
+        this.childvisible = true;
+        this.ticketlist = tickets;
+    };
+    OtaComponent.prototype.closechild = function () {
+        this.childvisible = false;
     };
     OtaComponent = __decorate([
         core_1.Component({

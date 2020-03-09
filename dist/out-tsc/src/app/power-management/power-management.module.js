@@ -13,6 +13,7 @@ var menu_component_1 = require("./menu/menu.component");
 var create_or_edit_menu_component_1 = require("./menu/create-or-edit-menu/create-or-edit-menu.component");
 var power_component_1 = require("./power/power.component");
 var create_or_edit_power_component_1 = require("./power/create-or-edit-power/create-or-edit-power.component");
+var batch_create_power_component_1 = require("./power/batch-create-power/batch-create-power.component");
 // import { PowerRoleComponent } from './power-role/power-role.component';
 // import { CreateOrEditPowerRoleComponent } from './power-role/create-or-edit-power-role/create-or-edit-power-role.component';
 var shared_module_1 = require("@shared/shared.module");
@@ -26,6 +27,7 @@ var PowerManagementModule = /** @class */ (function () {
                 create_or_edit_menu_component_1.CreateOrEditMenuComponent,
                 power_component_1.PowerComponent,
                 create_or_edit_power_component_1.CreateOrEditPowerComponent,
+                batch_create_power_component_1.BatchCreatePowerComponent,
             ],
             imports: [
                 common_1.CommonModule,
@@ -35,6 +37,7 @@ var PowerManagementModule = /** @class */ (function () {
             entryComponents: [
                 create_or_edit_menu_component_1.CreateOrEditMenuComponent,
                 create_or_edit_power_component_1.CreateOrEditPowerComponent,
+                batch_create_power_component_1.BatchCreatePowerComponent,
             ]
         })
     ], PowerManagementModule);

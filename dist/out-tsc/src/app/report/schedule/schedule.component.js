@@ -33,6 +33,8 @@ var ScheduleComponent = /** @class */ (function (_super) {
         _this._scheduleTicketService = _scheduleTicketService;
         _this._boatService = _boatService;
         _this._routeService = _routeService;
+        _this.visible = false;
+        _this.ticketinfo = [];
         _this.queryData = [{
                 field: "scheduleCode",
                 method: "%",
@@ -112,6 +114,18 @@ var ScheduleComponent = /** @class */ (function (_super) {
             .subscribe(function (result) {
             _this.boatList = result.items;
         });
+    };
+    ScheduleComponent.prototype.open = function (id) {
+        var _this = this;
+        this._scheduleTicketService.scheduleDetailStat(id)
+            .subscribe(function (result) {
+            console.log(result);
+            _this.visible = true;
+            _this.ticketinfo = result.items;
+        });
+    };
+    ScheduleComponent.prototype.close = function () {
+        this.visible = false;
     };
     ScheduleComponent = __decorate([
         core_1.Component({

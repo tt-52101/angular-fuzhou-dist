@@ -2362,6 +2362,7 @@ var CheckTicketServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 二维码验票
      * @param gateNumber (optional)
      * @param jqmpass (optional)
      * @param rdindex (optional)
@@ -13893,6 +13894,66 @@ var PowerServiceProxy = /** @class */ (function () {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
     /**
+     * 批量增加权限
+     * @param menuId (optional) 菜单Id
+     * @param powerCodeList (optional)
+     * @return Success
+     */
+    PowerServiceProxy.prototype.batchCreate = function (menuId, powerCodeList) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Power/BatchCreate?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(powerCodeList);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processBatchCreate(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processBatchCreate(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PowerServiceProxy.prototype.processBatchCreate = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 批量删除Power的方法
      * @param input (optional)
      * @return Success
@@ -21126,6 +21187,7 @@ var TicketDetailServiceProxy = /** @class */ (function () {
             responseType: "blob",
             headers: new http_1.HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
         return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
@@ -21144,6 +21206,7 @@ var TicketDetailServiceProxy = /** @class */ (function () {
         }));
     };
     TicketDetailServiceProxy.prototype.processPrintTicketDetail = function (response) {
+        var _this = this;
         var status = response.status;
         var responseBlob = response instanceof http_1.HttpResponse ? response.body :
             response.error instanceof Blob ? response.error : undefined;
@@ -21157,7 +21220,10 @@ var TicketDetailServiceProxy = /** @class */ (function () {
         ;
         if (status === 200) {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
-                return rxjs_1.of(null);
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ActivityResultModel.fromJS(resultData200) : new ActivityResultModel();
+                return rxjs_1.of(result200);
             }));
         }
         else if (status !== 200 && status !== 204) {
@@ -28025,6 +28091,287 @@ var WharfServiceProxy = /** @class */ (function () {
     return WharfServiceProxy;
 }());
 exports.WharfServiceProxy = WharfServiceProxy;
+var OperServiceProxy = /** @class */ (function () {
+    function OperServiceProxy(http, baseUrl) {
+        this.jsonParseReviver = undefined;
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+    /**
+     * 游船列表
+     * @return Success
+     */
+    OperServiceProxy.prototype.boatInfo = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/Stats/Oper/BoatInfo";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processBoatInfo(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processBoatInfo(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    OperServiceProxy.prototype.processBoatInfo = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_10 = resultData200; _i < resultData200_10.length; _i++) {
+                        var item = resultData200_10[_i];
+                        result200.push(BoatRunningStatusDto.fromJS(item));
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 营收状态
+     * @param date (optional)
+     * @return Success
+     */
+    OperServiceProxy.prototype.revenueAnal = function (date, type) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/Stats/Oper/RevenueAnal?";
+        if (date !== undefined)
+            url_ += "date=" + encodeURIComponent("" + date) + "&";
+        if (type === undefined || type === null)
+            throw new Error("The parameter 'type' must be defined and cannot be null.");
+        else
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processRevenueAnal(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processRevenueAnal(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    OperServiceProxy.prototype.processRevenueAnal = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? RevenueAnalyticsResultDto.fromJS(resultData200) : new RevenueAnalyticsResultDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 可售航班信息
+     * @param startDate (optional)
+     * @param endDate (optional)
+     * @return Success
+     */
+    OperServiceProxy.prototype.scheduleInfo = function (startDate, endDate) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/Stats/Oper/ScheduleInfo?";
+        if (startDate !== undefined)
+            url_ += "startDate=" + encodeURIComponent("" + startDate) + "&";
+        if (endDate !== undefined)
+            url_ += "endDate=" + encodeURIComponent("" + endDate) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processScheduleInfo(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processScheduleInfo(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    OperServiceProxy.prototype.processScheduleInfo = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_11 = resultData200; _i < resultData200_11.length; _i++) {
+                        var item = resultData200_11[_i];
+                        result200.push(ScheduleAnalResultDto.fromJS(item));
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 票型比例
+     * @return Success
+     */
+    OperServiceProxy.prototype.ticketRates = function (type) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/Stats/Oper/TicketRates?";
+        if (type === undefined || type === null)
+            throw new Error("The parameter 'type' must be defined and cannot be null.");
+        else
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processTicketRates(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processTicketRates(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    OperServiceProxy.prototype.processTicketRates = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_12 = resultData200; _i < resultData200_12.length; _i++) {
+                        var item = resultData200_12[_i];
+                        result200.push(TicketRatesResult.fromJS(item));
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    OperServiceProxy = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
+        __metadata("design:paramtypes", [http_1.HttpClient, String])
+    ], OperServiceProxy);
+    return OperServiceProxy;
+}());
+exports.OperServiceProxy = OperServiceProxy;
 var OrderSourceServiceProxy = /** @class */ (function () {
     function OrderSourceServiceProxy(http, baseUrl) {
         this.jsonParseReviver = undefined;
@@ -28158,8 +28505,8 @@ var OrderSourceServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_10 = resultData200; _i < resultData200_10.length; _i++) {
-                        var item = resultData200_10[_i];
+                    for (var _i = 0, resultData200_13 = resultData200; _i < resultData200_13.length; _i++) {
+                        var item = resultData200_13[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -28314,8 +28661,8 @@ var OtaServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_11 = resultData200; _i < resultData200_11.length; _i++) {
-                        var item = resultData200_11[_i];
+                    for (var _i = 0, resultData200_14 = resultData200; _i < resultData200_14.length; _i++) {
+                        var item = resultData200_14[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -28695,8 +29042,8 @@ var SellerDailyServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_12 = resultData200; _i < resultData200_12.length; _i++) {
-                        var item = resultData200_12[_i];
+                    for (var _i = 0, resultData200_15 = resultData200; _i < resultData200_15.length; _i++) {
+                        var item = resultData200_15[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -28712,7 +29059,7 @@ var SellerDailyServiceProxy = /** @class */ (function () {
     };
     /**
      * 销售员日结统计
-     * @param queryData (optional) DeviceCode,DeviceName,Port
+     * @param queryData (optional) CreatorUserId,CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
@@ -28801,7 +29148,7 @@ var SellerTicketServiceProxy = /** @class */ (function () {
     }
     /**
      * 售票员售票统计
-     * @param queryData (optional) DeviceCode,DeviceName,Port
+     * @param queryData (optional) CreatorUserId,CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
@@ -29001,8 +29348,8 @@ var FinanceServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_13 = resultData200; _i < resultData200_13.length; _i++) {
-                        var item = resultData200_13[_i];
+                    for (var _i = 0, resultData200_16 = resultData200; _i < resultData200_16.length; _i++) {
+                        var item = resultData200_16[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -29319,8 +29666,8 @@ var TokenAuthServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_14 = resultData200; _i < resultData200_14.length; _i++) {
-                        var item = resultData200_14[_i];
+                    for (var _i = 0, resultData200_17 = resultData200; _i < resultData200_17.length; _i++) {
+                        var item = resultData200_17[_i];
                         result200.push(ExternalLoginProviderInfoModel.fromJS(item));
                     }
                 }
@@ -29454,6 +29801,67 @@ var TokenAuthServiceProxy = /** @class */ (function () {
         }
         return rxjs_1.of(null);
     };
+    /**
+     * 微信登录接口，以后需要填写游客信息（用户名密码，手机号验证码）才能登录，现在直接登录
+     * @param openId (optional) 现在可以不填写
+     * @return Success
+     */
+    TokenAuthServiceProxy.prototype.wechatLogin = function (openId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/TokenAuth/WechatLogin?";
+        if (openId !== undefined)
+            url_ += "openId=" + encodeURIComponent("" + openId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processWechatLogin(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processWechatLogin(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TokenAuthServiceProxy.prototype.processWechatLogin = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? AuthenticateResultModel.fromJS(resultData200) : new AuthenticateResultModel();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     TokenAuthServiceProxy = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
@@ -29537,6 +29945,206 @@ var VerificationServiceProxy = /** @class */ (function () {
     return VerificationServiceProxy;
 }());
 exports.VerificationServiceProxy = VerificationServiceProxy;
+var WechatPayServiceProxy = /** @class */ (function () {
+    function WechatPayServiceProxy(http, baseUrl) {
+        this.jsonParseReviver = undefined;
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+    /**
+     * 获取OpenId
+     * @param code (optional)
+     * @return Success
+     */
+    WechatPayServiceProxy.prototype.getOpenId = function (code) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/WechatPay/GetOpenId?";
+        if (code !== undefined)
+            url_ += "code=" + encodeURIComponent("" + code) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetOpenId(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetOpenId(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatPayServiceProxy.prototype.processGetOpenId = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? AjaxResult.fromJS(resultData200) : new AjaxResult();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 获取凭证接口
+     * @param appid (optional) 第三方用户唯一凭证
+     * @param secret (optional) 第三方用户唯一凭证密钥，既appsecret
+     * @param grant_type (optional) 获取access_token填写client_credential
+     * @return Success
+     */
+    WechatPayServiceProxy.prototype.getToken = function (appid, secret, grant_type) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/WechatPay/GetToken?";
+        if (appid !== undefined)
+            url_ += "appid=" + encodeURIComponent("" + appid) + "&";
+        if (secret !== undefined)
+            url_ += "secret=" + encodeURIComponent("" + secret) + "&";
+        if (grant_type !== undefined)
+            url_ += "grant_type=" + encodeURIComponent("" + grant_type) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetToken(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetToken(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatPayServiceProxy.prototype.processGetToken = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? AccessTokenResult.fromJS(resultData200) : new AccessTokenResult();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 支付回调URL，对应于Service.Config.TenPayV3Notify
+     * @return Success
+     */
+    WechatPayServiceProxy.prototype.payNotifyUrl = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/WechatPay/PayNotifyUrl";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processPayNotifyUrl(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processPayNotifyUrl(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatPayServiceProxy.prototype.processPayNotifyUrl = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? AjaxResult.fromJS(resultData200) : new AjaxResult();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    WechatPayServiceProxy = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
+        __metadata("design:paramtypes", [http_1.HttpClient, String])
+    ], WechatPayServiceProxy);
+    return WechatPayServiceProxy;
+}());
+exports.WechatPayServiceProxy = WechatPayServiceProxy;
 var ActivityResultModel = /** @class */ (function () {
     function ActivityResultModel(data) {
         if (data) {
@@ -29643,8 +30251,8 @@ var CreateActivityModel = /** @class */ (function () {
 exports.CreateActivityModel = CreateActivityModel;
 var OrderTypeEnum;
 (function (OrderTypeEnum) {
-    OrderTypeEnum[OrderTypeEnum["Customer"] = "Customer"] = "Customer";
-    OrderTypeEnum[OrderTypeEnum["TravelAgency"] = "TravelAgency"] = "TravelAgency";
+    OrderTypeEnum[OrderTypeEnum["OrderTypeCustomer"] = "OrderTypeCustomer"] = "OrderTypeCustomer";
+    OrderTypeEnum[OrderTypeEnum["OrderTypeTravelAgency"] = "OrderTypeTravelAgency"] = "OrderTypeTravelAgency";
 })(OrderTypeEnum = exports.OrderTypeEnum || (exports.OrderTypeEnum = {}));
 var CreateActivityDetailModel = /** @class */ (function () {
     function CreateActivityDetailModel(data) {
@@ -32225,9 +32833,9 @@ exports.Source = Source;
 var PayStatusEnum;
 (function (PayStatusEnum) {
     PayStatusEnum[PayStatusEnum["NotPay"] = "NotPay"] = "NotPay";
-    PayStatusEnum[PayStatusEnum["Payment"] = "Payment"] = "Payment";
-    PayStatusEnum[PayStatusEnum["Refund"] = "Refund"] = "Refund";
-    PayStatusEnum[PayStatusEnum["Close"] = "Close"] = "Close";
+    PayStatusEnum[PayStatusEnum["PayStatusPayment"] = "PayStatusPayment"] = "PayStatusPayment";
+    PayStatusEnum[PayStatusEnum["PayStatusRefund"] = "PayStatusRefund"] = "PayStatusRefund";
+    PayStatusEnum[PayStatusEnum["PayStatusClose"] = "PayStatusClose"] = "PayStatusClose";
 })(PayStatusEnum = exports.PayStatusEnum || (exports.PayStatusEnum = {}));
 var ActivityTypeEnum;
 (function (ActivityTypeEnum) {
@@ -40030,7 +40638,7 @@ exports.Power = Power;
 var PowerTypeEnum;
 (function (PowerTypeEnum) {
     PowerTypeEnum[PowerTypeEnum["OPERATE"] = "OPERATE"] = "OPERATE";
-    PowerTypeEnum[PowerTypeEnum["Date"] = "Date"] = "Date";
+    PowerTypeEnum[PowerTypeEnum["Data"] = "Data"] = "Data";
     PowerTypeEnum[PowerTypeEnum["MENU"] = "MENU"] = "MENU";
 })(PowerTypeEnum = exports.PowerTypeEnum || (exports.PowerTypeEnum = {}));
 var PowerRole = /** @class */ (function () {
@@ -49154,6 +49762,7 @@ var TicketUserEnableEditDto = /** @class */ (function () {
             this.id = data["id"];
             this.saleUserId = data["saleUserId"];
             this.ticketId = data["ticketId"];
+            this.ticketPriceId = data["ticketPriceId"];
         }
     };
     TicketUserEnableEditDto.fromJS = function (data) {
@@ -49167,6 +49776,7 @@ var TicketUserEnableEditDto = /** @class */ (function () {
         data["id"] = this.id;
         data["saleUserId"] = this.saleUserId;
         data["ticketId"] = this.ticketId;
+        data["ticketPriceId"] = this.ticketPriceId;
         return data;
     };
     TicketUserEnableEditDto.prototype.clone = function () {
@@ -49194,6 +49804,8 @@ var TicketUserEnableListDto = /** @class */ (function () {
             this.saleUser = data["saleUser"] ? User.fromJS(data["saleUser"]) : undefined;
             this.ticketId = data["ticketId"];
             this.ticket = data["ticket"] ? Ticket.fromJS(data["ticket"]) : undefined;
+            this.ticketPriceId = data["ticketPriceId"];
+            this.ticketPrice = data["ticketPrice"] ? TicketPrice.fromJS(data["ticketPrice"]) : undefined;
             this.creatorUser = data["creatorUser"] ? User.fromJS(data["creatorUser"]) : undefined;
             this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : undefined;
@@ -49214,6 +49826,8 @@ var TicketUserEnableListDto = /** @class */ (function () {
         data["saleUser"] = this.saleUser ? this.saleUser.toJSON() : undefined;
         data["ticketId"] = this.ticketId;
         data["ticket"] = this.ticket ? this.ticket.toJSON() : undefined;
+        data["ticketPriceId"] = this.ticketPriceId;
+        data["ticketPrice"] = this.ticketPrice ? this.ticketPrice.toJSON() : undefined;
         data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : undefined;
         data["branch"] = this.branch ? this.branch.toJSON() : undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined;
@@ -52391,6 +53005,290 @@ var PagedResultDtoOfWharfListDto = /** @class */ (function () {
     return PagedResultDtoOfWharfListDto;
 }());
 exports.PagedResultDtoOfWharfListDto = PagedResultDtoOfWharfListDto;
+var BoatRunningStatusDto = /** @class */ (function () {
+    function BoatRunningStatusDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    BoatRunningStatusDto.prototype.init = function (data) {
+        if (data) {
+            this.boat = data["boat"] ? Boat.fromJS(data["boat"]) : undefined;
+            this.schedule = data["schedule"] ? Schedule.fromJS(data["schedule"]) : undefined;
+            this.saled = data["saled"];
+            this.rate = data["rate"];
+        }
+    };
+    BoatRunningStatusDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new BoatRunningStatusDto();
+        result.init(data);
+        return result;
+    };
+    BoatRunningStatusDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["boat"] = this.boat ? this.boat.toJSON() : undefined;
+        data["schedule"] = this.schedule ? this.schedule.toJSON() : undefined;
+        data["saled"] = this.saled;
+        data["rate"] = this.rate;
+        return data;
+    };
+    BoatRunningStatusDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new BoatRunningStatusDto();
+        result.init(json);
+        return result;
+    };
+    return BoatRunningStatusDto;
+}());
+exports.BoatRunningStatusDto = BoatRunningStatusDto;
+var AnalyticType;
+(function (AnalyticType) {
+    AnalyticType[AnalyticType["Daily"] = "Daily"] = "Daily";
+    AnalyticType[AnalyticType["Weekly"] = "Weekly"] = "Weekly";
+    AnalyticType[AnalyticType["Monthly"] = "Monthly"] = "Monthly";
+    AnalyticType[AnalyticType["Yearly"] = "Yearly"] = "Yearly";
+})(AnalyticType = exports.AnalyticType || (exports.AnalyticType = {}));
+/** 首页营收状况Dto */
+var RevenueAnalyticsResultDto = /** @class */ (function () {
+    function RevenueAnalyticsResultDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    RevenueAnalyticsResultDto.prototype.init = function (data) {
+        if (data) {
+            this.customerAnal = data["customerAnal"] ? CustomerAnalytics.fromJS(data["customerAnal"]) : undefined;
+            this.financeAnal = data["financeAnal"] ? FinanceAnalytics.fromJS(data["financeAnal"]) : undefined;
+        }
+    };
+    RevenueAnalyticsResultDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new RevenueAnalyticsResultDto();
+        result.init(data);
+        return result;
+    };
+    RevenueAnalyticsResultDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["customerAnal"] = this.customerAnal ? this.customerAnal.toJSON() : undefined;
+        data["financeAnal"] = this.financeAnal ? this.financeAnal.toJSON() : undefined;
+        return data;
+    };
+    RevenueAnalyticsResultDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new RevenueAnalyticsResultDto();
+        result.init(json);
+        return result;
+    };
+    return RevenueAnalyticsResultDto;
+}());
+exports.RevenueAnalyticsResultDto = RevenueAnalyticsResultDto;
+var CustomerAnalytics = /** @class */ (function () {
+    function CustomerAnalytics(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    CustomerAnalytics.prototype.init = function (data) {
+        if (data) {
+            if (data["timeSpan"] && data["timeSpan"].constructor === Array) {
+                this.timeSpan = [];
+                for (var _i = 0, _a = data["timeSpan"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.timeSpan.push(item);
+                }
+            }
+            if (data["count"] && data["count"].constructor === Array) {
+                this.count = [];
+                for (var _b = 0, _c = data["count"]; _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    this.count.push(item);
+                }
+            }
+            this.totalCount = data["totalCount"];
+        }
+    };
+    CustomerAnalytics.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new CustomerAnalytics();
+        result.init(data);
+        return result;
+    };
+    CustomerAnalytics.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        if (this.timeSpan && this.timeSpan.constructor === Array) {
+            data["timeSpan"] = [];
+            for (var _i = 0, _a = this.timeSpan; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["timeSpan"].push(item);
+            }
+        }
+        if (this.count && this.count.constructor === Array) {
+            data["count"] = [];
+            for (var _b = 0, _c = this.count; _b < _c.length; _b++) {
+                var item = _c[_b];
+                data["count"].push(item);
+            }
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    };
+    CustomerAnalytics.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new CustomerAnalytics();
+        result.init(json);
+        return result;
+    };
+    return CustomerAnalytics;
+}());
+exports.CustomerAnalytics = CustomerAnalytics;
+var FinanceAnalytics = /** @class */ (function () {
+    function FinanceAnalytics(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    FinanceAnalytics.prototype.init = function (data) {
+        if (data) {
+            if (data["timeSpan"] && data["timeSpan"].constructor === Array) {
+                this.timeSpan = [];
+                for (var _i = 0, _a = data["timeSpan"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.timeSpan.push(item);
+                }
+            }
+            if (data["amount"] && data["amount"].constructor === Array) {
+                this.amount = [];
+                for (var _b = 0, _c = data["amount"]; _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    this.amount.push(item);
+                }
+            }
+            this.totalAmount = data["totalAmount"];
+        }
+    };
+    FinanceAnalytics.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new FinanceAnalytics();
+        result.init(data);
+        return result;
+    };
+    FinanceAnalytics.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        if (this.timeSpan && this.timeSpan.constructor === Array) {
+            data["timeSpan"] = [];
+            for (var _i = 0, _a = this.timeSpan; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["timeSpan"].push(item);
+            }
+        }
+        if (this.amount && this.amount.constructor === Array) {
+            data["amount"] = [];
+            for (var _b = 0, _c = this.amount; _b < _c.length; _b++) {
+                var item = _c[_b];
+                data["amount"].push(item);
+            }
+        }
+        data["totalAmount"] = this.totalAmount;
+        return data;
+    };
+    FinanceAnalytics.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new FinanceAnalytics();
+        result.init(json);
+        return result;
+    };
+    return FinanceAnalytics;
+}());
+exports.FinanceAnalytics = FinanceAnalytics;
+var ScheduleAnalResultDto = /** @class */ (function () {
+    function ScheduleAnalResultDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    ScheduleAnalResultDto.prototype.init = function (data) {
+        if (data) {
+            this.schedule = data["schedule"] ? Schedule.fromJS(data["schedule"]) : undefined;
+            this.route = data["route"] ? Route.fromJS(data["route"]) : undefined;
+            this.boat = data["boat"] ? Boat.fromJS(data["boat"]) : undefined;
+        }
+    };
+    ScheduleAnalResultDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new ScheduleAnalResultDto();
+        result.init(data);
+        return result;
+    };
+    ScheduleAnalResultDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["schedule"] = this.schedule ? this.schedule.toJSON() : undefined;
+        data["route"] = this.route ? this.route.toJSON() : undefined;
+        data["boat"] = this.boat ? this.boat.toJSON() : undefined;
+        return data;
+    };
+    ScheduleAnalResultDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new ScheduleAnalResultDto();
+        result.init(json);
+        return result;
+    };
+    return ScheduleAnalResultDto;
+}());
+exports.ScheduleAnalResultDto = ScheduleAnalResultDto;
+var TicketRatesResult = /** @class */ (function () {
+    function TicketRatesResult(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    TicketRatesResult.prototype.init = function (data) {
+        if (data) {
+            this.ticketTypeId = data["ticketTypeId"];
+            this.ticketTypeName = data["ticketTypeName"];
+            this.count = data["count"];
+        }
+    };
+    TicketRatesResult.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new TicketRatesResult();
+        result.init(data);
+        return result;
+    };
+    TicketRatesResult.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["ticketTypeId"] = this.ticketTypeId;
+        data["ticketTypeName"] = this.ticketTypeName;
+        data["count"] = this.count;
+        return data;
+    };
+    TicketRatesResult.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new TicketRatesResult();
+        result.init(json);
+        return result;
+    };
+    return TicketRatesResult;
+}());
+exports.TicketRatesResult = TicketRatesResult;
 var PagedResultDtoOfGetOrderSourceResultDto = /** @class */ (function () {
     function PagedResultDtoOfGetOrderSourceResultDto(data) {
         if (data) {
@@ -53195,6 +54093,7 @@ var ScheduleTicketDetailResultDto = /** @class */ (function () {
             this.schedule = data["schedule"] ? Schedule.fromJS(data["schedule"]) : undefined;
             this.ticketDetail = data["ticketDetail"] ? TicketDetail.fromJS(data["ticketDetail"]) : undefined;
             this.customer = data["customer"] ? Customer.fromJS(data["customer"]) : undefined;
+            this.salePrice = data["salePrice"];
         }
     };
     ScheduleTicketDetailResultDto.fromJS = function (data) {
@@ -53209,6 +54108,7 @@ var ScheduleTicketDetailResultDto = /** @class */ (function () {
         data["schedule"] = this.schedule ? this.schedule.toJSON() : undefined;
         data["ticketDetail"] = this.ticketDetail ? this.ticketDetail.toJSON() : undefined;
         data["customer"] = this.customer ? this.customer.toJSON() : undefined;
+        data["salePrice"] = this.salePrice;
         return data;
     };
     ScheduleTicketDetailResultDto.prototype.clone = function () {
@@ -53291,10 +54191,9 @@ var SellerDailyResultDto = /** @class */ (function () {
             this.saleCount = data["saleCount"];
             this.refundCount = data["refundCount"];
             this.totalCount = data["totalCount"];
-            this.cashTotalAmount = data["cashTotalAmount"];
-            this.weiChatTotalAmount = data["weiChatTotalAmount"];
-            this.cardTotalAmount = data["cardTotalAmount"];
-            this.zhiFuBaoTotalAmount = data["zhiFuBaoTotalAmount"];
+            this.totalSaleAmount = data["totalSaleAmount"];
+            this.totalRefundAmount = data["totalRefundAmount"];
+            this.totalAmount = data["totalAmount"];
         }
     };
     SellerDailyResultDto.fromJS = function (data) {
@@ -53317,10 +54216,9 @@ var SellerDailyResultDto = /** @class */ (function () {
         data["saleCount"] = this.saleCount;
         data["refundCount"] = this.refundCount;
         data["totalCount"] = this.totalCount;
-        data["cashTotalAmount"] = this.cashTotalAmount;
-        data["weiChatTotalAmount"] = this.weiChatTotalAmount;
-        data["cardTotalAmount"] = this.cardTotalAmount;
-        data["zhiFuBaoTotalAmount"] = this.zhiFuBaoTotalAmount;
+        data["totalSaleAmount"] = this.totalSaleAmount;
+        data["totalRefundAmount"] = this.totalRefundAmount;
+        data["totalAmount"] = this.totalAmount;
         return data;
     };
     SellerDailyResultDto.prototype.clone = function () {
@@ -53969,6 +54867,276 @@ var CaptchaType;
     CaptchaType[CaptchaType["TenantUserRegister"] = "TenantUserRegister"] = "TenantUserRegister";
     CaptchaType[CaptchaType["TenantUserLogin"] = "TenantUserLogin"] = "TenantUserLogin";
 })(CaptchaType = exports.CaptchaType || (exports.CaptchaType = {}));
+var AjaxResult = /** @class */ (function () {
+    function AjaxResult(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    AjaxResult.prototype.init = function (data) {
+        if (data) {
+            this.isSuccess = data["isSuccess"];
+            this.message = data["message"];
+            this.absoluteUri = data["absoluteUri"];
+            this.isException = data["isException"];
+            this.primaryId = data["primaryId"];
+            this.data = data["data"];
+        }
+    };
+    AjaxResult.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new AjaxResult();
+        result.init(data);
+        return result;
+    };
+    AjaxResult.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess;
+        data["message"] = this.message;
+        data["absoluteUri"] = this.absoluteUri;
+        data["isException"] = this.isException;
+        data["primaryId"] = this.primaryId;
+        data["data"] = this.data;
+        return data;
+    };
+    AjaxResult.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new AjaxResult();
+        result.init(json);
+        return result;
+    };
+    return AjaxResult;
+}());
+exports.AjaxResult = AjaxResult;
+var AccessTokenResult = /** @class */ (function () {
+    function AccessTokenResult(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    AccessTokenResult.prototype.init = function (data) {
+        if (data) {
+            this.access_token = data["access_token"];
+            this.expires_in = data["expires_in"];
+            this.errcode = data["errcode"];
+            this.errorCodeValue = data["errorCodeValue"];
+            this.errmsg = data["errmsg"];
+            this.p2PData = data["p2PData"];
+        }
+    };
+    AccessTokenResult.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new AccessTokenResult();
+        result.init(data);
+        return result;
+    };
+    AccessTokenResult.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["access_token"] = this.access_token;
+        data["expires_in"] = this.expires_in;
+        data["errcode"] = this.errcode;
+        data["errorCodeValue"] = this.errorCodeValue;
+        data["errmsg"] = this.errmsg;
+        data["p2PData"] = this.p2PData;
+        return data;
+    };
+    AccessTokenResult.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new AccessTokenResult();
+        result.init(json);
+        return result;
+    };
+    return AccessTokenResult;
+}());
+exports.AccessTokenResult = AccessTokenResult;
+var ReturnCode;
+(function (ReturnCode) {
+    ReturnCode[ReturnCode["\u8BF7\u6C42\u6210\u529F"] = "系统繁忙此时请开发者稍候再试"] = "\u8BF7\u6C42\u6210\u529F";
+    ReturnCode[ReturnCode["\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u5DF2\u6CE8\u9500"] = "请求成功"] = "\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u5DF2\u6CE8\u9500";
+    ReturnCode[ReturnCode["\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u4E0D\u5B58\u5728\u6216\u4F01\u4E1A\u4FE1\u606F\u672A\u66F4\u65B0"] = "获取access_token时AppSecret错误或者access_token无效"] = "\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u4E0D\u5B58\u5728\u6216\u4F01\u4E1A\u4FE1\u606F\u672A\u66F4\u65B0";
+    ReturnCode[ReturnCode["\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u59D3\u540D\u4E0D\u4E00\u81F4"] = "不合法的凭证类型"] = "\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u59D3\u540D\u4E0D\u4E00\u81F4";
+    ReturnCode[ReturnCode["\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u8EAB\u4EFD\u8BC1\u53F7\u7801\u4E0D\u4E00\u81F4"] = "不合法的OpenID"] = "\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u8EAB\u4EFD\u8BC1\u53F7\u7801\u4E0D\u4E00\u81F4";
+    ReturnCode[ReturnCode["\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u8EAB\u4EFD\u8BC1\u53F7\u7801_\u5DE5\u5546\u6570\u636E\u672A\u66F4\u65B0_\u8BF75_15\u4E2A\u5DE5\u4F5C\u65E5\u4E4B\u540E\u5C1D\u8BD5"] = "不合法的媒体文件类型"] = "\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u8EAB\u4EFD\u8BC1\u53F7\u7801_\u5DE5\u5546\u6570\u636E\u672A\u66F4\u65B0_\u8BF75_15\u4E2A\u5DE5\u4F5C\u65E5\u4E4B\u540E\u5C1D\u8BD5";
+    ReturnCode[ReturnCode["\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u4FE1\u606F\u6216\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u4FE1\u606F\u4E0D\u4E00\u81F4"] = "不合法的文件类型"] = "\u5DE5\u5546\u6570\u636E\u8FD4\u56DE_\u4F01\u4E1A\u4FE1\u606F\u6216\u6CD5\u5B9A\u4EE3\u8868\u4EBA\u4FE1\u606F\u4E0D\u4E00\u81F4";
+    ReturnCode[ReturnCode["\u5BF9\u65B9\u4E0D\u662F\u7C89\u4E1D"] = "不合法的文件大小"] = "\u5BF9\u65B9\u4E0D\u662F\u7C89\u4E1D";
+    ReturnCode[ReturnCode["\u53D1\u9001\u6D88\u606F\u5931\u8D25_\u5BF9\u65B9\u5173\u95ED\u4E86\u63A5\u6536\u6D88\u606F"] = "不合法的媒体文件id"] = "\u53D1\u9001\u6D88\u606F\u5931\u8D25_\u5BF9\u65B9\u5173\u95ED\u4E86\u63A5\u6536\u6D88\u606F";
+    ReturnCode[ReturnCode["\u53D1\u9001\u6D88\u606F\u5931\u8D25_48\u5C0F\u65F6\u5185\u7528\u6237\u672A\u4E92\u52A8"] = "不合法的消息类型_40008"] = "\u53D1\u9001\u6D88\u606F\u5931\u8D25_48\u5C0F\u65F6\u5185\u7528\u6237\u672A\u4E92\u52A8";
+    ReturnCode[ReturnCode["POST\u53C2\u6570\u975E\u6CD5"] = "不合法的图片文件大小"] = "POST\u53C2\u6570\u975E\u6CD5";
+    ReturnCode[ReturnCode["\u83B7\u53D6access_token\u65F6AppSecret\u9519\u8BEF\u6216\u8005access_token\u65E0\u6548"] = "不合法的语音文件大小"] = "\u83B7\u53D6access_token\u65F6AppSecret\u9519\u8BEF\u6216\u8005access_token\u65E0\u6548";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u51ED\u8BC1\u7C7B\u578B"] = "不合法的视频文件大小"] = "\u4E0D\u5408\u6CD5\u7684\u51ED\u8BC1\u7C7B\u578B";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684OpenID"] = "不合法的缩略图文件大小"] = "\u4E0D\u5408\u6CD5\u7684OpenID";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5A92\u4F53\u6587\u4EF6\u7C7B\u578B"] = "不合法的APPID"] = "\u4E0D\u5408\u6CD5\u7684\u5A92\u4F53\u6587\u4EF6\u7C7B\u578B";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6587\u4EF6\u7C7B\u578B"] = "不合法的access_token"] = "\u4E0D\u5408\u6CD5\u7684\u6587\u4EF6\u7C7B\u578B";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6587\u4EF6\u5927\u5C0F"] = "不合法的菜单类型"] = "\u4E0D\u5408\u6CD5\u7684\u6587\u4EF6\u5927\u5C0F";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5A92\u4F53\u6587\u4EF6id"] = "不合法的按钮个数1"] = "\u4E0D\u5408\u6CD5\u7684\u5A92\u4F53\u6587\u4EF6id";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6D88\u606F\u7C7B\u578B_40008"] = "不合法的按钮个数2"] = "\u4E0D\u5408\u6CD5\u7684\u6D88\u606F\u7C7B\u578B_40008";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u56FE\u7247\u6587\u4EF6\u5927\u5C0F"] = "不合法的按钮名字长度"] = "\u4E0D\u5408\u6CD5\u7684\u56FE\u7247\u6587\u4EF6\u5927\u5C0F";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u8BED\u97F3\u6587\u4EF6\u5927\u5C0F"] = "不合法的按钮KEY长度"] = "\u4E0D\u5408\u6CD5\u7684\u8BED\u97F3\u6587\u4EF6\u5927\u5C0F";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u89C6\u9891\u6587\u4EF6\u5927\u5C0F"] = "不合法的按钮URL长度"] = "\u4E0D\u5408\u6CD5\u7684\u89C6\u9891\u6587\u4EF6\u5927\u5C0F";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u7F29\u7565\u56FE\u6587\u4EF6\u5927\u5C0F"] = "不合法的菜单版本号"] = "\u4E0D\u5408\u6CD5\u7684\u7F29\u7565\u56FE\u6587\u4EF6\u5927\u5C0F";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684APPID"] = "不合法的子菜单级数"] = "\u4E0D\u5408\u6CD5\u7684APPID";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684access_token"] = "不合法的子菜单按钮个数"] = "\u4E0D\u5408\u6CD5\u7684access_token";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u83DC\u5355\u7C7B\u578B"] = "不合法的子菜单按钮类型"] = "\u4E0D\u5408\u6CD5\u7684\u83DC\u5355\u7C7B\u578B";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6309\u94AE\u4E2A\u65701"] = "不合法的子菜单按钮名字长度"] = "\u4E0D\u5408\u6CD5\u7684\u6309\u94AE\u4E2A\u65701";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6309\u94AE\u4E2A\u65702"] = "不合法的子菜单按钮KEY长度"] = "\u4E0D\u5408\u6CD5\u7684\u6309\u94AE\u4E2A\u65702";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6309\u94AE\u540D\u5B57\u957F\u5EA6"] = "不合法的子菜单按钮URL长度"] = "\u4E0D\u5408\u6CD5\u7684\u6309\u94AE\u540D\u5B57\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6309\u94AEKEY\u957F\u5EA6"] = "不合法的自定义菜单使用用户"] = "\u4E0D\u5408\u6CD5\u7684\u6309\u94AEKEY\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u6309\u94AEURL\u957F\u5EA6"] = "不合法的oauth_code"] = "\u4E0D\u5408\u6CD5\u7684\u6309\u94AEURL\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u83DC\u5355\u7248\u672C\u53F7"] = "不合法的refresh_token"] = "\u4E0D\u5408\u6CD5\u7684\u83DC\u5355\u7248\u672C\u53F7";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u7EA7\u6570"] = "不合法的openid列表"] = "\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u7EA7\u6570";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AE\u4E2A\u6570"] = "不合法的openid列表长度"] = "\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AE\u4E2A\u6570";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AE\u7C7B\u578B"] = "不合法的请求字符不能包含uxxxx格式的字符"] = "\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AE\u7C7B\u578B";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AE\u540D\u5B57\u957F\u5EA6"] = "不合法的参数"] = "\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AE\u540D\u5B57\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AEKEY\u957F\u5EA6"] = "template_id不正确"] = "\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AEKEY\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AEURL\u957F\u5EA6"] = "不合法的请求格式"] = "\u4E0D\u5408\u6CD5\u7684\u5B50\u83DC\u5355\u6309\u94AEURL\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u81EA\u5B9A\u4E49\u83DC\u5355\u4F7F\u7528\u7528\u6237"] = "不合法的URL长度"] = "\u4E0D\u5408\u6CD5\u7684\u81EA\u5B9A\u4E49\u83DC\u5355\u4F7F\u7528\u7528\u6237";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684oauth_code"] = "不合法的分组id"] = "\u4E0D\u5408\u6CD5\u7684oauth_code";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684refresh_token"] = "分组名字不合法"] = "\u4E0D\u5408\u6CD5\u7684refresh_token";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684openid\u5217\u8868"] = "appsecret不正确"] = "\u4E0D\u5408\u6CD5\u7684openid\u5217\u8868";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684openid\u5217\u8868\u957F\u5EA6"] = "小程序Appid不存在"] = "\u4E0D\u5408\u6CD5\u7684openid\u5217\u8868\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u8BF7\u6C42\u5B57\u7B26\u4E0D\u80FD\u5305\u542Buxxxx\u683C\u5F0F\u7684\u5B57\u7B26"] = "缺少access_token参数"] = "\u4E0D\u5408\u6CD5\u7684\u8BF7\u6C42\u5B57\u7B26\u4E0D\u80FD\u5305\u542Buxxxx\u683C\u5F0F\u7684\u5B57\u7B26";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u53C2\u6570"] = "缺少appid参数"] = "\u4E0D\u5408\u6CD5\u7684\u53C2\u6570";
+    ReturnCode[ReturnCode["Template_id\u4E0D\u6B63\u786E"] = "缺少refresh_token参数"] = "Template_id\u4E0D\u6B63\u786E";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u8BF7\u6C42\u683C\u5F0F"] = "缺少secret参数"] = "\u4E0D\u5408\u6CD5\u7684\u8BF7\u6C42\u683C\u5F0F";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684URL\u957F\u5EA6"] = "缺少多媒体文件数据"] = "\u4E0D\u5408\u6CD5\u7684URL\u957F\u5EA6";
+    ReturnCode[ReturnCode["\u4E0D\u5408\u6CD5\u7684\u5206\u7EC4id"] = "缺少media_id参数"] = "\u4E0D\u5408\u6CD5\u7684\u5206\u7EC4id";
+    ReturnCode[ReturnCode["\u5206\u7EC4\u540D\u5B57\u4E0D\u5408\u6CD5"] = "缺少子菜单数据"] = "\u5206\u7EC4\u540D\u5B57\u4E0D\u5408\u6CD5";
+    ReturnCode[ReturnCode["\u8F93\u5165\u53C2\u6570\u6709\u8BEF"] = "缺少oauth_code"] = "\u8F93\u5165\u53C2\u6570\u6709\u8BEF";
+    ReturnCode[ReturnCode["Appsecret\u4E0D\u6B63\u786E"] = "缺少openid"] = "Appsecret\u4E0D\u6B63\u786E";
+    ReturnCode[ReturnCode["\u5C0F\u7A0B\u5E8FAppid\u4E0D\u5B58\u5728"] = "form_id不正确_或者过期"] = "\u5C0F\u7A0B\u5E8FAppid\u4E0D\u5B58\u5728";
+    ReturnCode[ReturnCode["\u7F3A\u5C11access_token\u53C2\u6570"] = "form_id已被使用"] = "\u7F3A\u5C11access_token\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7F3A\u5C11appid\u53C2\u6570"] = "page不正确"] = "\u7F3A\u5C11appid\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7F3A\u5C11refresh_token\u53C2\u6570"] = "access_token超时"] = "\u7F3A\u5C11refresh_token\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7F3A\u5C11secret\u53C2\u6570"] = "refresh_token超时"] = "\u7F3A\u5C11secret\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7F3A\u5C11\u591A\u5A92\u4F53\u6587\u4EF6\u6570\u636E"] = "oauth_code超时"] = "\u7F3A\u5C11\u591A\u5A92\u4F53\u6587\u4EF6\u6570\u636E";
+    ReturnCode[ReturnCode["\u7F3A\u5C11media_id\u53C2\u6570"] = "需要GET请求"] = "\u7F3A\u5C11media_id\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7F3A\u5C11\u5B50\u83DC\u5355\u6570\u636E"] = "需要POST请求"] = "\u7F3A\u5C11\u5B50\u83DC\u5355\u6570\u636E";
+    ReturnCode[ReturnCode["\u7F3A\u5C11oauth_code"] = "需要HTTPS请求"] = "\u7F3A\u5C11oauth_code";
+    ReturnCode[ReturnCode["\u7F3A\u5C11openid"] = "需要接收者关注"] = "\u7F3A\u5C11openid";
+    ReturnCode[ReturnCode["Form_id\u4E0D\u6B63\u786E_\u6216\u8005\u8FC7\u671F"] = "需要好友关系"] = "Form_id\u4E0D\u6B63\u786E_\u6216\u8005\u8FC7\u671F";
+    ReturnCode[ReturnCode["Form_id\u5DF2\u88AB\u4F7F\u7528"] = "多媒体文件为空"] = "Form_id\u5DF2\u88AB\u4F7F\u7528";
+    ReturnCode[ReturnCode["Page\u4E0D\u6B63\u786E"] = "POST的数据包为空"] = "Page\u4E0D\u6B63\u786E";
+    ReturnCode[ReturnCode["Access_token\u8D85\u65F6"] = "图文消息内容为空"] = "Access_token\u8D85\u65F6";
+    ReturnCode[ReturnCode["Refresh_token\u8D85\u65F6"] = "文本消息内容为空"] = "Refresh_token\u8D85\u65F6";
+    ReturnCode[ReturnCode["Oauth_code\u8D85\u65F6"] = "多媒体文件大小超过限制"] = "Oauth_code\u8D85\u65F6";
+    ReturnCode[ReturnCode["\u9700\u8981GET\u8BF7\u6C42"] = "消息内容超过限制"] = "\u9700\u8981GET\u8BF7\u6C42";
+    ReturnCode[ReturnCode["\u9700\u8981POST\u8BF7\u6C42"] = "标题字段超过限制"] = "\u9700\u8981POST\u8BF7\u6C42";
+    ReturnCode[ReturnCode["\u9700\u8981HTTPS\u8BF7\u6C42"] = "描述字段超过限制"] = "\u9700\u8981HTTPS\u8BF7\u6C42";
+    ReturnCode[ReturnCode["\u9700\u8981\u63A5\u6536\u8005\u5173\u6CE8"] = "链接字段超过限制"] = "\u9700\u8981\u63A5\u6536\u8005\u5173\u6CE8";
+    ReturnCode[ReturnCode["\u9700\u8981\u597D\u53CB\u5173\u7CFB"] = "图片链接字段超过限制"] = "\u9700\u8981\u597D\u53CB\u5173\u7CFB";
+    ReturnCode[ReturnCode["\u6CA1\u6709\u6743\u9650"] = "语音播放时间超过限制"] = "\u6CA1\u6709\u6743\u9650";
+    ReturnCode[ReturnCode["\u591A\u5A92\u4F53\u6587\u4EF6\u4E3A\u7A7A"] = "图文消息超过限制"] = "\u591A\u5A92\u4F53\u6587\u4EF6\u4E3A\u7A7A";
+    ReturnCode[ReturnCode["POST\u7684\u6570\u636E\u5305\u4E3A\u7A7A"] = "接口调用超过限制"] = "POST\u7684\u6570\u636E\u5305\u4E3A\u7A7A";
+    ReturnCode[ReturnCode["\u56FE\u6587\u6D88\u606F\u5185\u5BB9\u4E3A\u7A7A"] = "创建菜单个数超过限制"] = "\u56FE\u6587\u6D88\u606F\u5185\u5BB9\u4E3A\u7A7A";
+    ReturnCode[ReturnCode["\u6587\u672C\u6D88\u606F\u5185\u5BB9\u4E3A\u7A7A"] = "回复时间超过限制"] = "\u6587\u672C\u6D88\u606F\u5185\u5BB9\u4E3A\u7A7A";
+    ReturnCode[ReturnCode["\u591A\u5A92\u4F53\u6587\u4EF6\u5927\u5C0F\u8D85\u8FC7\u9650\u5236"] = "系统分组不允许修改"] = "\u591A\u5A92\u4F53\u6587\u4EF6\u5927\u5C0F\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u6D88\u606F\u5185\u5BB9\u8D85\u8FC7\u9650\u5236"] = "分组名字过长"] = "\u6D88\u606F\u5185\u5BB9\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u6807\u9898\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236"] = "分组数量超过上限"] = "\u6807\u9898\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u63CF\u8FF0\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236"] = "不存在媒体数据"] = "\u63CF\u8FF0\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u94FE\u63A5\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236"] = "不存在的菜单版本"] = "\u94FE\u63A5\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u56FE\u7247\u94FE\u63A5\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236"] = "不存在的菜单数据"] = "\u56FE\u7247\u94FE\u63A5\u5B57\u6BB5\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u8BED\u97F3\u64AD\u653E\u65F6\u95F4\u8D85\u8FC7\u9650\u5236"] = "解析JSON_XML内容错误"] = "\u8BED\u97F3\u64AD\u653E\u65F6\u95F4\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u56FE\u6587\u6D88\u606F\u8D85\u8FC7\u9650\u5236"] = "api功能未授权"] = "\u56FE\u6587\u6D88\u606F\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u63A5\u53E3\u8C03\u7528\u8D85\u8FC7\u9650\u5236"] = "用户未授权该api"] = "\u63A5\u53E3\u8C03\u7528\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u521B\u5EFA\u83DC\u5355\u4E2A\u6570\u8D85\u8FC7\u9650\u5236"] = "参数错误invalid_parameter"] = "\u521B\u5EFA\u83DC\u5355\u4E2A\u6570\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u56DE\u590D\u65F6\u95F4\u8D85\u8FC7\u9650\u5236"] = "无效客服账号invalid_kf_account"] = "\u56DE\u590D\u65F6\u95F4\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u7CFB\u7EDF\u5206\u7EC4\u4E0D\u5141\u8BB8\u4FEE\u6539"] = "客服帐号已存在kf_account_exsited"] = "\u7CFB\u7EDF\u5206\u7EC4\u4E0D\u5141\u8BB8\u4FEE\u6539";
+    ReturnCode[ReturnCode["\u5206\u7EC4\u540D\u5B57\u8FC7\u957F"] = "客服帐号名长度超过限制"] = "\u5206\u7EC4\u540D\u5B57\u8FC7\u957F";
+    ReturnCode[ReturnCode["\u5206\u7EC4\u6570\u91CF\u8D85\u8FC7\u4E0A\u9650"] = "客服帐号名包含非法字符"] = "\u5206\u7EC4\u6570\u91CF\u8D85\u8FC7\u4E0A\u9650";
+    ReturnCode[ReturnCode["\u4E0D\u5B58\u5728\u5A92\u4F53\u6570\u636E"] = "客服帐号个数超过限制"] = "\u4E0D\u5B58\u5728\u5A92\u4F53\u6570\u636E";
+    ReturnCode[ReturnCode["\u4E0D\u5B58\u5728\u7684\u83DC\u5355\u7248\u672C"] = "无效头像文件类型invalid_file_type"] = "\u4E0D\u5B58\u5728\u7684\u83DC\u5355\u7248\u672C";
+    ReturnCode[ReturnCode["\u4E0D\u5B58\u5728\u7684\u83DC\u5355\u6570\u636E"] = "系统错误system_error"] = "\u4E0D\u5B58\u5728\u7684\u83DC\u5355\u6570\u636E";
+    ReturnCode[ReturnCode["\u89E3\u6790JSON_XML\u5185\u5BB9\u9519\u8BEF"] = "日期格式错误"] = "\u89E3\u6790JSON_XML\u5185\u5BB9\u9519\u8BEF";
+    ReturnCode[ReturnCode["Api\u529F\u80FD\u672A\u6388\u6743"] = "日期范围错误"] = "Api\u529F\u80FD\u672A\u6388\u6743";
+    ReturnCode[ReturnCode["\u7528\u6237\u672A\u6388\u6743\u8BE5api"] = "发送消息失败_48小时内用户未互动"] = "\u7528\u6237\u672A\u6388\u6743\u8BE5api";
+    ReturnCode[ReturnCode["\u6CD5\u4EBA\u59D3\u540D\u4E0E\u5FAE\u4FE1\u53F7\u4E0D\u4E00\u81F4"] = "发送消息失败_该用户已被加入黑名单_无法向此发送消息"] = "\u6CD5\u4EBA\u59D3\u540D\u4E0E\u5FAE\u4FE1\u53F7\u4E0D\u4E00\u81F4";
+    ReturnCode[ReturnCode["\u7CFB\u7EDF\u9519\u8BEFsystem_error"] = "发送消息失败_对方关闭了接收消息"] = "\u7CFB\u7EDF\u9519\u8BEFsystem_error";
+    ReturnCode[ReturnCode["\u53C2\u6570\u9519\u8BEFinvalid_parameter"] = "对方不是粉丝"] = "\u53C2\u6570\u9519\u8BEFinvalid_parameter";
+    ReturnCode[ReturnCode["\u65E0\u6548\u5BA2\u670D\u8D26\u53F7invalid_kf_account"] = "没有留言权限"] = "\u65E0\u6548\u5BA2\u670D\u8D26\u53F7invalid_kf_account";
+    ReturnCode[ReturnCode["\u5BA2\u670D\u5E10\u53F7\u5DF2\u5B58\u5728kf_account_exsited"] = "该图文不存在"] = "\u5BA2\u670D\u5E10\u53F7\u5DF2\u5B58\u5728kf_account_exsited";
+    ReturnCode[ReturnCode["\u5BA2\u670D\u5E10\u53F7\u540D\u957F\u5EA6\u8D85\u8FC7\u9650\u5236"] = "文章存在敏感信息"] = "\u5BA2\u670D\u5E10\u53F7\u540D\u957F\u5EA6\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u5BA2\u670D\u5E10\u53F7\u540D\u5305\u542B\u975E\u6CD5\u5B57\u7B26"] = "精选评论数已达上限"] = "\u5BA2\u670D\u5E10\u53F7\u540D\u5305\u542B\u975E\u6CD5\u5B57\u7B26";
+    ReturnCode[ReturnCode["\u5BA2\u670D\u5E10\u53F7\u4E2A\u6570\u8D85\u8FC7\u9650\u5236"] = "已被用户删除_无法精选"] = "\u5BA2\u670D\u5E10\u53F7\u4E2A\u6570\u8D85\u8FC7\u9650\u5236";
+    ReturnCode[ReturnCode["\u65E0\u6548\u5934\u50CF\u6587\u4EF6\u7C7B\u578Binvalid_file_type"] = "已经回复过了"] = "\u65E0\u6548\u5934\u50CF\u6587\u4EF6\u7C7B\u578Binvalid_file_type";
+    ReturnCode[ReturnCode["\u65E5\u671F\u683C\u5F0F\u9519\u8BEF"] = "回复超过长度限制或为0"] = "\u65E5\u671F\u683C\u5F0F\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u65E5\u671F\u8303\u56F4\u9519\u8BEF"] = "该评论不存在"] = "\u65E5\u671F\u8303\u56F4\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u53D1\u9001\u6D88\u606F\u5931\u8D25_\u8BE5\u7528\u6237\u5DF2\u88AB\u52A0\u5165\u9ED1\u540D\u5355_\u65E0\u6CD5\u5411\u6B64\u53D1\u9001\u6D88\u606F"] = "获取评论数目不合法"] = "\u53D1\u9001\u6D88\u606F\u5931\u8D25_\u8BE5\u7528\u6237\u5DF2\u88AB\u52A0\u5165\u9ED1\u540D\u5355_\u65E0\u6CD5\u5411\u6B64\u53D1\u9001\u6D88\u606F";
+    ReturnCode[ReturnCode["\u95E8\u5E97\u4E0D\u5B58\u5728"] = "该公众号_小程序已经绑定了开放平台帐号"] = "\u95E8\u5E97\u4E0D\u5B58\u5728";
+    ReturnCode[ReturnCode["\u8BE5\u95E8\u5E97\u72B6\u6001\u4E0D\u5141\u8BB8\u66F4\u65B0"] = "该主体已有任务执行中_距上次任务24h后再试"] = "\u8BE5\u95E8\u5E97\u72B6\u6001\u4E0D\u5141\u8BB8\u66F4\u65B0";
+    ReturnCode[ReturnCode["\u6807\u7B7E\u683C\u5F0F\u9519\u8BEF"] = "内部错误"] = "\u6807\u7B7E\u683C\u5F0F\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u9875\u9762\u8DEF\u5F84\u9519\u8BEF"] = "无效微信号"] = "\u9875\u9762\u8DEF\u5F84\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u7C7B\u76EE\u586B\u5199\u9519\u8BEF"] = "法人姓名与微信号不一致"] = "\u7C7B\u76EE\u586B\u5199\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u5DF2\u7ECF\u6709\u6B63\u5728\u5BA1\u6838\u7684\u7248\u672C"] = "企业代码类型无效_请选择正确类型填写"] = "\u5DF2\u7ECF\u6709\u6B63\u5728\u5BA1\u6838\u7684\u7248\u672C";
+    ReturnCode[ReturnCode["Item_list\u6709\u9879\u76EE\u4E3A\u7A7A"] = "未找到该任务"] = "Item_list\u6709\u9879\u76EE\u4E3A\u7A7A";
+    ReturnCode[ReturnCode["\u6807\u9898\u586B\u5199\u9519\u8BEF"] = "待法人人脸核身校验"] = "\u6807\u9898\u586B\u5199\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u65E0\u6548\u7684\u5BA1\u6838id"] = "法人_企业信息一致性校验中"] = "\u65E0\u6548\u7684\u5BA1\u6838id";
+    ReturnCode[ReturnCode["\u6CA1\u6709\u5BA1\u6838\u7248\u672C"] = "缺少参数"] = "\u6CA1\u6709\u5BA1\u6838\u7248\u672C";
+    ReturnCode[ReturnCode["\u5BA1\u6838\u72B6\u6001\u672A\u6EE1\u8DB3\u53D1\u5E03"] = "第三方权限集不全_补全权限集全网发布后生效"] = "\u5BA1\u6838\u72B6\u6001\u672A\u6EE1\u8DB3\u53D1\u5E03";
+    ReturnCode[ReturnCode["\u72B6\u6001\u4E0D\u53EF\u53D8"] = "已下发的模板消息法人并未确认且已超时_24h_未进行身份证校验"] = "\u72B6\u6001\u4E0D\u53EF\u53D8";
+    ReturnCode[ReturnCode["Action\u975E\u6CD5"] = "已下发的模板消息法人并未确认且已超时_24h_未进行人脸识别校验"] = "Action\u975E\u6CD5";
+    ReturnCode[ReturnCode["\u5BA1\u6838\u5217\u8868\u586B\u5199\u7684\u9879\u76EE\u6570\u4E0D\u57281\u52305\u4EE5\u5185"] = "已下发的模板消息法人并未确认且已超时_24h"] = "\u5BA1\u6838\u5217\u8868\u586B\u5199\u7684\u9879\u76EE\u6570\u4E0D\u57281\u52305\u4EE5\u5185";
+    ReturnCode[ReturnCode["\u9700\u8981\u8865\u5145\u76F8\u5E94\u8D44\u6599_\u586B\u5199org_code\u548Cother_files\u53C2\u6570"] = "工商数据返回_企业已注销"] = "\u9700\u8981\u8865\u5145\u76F8\u5E94\u8D44\u6599_\u586B\u5199org_code\u548Cother_files\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7BA1\u7406\u5458\u624B\u673A\u767B\u8BB0\u6570\u91CF\u5DF2\u8D85\u8FC7\u4E0A\u9650"] = "工商数据返回_企业不存在或企业信息未更新"] = "\u7BA1\u7406\u5458\u624B\u673A\u767B\u8BB0\u6570\u91CF\u5DF2\u8D85\u8FC7\u4E0A\u9650";
+    ReturnCode[ReturnCode["\u8BE5\u5FAE\u4FE1\u53F7\u5DF2\u7ED1\u5B9A5\u4E2A\u7BA1\u7406\u5458"] = "工商数据返回_企业法定代表人姓名不一致"] = "\u8BE5\u5FAE\u4FE1\u53F7\u5DF2\u7ED1\u5B9A5\u4E2A\u7BA1\u7406\u5458";
+    ReturnCode[ReturnCode["\u7BA1\u7406\u5458\u8EAB\u4EFD\u8BC1\u5DF2\u767B\u8BB0\u8FC75\u6B21"] = "工商数据返回_企业法定代表人身份证号码不一致"] = "\u7BA1\u7406\u5458\u8EAB\u4EFD\u8BC1\u5DF2\u767B\u8BB0\u8FC75\u6B21";
+    ReturnCode[ReturnCode["\u8BE5\u4E3B\u4F53\u767B\u8BB0\u6570\u91CF\u5DF2\u8D85\u8FC7\u4E0A\u9650"] = "法定代表人身份证号码_工商数据未更新_请5_15个工作日之后尝试"] = "\u8BE5\u4E3B\u4F53\u767B\u8BB0\u6570\u91CF\u5DF2\u8D85\u8FC7\u4E0A\u9650";
+    ReturnCode[ReturnCode["\u5546\u5BB6\u540D\u79F0\u5DF2\u88AB\u5360\u7528"] = "工商数据返回_企业信息或法定代表人信息不一致"] = "\u5546\u5BB6\u540D\u79F0\u5DF2\u88AB\u5360\u7528";
+    ReturnCode[ReturnCode["\u4E0D\u80FD\u4F7F\u7528\u8BE5\u540D\u79F0"] = "不是由第三方代小程序进行调用"] = "\u4E0D\u80FD\u4F7F\u7528\u8BE5\u540D\u79F0";
+    ReturnCode[ReturnCode["\u8BE5\u540D\u79F0\u5728\u4FB5\u6743\u6295\u8BC9\u4FDD\u62A4\u671F"] = "不存在第三方的已经提交的代码"] = "\u8BE5\u540D\u79F0\u5728\u4FB5\u6743\u6295\u8BC9\u4FDD\u62A4\u671F";
+    ReturnCode[ReturnCode["\u540D\u79F0\u5305\u542B\u8FDD\u89C4\u5185\u5BB9\u6216\u5FAE\u4FE1\u7B49\u4FDD\u7559\u5B57"] = "标签格式错误"] = "\u540D\u79F0\u5305\u542B\u8FDD\u89C4\u5185\u5BB9\u6216\u5FAE\u4FE1\u7B49\u4FDD\u7559\u5B57";
+    ReturnCode[ReturnCode["\u5546\u5BB6\u540D\u79F0\u5728\u6539\u540D15\u5929\u4FDD\u62A4\u671F\u5185"] = "页面路径错误"] = "\u5546\u5BB6\u540D\u79F0\u5728\u6539\u540D15\u5929\u4FDD\u62A4\u671F\u5185";
+    ReturnCode[ReturnCode["\u9700\u4E0E\u8BE5\u5E10\u53F7\u76F8\u540C\u4E3B\u4F53\u624D\u53EF\u7533\u8BF7"] = "类目填写错误"] = "\u9700\u4E0E\u8BE5\u5E10\u53F7\u76F8\u540C\u4E3B\u4F53\u624D\u53EF\u7533\u8BF7";
+    ReturnCode[ReturnCode["\u4ECB\u7ECD\u4E2D\u542B\u6709\u865A\u5047\u6DF7\u6DC6\u5185\u5BB9"] = "已经有正在审核的版本"] = "\u4ECB\u7ECD\u4E2D\u542B\u6709\u865A\u5047\u6DF7\u6DC6\u5185\u5BB9";
+    ReturnCode[ReturnCode["\u5934\u50CF\u6216\u8005\u7B80\u4ECB\u4FEE\u6539\u8FBE\u5230\u6BCF\u4E2A\u6708\u4E0A\u9650"] = "item_list有项目为空"] = "\u5934\u50CF\u6216\u8005\u7B80\u4ECB\u4FEE\u6539\u8FBE\u5230\u6BCF\u4E2A\u6708\u4E0A\u9650";
+    ReturnCode[ReturnCode["\u6B63\u5728\u5BA1\u6838\u4E2D_\u8BF7\u52FF\u91CD\u590D\u63D0\u4EA4"] = "标题填写错误"] = "\u6B63\u5728\u5BA1\u6838\u4E2D_\u8BF7\u52FF\u91CD\u590D\u63D0\u4EA4";
+    ReturnCode[ReturnCode["\u8BF7\u5148\u6210\u529F\u521B\u5EFA\u95E8\u5E97\u540E\u518D\u8C03\u7528"] = "无效的审核id"] = "\u8BF7\u5148\u6210\u529F\u521B\u5EFA\u95E8\u5E97\u540E\u518D\u8C03\u7528";
+    ReturnCode[ReturnCode["\u4E34\u65F6mediaid\u65E0\u6548"] = "没有审核版本"] = "\u4E34\u65F6mediaid\u65E0\u6548";
+    ReturnCode[ReturnCode["\u4E0D\u662F\u7531\u7B2C\u4E09\u65B9\u4EE3\u5C0F\u7A0B\u5E8F\u8FDB\u884C\u8C03\u7528"] = "审核状态未满足发布"] = "\u4E0D\u662F\u7531\u7B2C\u4E09\u65B9\u4EE3\u5C0F\u7A0B\u5E8F\u8FDB\u884C\u8C03\u7528";
+    ReturnCode[ReturnCode["\u4E0D\u5B58\u5728\u7B2C\u4E09\u65B9\u7684\u5DF2\u7ECF\u63D0\u4EA4\u7684\u4EE3\u7801"] = "状态不可变"] = "\u4E0D\u5B58\u5728\u7B2C\u4E09\u65B9\u7684\u5DF2\u7ECF\u63D0\u4EA4\u7684\u4EE3\u7801";
+    ReturnCode[ReturnCode["\u5C0F\u7A0B\u5E8F\u8FD8\u672A\u8BBE\u7F6E\u6635\u79F0_\u5934\u50CF_\u7B80\u4ECB_\u8BF7\u5148\u8BBE\u7F6E\u5B8C\u540E\u518D\u91CD\u65B0\u63D0\u4EA4"] = "action非法"] = "\u5C0F\u7A0B\u5E8F\u8FD8\u672A\u8BBE\u7F6E\u6635\u79F0_\u5934\u50CF_\u7B80\u4ECB_\u8BF7\u5148\u8BBE\u7F6E\u5B8C\u540E\u518D\u91CD\u65B0\u63D0\u4EA4";
+    ReturnCode[ReturnCode["\u65E0\u6548\u5FAE\u4FE1\u53F7"] = "审核列表填写的项目数不在1到5以内"] = "\u65E0\u6548\u5FAE\u4FE1\u53F7";
+    ReturnCode[ReturnCode["\u7B7E\u540D\u9519\u8BEF"] = "小程序还未设置昵称_头像_简介_请先设置完后再重新提交"] = "\u7B7E\u540D\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u5185\u5BB9\u542B\u6709\u8FDD\u6CD5\u8FDD\u89C4\u5185\u5BB9"] = "签名错误"] = "\u5185\u5BB9\u542B\u6709\u8FDD\u6CD5\u8FDD\u89C4\u5185\u5BB9";
+    ReturnCode[ReturnCode["\u6CA1\u6709\u7559\u8A00\u6743\u9650"] = "内容含有违法违规内容"] = "\u6CA1\u6709\u7559\u8A00\u6743\u9650";
+    ReturnCode[ReturnCode["\u8BE5\u56FE\u6587\u4E0D\u5B58\u5728"] = "POST参数非法"] = "\u8BE5\u56FE\u6587\u4E0D\u5B58\u5728";
+    ReturnCode[ReturnCode["\u6587\u7AE0\u5B58\u5728\u654F\u611F\u4FE1\u606F"] = "该经营资质已添加_请勿重复添加"] = "\u6587\u7AE0\u5B58\u5728\u654F\u611F\u4FE1\u606F";
+    ReturnCode[ReturnCode["\u7CBE\u9009\u8BC4\u8BBA\u6570\u5DF2\u8FBE\u4E0A\u9650"] = "附近地点添加数量达到上线_无法继续添加"] = "\u7CBE\u9009\u8BC4\u8BBA\u6570\u5DF2\u8FBE\u4E0A\u9650";
+    ReturnCode[ReturnCode["\u5DF2\u88AB\u7528\u6237\u5220\u9664_\u65E0\u6CD5\u7CBE\u9009"] = "地点已被其它小程序占用"] = "\u5DF2\u88AB\u7528\u6237\u5220\u9664_\u65E0\u6CD5\u7CBE\u9009";
+    ReturnCode[ReturnCode["\u5DF2\u7ECF\u56DE\u590D\u8FC7\u4E86"] = "附近功能被封禁"] = "\u5DF2\u7ECF\u56DE\u590D\u8FC7\u4E86";
+    ReturnCode[ReturnCode["\u56DE\u590D\u8D85\u8FC7\u957F\u5EA6\u9650\u5236\u6216\u4E3A0"] = "地点正在审核中"] = "\u56DE\u590D\u8D85\u8FC7\u957F\u5EA6\u9650\u5236\u6216\u4E3A0";
+    ReturnCode[ReturnCode["\u8BE5\u8BC4\u8BBA\u4E0D\u5B58\u5728"] = "地点正在展示小程序"] = "\u8BE5\u8BC4\u8BBA\u4E0D\u5B58\u5728";
+    ReturnCode[ReturnCode["\u83B7\u53D6\u8BC4\u8BBA\u6570\u76EE\u4E0D\u5408\u6CD5"] = "地点审核失败"] = "\u83B7\u53D6\u8BC4\u8BBA\u6570\u76EE\u4E0D\u5408\u6CD5";
+    ReturnCode[ReturnCode["\u8BE5\u516C\u4F17\u53F7_\u5C0F\u7A0B\u5E8F\u5DF2\u7ECF\u7ED1\u5B9A\u4E86\u5F00\u653E\u5E73\u53F0\u5E10\u53F7"] = "程序未展示在该地点"] = "\u8BE5\u516C\u4F17\u53F7_\u5C0F\u7A0B\u5E8F\u5DF2\u7ECF\u7ED1\u5B9A\u4E86\u5F00\u653E\u5E73\u53F0\u5E10\u53F7";
+    ReturnCode[ReturnCode["\u5185\u90E8\u9519\u8BEF"] = "小程序未上架或不可见"] = "\u5185\u90E8\u9519\u8BEF";
+    ReturnCode[ReturnCode["\u4F01\u4E1A\u4EE3\u7801\u7C7B\u578B\u65E0\u6548_\u8BF7\u9009\u62E9\u6B63\u786E\u7C7B\u578B\u586B\u5199"] = "地点不存在"] = "\u4F01\u4E1A\u4EE3\u7801\u7C7B\u578B\u65E0\u6548_\u8BF7\u9009\u62E9\u6B63\u786E\u7C7B\u578B\u586B\u5199";
+    ReturnCode[ReturnCode["\u8BE5\u4E3B\u4F53\u5DF2\u6709\u4EFB\u52A1\u6267\u884C\u4E2D_\u8DDD\u4E0A\u6B21\u4EFB\u52A124h\u540E\u518D\u8BD5"] = "个人类型小程序不可用"] = "\u8BE5\u4E3B\u4F53\u5DF2\u6709\u4EFB\u52A1\u6267\u884C\u4E2D_\u8DDD\u4E0A\u6B21\u4EFB\u52A124h\u540E\u518D\u8BD5";
+    ReturnCode[ReturnCode["\u672A\u627E\u5230\u8BE5\u4EFB\u52A1"] = "需要补充相应资料_填写org_code和other_files参数"] = "\u672A\u627E\u5230\u8BE5\u4EFB\u52A1";
+    ReturnCode[ReturnCode["\u5F85\u6CD5\u4EBA\u4EBA\u8138\u6838\u8EAB\u6821\u9A8C"] = "管理员手机登记数量已超过上限"] = "\u5F85\u6CD5\u4EBA\u4EBA\u8138\u6838\u8EAB\u6821\u9A8C";
+    ReturnCode[ReturnCode["\u6CD5\u4EBA_\u4F01\u4E1A\u4FE1\u606F\u4E00\u81F4\u6027\u6821\u9A8C\u4E2D"] = "该微信号已绑定5个管理员"] = "\u6CD5\u4EBA_\u4F01\u4E1A\u4FE1\u606F\u4E00\u81F4\u6027\u6821\u9A8C\u4E2D";
+    ReturnCode[ReturnCode["\u7F3A\u5C11\u53C2\u6570"] = "管理员身份证已登记过5次"] = "\u7F3A\u5C11\u53C2\u6570";
+    ReturnCode[ReturnCode["\u7B2C\u4E09\u65B9\u6743\u9650\u96C6\u4E0D\u5168_\u8865\u5168\u6743\u9650\u96C6\u5168\u7F51\u53D1\u5E03\u540E\u751F\u6548"] = "该主体登记数量已超过上限"] = "\u7B2C\u4E09\u65B9\u6743\u9650\u96C6\u4E0D\u5168_\u8865\u5168\u6743\u9650\u96C6\u5168\u7F51\u53D1\u5E03\u540E\u751F\u6548";
+    ReturnCode[ReturnCode["\u8BE5\u7ECF\u8425\u8D44\u8D28\u5DF2\u6DFB\u52A0_\u8BF7\u52FF\u91CD\u590D\u6DFB\u52A0"] = "商家名称已被占用"] = "\u8BE5\u7ECF\u8425\u8D44\u8D28\u5DF2\u6DFB\u52A0_\u8BF7\u52FF\u91CD\u590D\u6DFB\u52A0";
+    ReturnCode[ReturnCode["\u9644\u8FD1\u5730\u70B9\u6DFB\u52A0\u6570\u91CF\u8FBE\u5230\u4E0A\u7EBF_\u65E0\u6CD5\u7EE7\u7EED\u6DFB\u52A0"] = "不能使用该名称"] = "\u9644\u8FD1\u5730\u70B9\u6DFB\u52A0\u6570\u91CF\u8FBE\u5230\u4E0A\u7EBF_\u65E0\u6CD5\u7EE7\u7EED\u6DFB\u52A0";
+    ReturnCode[ReturnCode["\u5730\u70B9\u5DF2\u88AB\u5176\u5B83\u5C0F\u7A0B\u5E8F\u5360\u7528"] = "该名称在侵权投诉保护期"] = "\u5730\u70B9\u5DF2\u88AB\u5176\u5B83\u5C0F\u7A0B\u5E8F\u5360\u7528";
+    ReturnCode[ReturnCode["\u9644\u8FD1\u529F\u80FD\u88AB\u5C01\u7981"] = "名称包含违规内容或微信等保留字"] = "\u9644\u8FD1\u529F\u80FD\u88AB\u5C01\u7981";
+    ReturnCode[ReturnCode["\u5730\u70B9\u6B63\u5728\u5BA1\u6838\u4E2D"] = "商家名称在改名15天保护期内"] = "\u5730\u70B9\u6B63\u5728\u5BA1\u6838\u4E2D";
+    ReturnCode[ReturnCode["\u5730\u70B9\u6B63\u5728\u5C55\u793A\u5C0F\u7A0B\u5E8F"] = "需与该帐号相同主体才可申请"] = "\u5730\u70B9\u6B63\u5728\u5C55\u793A\u5C0F\u7A0B\u5E8F";
+    ReturnCode[ReturnCode["\u5730\u70B9\u5BA1\u6838\u5931\u8D25"] = "介绍中含有虚假混淆内容"] = "\u5730\u70B9\u5BA1\u6838\u5931\u8D25";
+    ReturnCode[ReturnCode["\u7A0B\u5E8F\u672A\u5C55\u793A\u5728\u8BE5\u5730\u70B9"] = "头像或者简介修改达到每个月上限"] = "\u7A0B\u5E8F\u672A\u5C55\u793A\u5728\u8BE5\u5730\u70B9";
+    ReturnCode[ReturnCode["\u5C0F\u7A0B\u5E8F\u672A\u4E0A\u67B6\u6216\u4E0D\u53EF\u89C1"] = "没有权限"] = "\u5C0F\u7A0B\u5E8F\u672A\u4E0A\u67B6\u6216\u4E0D\u53EF\u89C1";
+    ReturnCode[ReturnCode["\u5730\u70B9\u4E0D\u5B58\u5728"] = "正在审核中_请勿重复提交"] = "\u5730\u70B9\u4E0D\u5B58\u5728";
+    ReturnCode[ReturnCode["\u4E2A\u4EBA\u7C7B\u578B\u5C0F\u7A0B\u5E8F\u4E0D\u53EF\u7528"] = "请先成功创建门店后再调用"] = "\u4E2A\u4EBA\u7C7B\u578B\u5C0F\u7A0B\u5E8F\u4E0D\u53EF\u7528";
+    ReturnCode[ReturnCode["\u5DF2\u4E0B\u53D1\u7684\u6A21\u677F\u6D88\u606F\u6CD5\u4EBA\u5E76\u672A\u786E\u8BA4\u4E14\u5DF2\u8D85\u65F6_24h_\u672A\u8FDB\u884C\u8EAB\u4EFD\u8BC1\u6821\u9A8C"] = "临时mediaid无效"] = "\u5DF2\u4E0B\u53D1\u7684\u6A21\u677F\u6D88\u606F\u6CD5\u4EBA\u5E76\u672A\u786E\u8BA4\u4E14\u5DF2\u8D85\u65F6_24h_\u672A\u8FDB\u884C\u8EAB\u4EFD\u8BC1\u6821\u9A8C";
+    ReturnCode[ReturnCode["\u5DF2\u4E0B\u53D1\u7684\u6A21\u677F\u6D88\u606F\u6CD5\u4EBA\u5E76\u672A\u786E\u8BA4\u4E14\u5DF2\u8D85\u65F6_24h_\u672A\u8FDB\u884C\u4EBA\u8138\u8BC6\u522B\u6821\u9A8C"] = "输入参数有误"] = "\u5DF2\u4E0B\u53D1\u7684\u6A21\u677F\u6D88\u606F\u6CD5\u4EBA\u5E76\u672A\u786E\u8BA4\u4E14\u5DF2\u8D85\u65F6_24h_\u672A\u8FDB\u884C\u4EBA\u8138\u8BC6\u522B\u6821\u9A8C";
+    ReturnCode[ReturnCode["\u5DF2\u4E0B\u53D1\u7684\u6A21\u677F\u6D88\u606F\u6CD5\u4EBA\u5E76\u672A\u786E\u8BA4\u4E14\u5DF2\u8D85\u65F6_24h"] = "门店不存在"] = "\u5DF2\u4E0B\u53D1\u7684\u6A21\u677F\u6D88\u606F\u6CD5\u4EBA\u5E76\u672A\u786E\u8BA4\u4E14\u5DF2\u8D85\u65F6_24h";
+    ReturnCode[ReturnCode["\u7CFB\u7EDF\u7E41\u5FD9\u6B64\u65F6\u8BF7\u5F00\u53D1\u8005\u7A0D\u5019\u518D\u8BD5"] = "该门店状态不允许更新"] = "\u7CFB\u7EDF\u7E41\u5FD9\u6B64\u65F6\u8BF7\u5F00\u53D1\u8005\u7A0D\u5019\u518D\u8BD5";
+})(ReturnCode = exports.ReturnCode || (exports.ReturnCode = {}));
 var SwaggerException = /** @class */ (function (_super) {
     __extends(SwaggerException, _super);
     function SwaggerException(message, status, response, headers, result) {

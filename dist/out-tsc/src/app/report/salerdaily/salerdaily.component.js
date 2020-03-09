@@ -27,6 +27,7 @@ var routerTransition_1 = require("@shared/animations/routerTransition");
 var paged_listing_component_base_1 = require("@shared/component-base/paged-listing-component-base");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
 var differenceInCalendarDays = require("date-fns/difference_in_calendar_days");
+var moment = require("moment");
 var SalerDailyComponent = /** @class */ (function (_super) {
     __extends(SalerDailyComponent, _super);
     function SalerDailyComponent(injector, _sellerdailyService, _userService) {
@@ -34,17 +35,29 @@ var SalerDailyComponent = /** @class */ (function (_super) {
         _this._sellerdailyService = _sellerdailyService;
         _this._userService = _userService;
         _this.queryData = [{
-                field: "creatorUserId",
+                field: "CreatorUserId",
                 method: "=",
                 value: "",
                 logic: "and"
-            }, {
+            },
+            {
                 field: "CreationTime",
-                method: "=",
+                method: ">=",
                 value: "",
                 logic: "and"
-            }];
+            },
+            {
+                field: "CreationTime",
+                method: "<=",
+                value: "",
+                logic: "and"
+            }
+        ];
         _this.CreationTime = '';
+        _this.orderlist = [];
+        _this.ticketlist = [];
+        _this.visible = false;
+        _this.childvisible = false;
         _this.disabledDate = function (current) {
             // Can not select days before today and today
             return differenceInCalendarDays(current, new Date()) > 0;
@@ -72,8 +85,32 @@ var SalerDailyComponent = /** @class */ (function (_super) {
         });
         this.getuser();
     };
+    SalerDailyComponent.prototype.open = function (id) {
+        var _this = this;
+        this._sellerdailyService.detail(id)
+            .subscribe(function (result) {
+            _this.visible = true;
+            _this.orderlist = result;
+        });
+    };
+    SalerDailyComponent.prototype.close = function () {
+        this.visible = false;
+    };
+    SalerDailyComponent.prototype.openchild = function (tickets) {
+        this.childvisible = true;
+        this.ticketlist = tickets;
+    };
+    SalerDailyComponent.prototype.closechild = function () {
+        this.childvisible = false;
+    };
     SalerDailyComponent.prototype.datechange = function ($event) {
-        this.queryData[1].value = $event;
+        var myDate = new Date($event);
+        var year = myDate.getFullYear();
+        var month = myDate.getMonth() + 1;
+        var date = myDate.getDate();
+        var fulldate = year + '-' + month + '-' + date;
+        this.queryData[1].value = moment(fulldate).format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[2].value = moment(fulldate).add(1, 'd').format('YYYY-MM-DD HH:mm:ss');
     };
     SalerDailyComponent.prototype.getuser = function () {
         var _this = this;

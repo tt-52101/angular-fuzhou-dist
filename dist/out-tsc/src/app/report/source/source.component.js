@@ -39,6 +39,10 @@ var SourceComponent = /** @class */ (function (_super) {
                 logic: "and"
             }];
         _this.sourceList = [];
+        _this.orderlist = [];
+        _this.ticketlist = [];
+        _this.visible = false;
+        _this.childvisible = false;
         return _this;
     }
     SourceComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -59,19 +63,23 @@ var SourceComponent = /** @class */ (function (_super) {
         });
         this.getsource();
     };
-    SourceComponent.prototype.search = function () {
+    SourceComponent.prototype.open = function (id) {
         var _this = this;
-        var arr = [];
-        for (var i = 0; i < this.queryData.length; i++) {
-            if (this.queryData[i].value) {
-                arr.push(new service_proxies_1.QueryData(this.queryData[i]));
-            }
-        }
-        this._orderSourceService.getPagedStat(arr, null, 999, 0)
+        this._orderSourceService.orderSourceStatDetail(id)
             .subscribe(function (result) {
-            _this.dataList = result.items;
-            _this.showPaging(result);
+            _this.visible = true;
+            _this.orderlist = result;
         });
+    };
+    SourceComponent.prototype.close = function () {
+        this.visible = false;
+    };
+    SourceComponent.prototype.openchild = function (tickets) {
+        this.childvisible = true;
+        this.ticketlist = tickets;
+    };
+    SourceComponent.prototype.closechild = function () {
+        this.childvisible = false;
     };
     SourceComponent.prototype.getsource = function () {
         var _this = this;

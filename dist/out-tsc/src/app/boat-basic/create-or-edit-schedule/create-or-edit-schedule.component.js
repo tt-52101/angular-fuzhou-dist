@@ -131,12 +131,12 @@ var CreateOrEditScheduleComponent = /** @class */ (function (_super) {
     CreateOrEditScheduleComponent.prototype.getticket = function () {
         var _this = this;
         var arr = [];
-        // arr.push(new QueryData({
-        //     field: "position",
-        //     method: "=",
-        //     value: "windows",
-        //     logic: "and"
-        // }))
+        arr.push(new service_proxies_1.QueryData({
+            field: "isEnabled",
+            method: "=",
+            value: 'true',
+            logic: "and"
+        }));
         this._ticketPriceService.getPaged(arr, null, 999, 0)
             .subscribe(function (result) {
             _this.ticketlist = result.items;

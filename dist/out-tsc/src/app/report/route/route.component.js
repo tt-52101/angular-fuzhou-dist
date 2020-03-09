@@ -66,7 +66,7 @@ var RouteComponent = /** @class */ (function (_super) {
     RouteComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
         var _this = this;
         var arr = [];
-        for (var i = this.queryData.length - 1; i >= 0; i--) {
+        for (var i = 0; i < this.queryData.length; i++) {
             if (this.queryData[i].value) {
                 arr.push(new service_proxies_1.QueryData(this.queryData[i]));
             }
@@ -83,8 +83,8 @@ var RouteComponent = /** @class */ (function (_super) {
         this.getboat();
     };
     RouteComponent.prototype.datechange = function ($event) {
-        this.queryData[4].value = $event[0];
-        this.queryData[5].value = $event[1];
+        this.queryData[2].value = $event[0];
+        this.queryData[3].value = $event[1];
     };
     RouteComponent.prototype.getroute = function () {
         var _this = this;

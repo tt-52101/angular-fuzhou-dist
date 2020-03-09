@@ -34,6 +34,8 @@ var CheckComponent = /** @class */ (function (_super) {
         _this._boatService = _boatService;
         _this._routeService = _routeService;
         _this._wharfService = _wharfService;
+        _this.visible = false;
+        _this.ticketinfo = [];
         _this.queryData = [{
                 field: "scheduleCode",
                 method: "%",
@@ -50,17 +52,17 @@ var CheckComponent = /** @class */ (function (_super) {
                 value: "",
                 logic: "and"
             }, {
-                field: "wharfId",
+                field: "Route.startWharfId",
                 method: "=",
                 value: "",
                 logic: "and"
             }, {
-                field: "schedule.starttime",
+                field: "Schedule.starttime",
                 method: ">=",
                 value: "",
                 logic: "and"
             }, {
-                field: "schedule.endtime",
+                field: "Schedule.endtime",
                 method: "<=",
                 value: "",
                 logic: "and"
@@ -132,6 +134,18 @@ var CheckComponent = /** @class */ (function (_super) {
             .subscribe(function (result) {
             _this.wharfList = result.items;
         });
+    };
+    CheckComponent.prototype.open = function (id) {
+        var _this = this;
+        this._scheduleCheckService.scheduleDetailStat(id)
+            .subscribe(function (result) {
+            console.log(result);
+            _this.visible = true;
+            _this.ticketinfo = result.items;
+        });
+    };
+    CheckComponent.prototype.close = function () {
+        this.visible = false;
     };
     CheckComponent = __decorate([
         core_1.Component({

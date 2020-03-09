@@ -49,6 +49,16 @@ var RefundTicketComponent = /** @class */ (function (_super) {
                 method: "=",
                 value: "",
                 logic: "and"
+            }, {
+                field: "activityType",
+                method: "=",
+                value: "ActivityTypePayment",
+                logic: "and"
+            }, {
+                field: "buyer",
+                method: "%",
+                value: "",
+                logic: "and"
             }];
         _this.certificatesNum = '';
         _this.orderlist = [];
@@ -93,7 +103,7 @@ var RefundTicketComponent = /** @class */ (function (_super) {
             });
         }
         else {
-            for (var i = 2; i < 3; i++) {
+            for (var i = 2; i < 4; i++) {
                 if (this.queryData[i].value) {
                     arr.push(new service_proxies_1.QueryData(this.queryData[i]));
                 }
@@ -124,7 +134,7 @@ var RefundTicketComponent = /** @class */ (function (_super) {
     RefundTicketComponent.prototype.select = function (item) {
         var _this = this;
         // console.log(item)
-        if (item.payStatus !== 'Payment') {
+        if (item.payStatus !== 'PayStatusPayment') {
             abp.message.warn(this.l('该订单不能退款'));
             return;
         }

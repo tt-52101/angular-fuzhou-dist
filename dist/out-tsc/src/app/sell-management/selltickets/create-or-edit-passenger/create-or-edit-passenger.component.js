@@ -116,22 +116,24 @@ var CreateOrEditPassengerComponent = /** @class */ (function (_super) {
         //$("#address").val(result.Certificate.Address);
     };
     CreateOrEditPassengerComponent.prototype.legal = function (con) {
-        // console.log(/^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/.test(this.entity.certificatesNum))
-        // console.log(/(H|M)(\d{10})$/.test(this.entity.certificatesNum))
-        // console.log(/(^\d{8})$/.test(this.entity.certificatesNum))
-        console.log(this.entity.verifiableType == service_proxies_1.VerifiableTypeEnum.IdentityCard);
         if (!(/^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/.test(this.entity.certificatesNum)) && this.entity.verifiableType == service_proxies_1.VerifiableTypeEnum.IdentityCard) { //身份证
             con.setErrors({ legal: true });
         }
-        if (!(/(H|M)(\d{10})$/.test(this.entity.certificatesNum)) && this.entity.verifiableType == service_proxies_1.VerifiableTypeEnum.IdentityCard) { //回乡证
+        if (!(/(H|M)(\d{10})$/.test(this.entity.certificatesNum)) && this.entity.verifiableType == service_proxies_1.VerifiableTypeEnum.ReturnCard) { //回乡证
             con.setErrors({ legal: true });
         }
-        if (!(/(^\d{8})$/.test(this.entity.certificatesNum))) { //台胞证
+        if (!(/(^\d{8})$/.test(this.entity.certificatesNum)) && this.entity.verifiableType == service_proxies_1.VerifiableTypeEnum.TaiwanCard) { //台胞证
             con.setErrors({ legal: true });
+        }
+    };
+    CreateOrEditPassengerComponent.prototype.mobilelegal = function (con) {
+        if (!(/^1[3456789]\d{9}$/.test(this.entity.mobile))) { //台胞证
+            con.setErrors({ mobilelegal: true });
         }
     };
     CreateOrEditPassengerComponent.prototype.init = function () {
         var _this = this;
+        this.entity.verifiableType = service_proxies_1.VerifiableTypeEnum.IdentityCard;
         this.uploadurl = AppConsts_1.AppConsts.remoteServiceBaseUrl + '/api/File/UploadImageAsync';
         this.hearder.Authorization = 'Bearer ' + this._utilsService.getCookieValue("Abp.AuthToken");
         var that = this;
@@ -251,6 +253,7 @@ var CreateOrEditPassengerComponent = /** @class */ (function (_super) {
                         .subscribe(function (res) {
                         console.log(res);
                         _this.notify.success(_this.l('SavedSuccessfully'));
+                        // abp.message.success(this.l('SavedSuccessfully'));
                         _this.success(res.customer);
                     });
                 });

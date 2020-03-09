@@ -31,6 +31,7 @@ var AppConsts_1 = require("abpPro/AppConsts");
 var ng_zorro_antd_1 = require("ng-zorro-antd");
 var moment = require("moment");
 var differenceInCalendarDays = require("date-fns/difference_in_calendar_days");
+var signalrservice_1 = require("@shared/service-proxies/signalrservice");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
 var SellTicketsComponent = /** @class */ (function (_super) {
     __extends(SellTicketsComponent, _super);
@@ -38,7 +39,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
     // private _wharfService: WharfServiceProxy,
     _payMethodService, 
     // private _ticketPriceService: TicketPriceServiceProxy,
-    _activityService, _modalService, _sourceService) {
+    _activityService, _modalService, _sourceService, signalRService) {
         var _this = _super.call(this, injector) || this;
         _this._reuseTabService = _reuseTabService;
         _this._scheduleService = _scheduleService;
@@ -48,6 +49,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         _this._activityService = _activityService;
         _this._modalService = _modalService;
         _this._sourceService = _sourceService;
+        _this.signalRService = signalRService;
         _this.imgurl = AppConsts_1.AppConsts.remoteServiceBaseUrl;
         _this.hblist = [];
         _this.nowtimestamp = 0;
@@ -127,8 +129,10 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         _this.discount = 1;
         _this.receive = 0;
         _this.change = 0;
+        _this.today = 0;
         _this.showcalendar = false;
         _this.calendardate = '';
+        _this.groupid = 0;
         _this.disabledDate = function (current) {
             // Can not select days before today and today
             return differenceInCalendarDays(current, new Date()) < 0;
@@ -152,12 +156,11 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         var now = new Date($event);
         // console.log(now)
         // console.log(now.getDay())
-        if (now.getDay() > 0) {
-            this.starttimestamp = now.getTime() - now.getDay() * 86400000;
-        }
-        else {
-            this.starttimestamp = now.getTime();
-        }
+        // if(now.getDay()>0){
+        //   this.starttimestamp=now.getTime() - now.getDay() * 86400000;
+        // }else{
+        this.starttimestamp = now.getTime();
+        // }
         this.settime(0);
         this.showcalendar = !this.showcalendar;
         // var timestamp = (new Date(now)).getTime();
@@ -202,13 +205,15 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         this.getsource();
         this.calendardate = new Date().toString();
         var now = new Date();
-        if (now.getDay() > 0) {
-            this.starttimestamp = now.getTime() - now.getDay() * 86400000;
-        }
-        else {
-            this.starttimestamp = now.getTime();
-        }
+        this.starttimestamp = now.getTime();
         this.settime(0);
+    };
+    SellTicketsComponent.prototype.openguest = function () {
+        var groupid = new Date().getTime();
+        this.groupid = groupid;
+        console.log(this.groupid);
+        this.signalRService.startConnection(groupid);
+        window.open("/#/guest/guestdisplay?gn=" + groupid, '_blank', "menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
     };
     SellTicketsComponent.prototype.settlement = function () {
         var _this = this;
@@ -307,6 +312,15 @@ var SellTicketsComponent = /** @class */ (function (_super) {
                     _this.schedule = item;
                     _this.scheduleId = item.id;
                     _this.orderdetail = [];
+                    var data = {
+                        scheduleCode: item.scheduleCode,
+                        routeName: item.route.routeName,
+                        startTimeStr: item.startTimeStr.split(' ')[1],
+                        endTimeStr: item.endTimeStr.split(' ')[1],
+                        saleDateStr: item.saleDateStr.split(' ')[0]
+                    };
+                    console.log(_this.groupid);
+                    _this.signalRService.send(_this.groupid, 'updateSchedule' + '&' + JSON.stringify(data));
                     _this.createcustomer();
                 }
             });
@@ -317,6 +331,14 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         else if (!this.scheduleId) {
             this.scheduleId = item.id;
             this.schedule = item;
+            var data = {
+                scheduleCode: item.scheduleCode,
+                routeName: item.route.routeName,
+                startTimeStr: item.startTimeStr.split(' ')[1],
+                endTimeStr: item.endTimeStr.split(' ')[1],
+                saleDateStr: item.saleDateStr.split(' ')[0]
+            };
+            this.signalRService.send(this.groupid, 'updateSchedule' + '&' + JSON.stringify(data));
             this.createcustomer();
         }
     };
@@ -340,21 +362,29 @@ var SellTicketsComponent = /** @class */ (function (_super) {
                         nzContent: _this.l('IsReplacePassenger'),
                         nzClosable: false,
                         nzOnOk: function () {
-                            _this.orderdetail[hadindex] = {
+                            var item = {
                                 customer: result,
                                 customerId: result.id,
                                 ticket: _this.curticket
                             };
+                            _this.orderdetail[hadindex] = item;
+                            var data = {
+                                info: item,
+                                index: hadindex
+                            };
+                            _this.signalRService.send(_this.groupid, 'replace&' + JSON.stringify(data));
                             _this.countprice();
                         }
                     });
                 }
                 else {
-                    _this.orderdetail.push({
+                    var ticketitem = {
                         customer: result,
                         customerId: result.id,
                         ticket: _this.curticket
-                    });
+                    };
+                    _this.orderdetail.push(ticketitem);
+                    _this.signalRService.send(_this.groupid, 'addTicket&' + JSON.stringify(ticketitem));
                     _this.countprice();
                 }
             }
@@ -370,11 +400,21 @@ var SellTicketsComponent = /** @class */ (function (_super) {
     };
     SellTicketsComponent.prototype.deleteticket = function (i) {
         this.orderdetail.splice(i, 1);
+        this.signalRService.send(this.groupid, 'deleteTicket&' + i);
         this.countprice();
     };
     SellTicketsComponent.prototype.settime = function (e) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        this.today = new Date(year + '-' + month + '-' + day).getTime();
         if (e == 1) {
             var starttimestamp = this.starttimestamp - 7 * 86400000;
+            if (starttimestamp < this.today) {
+                abp.message.warn(this.l('TicketSaleClose'));
+                return;
+            }
         }
         else if (e == 2) {
             var starttimestamp = this.starttimestamp + 7 * 86400000;
@@ -530,7 +570,8 @@ var SellTicketsComponent = /** @class */ (function (_super) {
             service_proxies_1.PayMethodServiceProxy,
             service_proxies_1.ActivityServiceProxy,
             ng_zorro_antd_1.NzModalService,
-            service_proxies_1.SourceServiceProxy])
+            service_proxies_1.SourceServiceProxy,
+            signalrservice_1.SignalRService])
     ], SellTicketsComponent);
     return SellTicketsComponent;
 }(app_component_base_1.AppComponentBase));

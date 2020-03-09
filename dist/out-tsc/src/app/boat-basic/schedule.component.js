@@ -85,7 +85,7 @@ var ScheduleComponent = /** @class */ (function (_super) {
             }
         }
         formdata.queryData = arr;
-        formdata.sorting = null;
+        formdata.sorting = request.sorting;
         formdata.maxResultCount = request.maxResultCount;
         formdata.skipCount = request.skipCount;
         this._scheduleService.getPaged(formdata)

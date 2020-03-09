@@ -32,18 +32,20 @@ var SalerTicketComponent = /** @class */ (function (_super) {
         var _this = _super.call(this, injector) || this;
         _this._sellerticketService = _sellerticketService;
         _this._userService = _userService;
+        _this.visible = false;
+        _this.ticketinfo = [];
         _this.queryData = [{
-                field: "User.id",
+                field: "CreatorUserId",
                 method: "=",
                 value: "",
                 logic: "and"
             }, {
-                field: "collectionTime",
+                field: "CreationTime",
                 method: ">=",
                 value: "",
                 logic: "and"
             }, {
-                field: "collectionTime",
+                field: "CreationTime",
                 method: "<=",
                 value: "",
                 logic: "and"
@@ -90,6 +92,18 @@ var SalerTicketComponent = /** @class */ (function (_super) {
             .subscribe(function (result) {
             _this.userList = result.items;
         });
+    };
+    SalerTicketComponent.prototype.open = function (id) {
+        var _this = this;
+        this._sellerticketService.sellerTicketDetailStat(id)
+            .subscribe(function (result) {
+            console.log(result);
+            _this.visible = true;
+            _this.ticketinfo = result.items;
+        });
+    };
+    SalerTicketComponent.prototype.close = function () {
+        this.visible = false;
     };
     SalerTicketComponent = __decorate([
         core_1.Component({

@@ -28,9 +28,9 @@ var RootComponent = /** @class */ (function () {
         renderer.setAttribute(el.nativeElement, 'ng-zorro-version', ng_zorro_antd_1.VERSION.full);
     }
     RootComponent.prototype.ngOnInit = function () {
-        var _this = this;
         //  设置标题
-        this.titleSrv.prefix = 'Yozeev';
+        // this.titleSrv.prefix = 'Yozeev';
+        var _this = this;
         // console.log(this.titleSrv)
         this.router.events
             .pipe(operators_1.filter(function (evt) { return evt instanceof router_1.NavigationEnd; }))

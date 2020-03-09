@@ -52,6 +52,10 @@ var PayMethodComponent = /** @class */ (function (_super) {
         _this.payMethodList = [];
         _this.routelist = [];
         _this.boatlist = [];
+        _this.orderlist = [];
+        _this.ticketlist = [];
+        _this.visible = false;
+        _this.childvisible = false;
         return _this;
     }
     PayMethodComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -74,19 +78,23 @@ var PayMethodComponent = /** @class */ (function (_super) {
         this.getroute();
         this.getboat();
     };
-    PayMethodComponent.prototype.search = function () {
+    PayMethodComponent.prototype.open = function (id) {
         var _this = this;
-        var arr = [];
-        for (var i = 0; i < this.queryData.length; i++) {
-            if (this.queryData[i].value) {
-                arr.push(new service_proxies_1.QueryData(this.queryData[i]));
-            }
-        }
-        this._payMethodService.getPagedStat(arr, null, 999, 0)
+        this._payMethodService.payMethodStatDetail(id)
             .subscribe(function (result) {
-            _this.dataList = result.items;
-            _this.showPaging(result);
+            _this.visible = true;
+            _this.orderlist = result;
         });
+    };
+    PayMethodComponent.prototype.close = function () {
+        this.visible = false;
+    };
+    PayMethodComponent.prototype.openchild = function (tickets) {
+        this.childvisible = true;
+        this.ticketlist = tickets;
+    };
+    PayMethodComponent.prototype.closechild = function () {
+        this.childvisible = false;
     };
     PayMethodComponent.prototype.getroute = function () {
         var _this = this;

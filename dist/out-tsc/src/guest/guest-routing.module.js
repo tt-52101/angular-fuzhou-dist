@@ -8,37 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var routes = [
-    {
-        path: 'app',
-        loadChildren: 'app/app.module#AppModule',
-        data: { preload: true }
-    },
-    {
-        path: 'account',
-        loadChildren: 'account/account.module#AccountModule',
-        data: { preload: true }
-    },
-    {
-        path: 'guest',
-        loadChildren: 'guest/guest.module#GuestModule',
-        data: { preload: true }
-    },
-    {
-        path: '**',
-        redirectTo: 'app/main/'
+var guestdisplay_component_1 = require("./guestdisplay.component");
+var GuestRoutingModule = /** @class */ (function () {
+    function GuestRoutingModule() {
     }
-];
-var RootRoutingModule = /** @class */ (function () {
-    function RootRoutingModule() {
-    }
-    RootRoutingModule = __decorate([
+    GuestRoutingModule = __decorate([
         core_1.NgModule({
-            imports: [router_1.RouterModule.forRoot(routes, { useHash: true })],
+            imports: [
+                router_1.RouterModule.forChild([
+                    {
+                        path: '',
+                        children: [
+                            { path: 'guestdisplay', component: guestdisplay_component_1.GuestdisplayComponent, data: { title: '客显界面' } },
+                        ],
+                    },
+                ]),
+            ],
             exports: [router_1.RouterModule],
-            providers: []
         })
-    ], RootRoutingModule);
-    return RootRoutingModule;
+    ], GuestRoutingModule);
+    return GuestRoutingModule;
 }());
-exports.RootRoutingModule = RootRoutingModule;
+exports.GuestRoutingModule = GuestRoutingModule;

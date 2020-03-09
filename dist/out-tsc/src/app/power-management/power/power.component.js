@@ -28,6 +28,7 @@ var routerTransition_1 = require("@shared/animations/routerTransition");
 var paged_listing_component_base_1 = require("@shared/component-base/paged-listing-component-base");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
 var create_or_edit_power_component_1 = require("./create-or-edit-power/create-or-edit-power.component");
+var batch_create_power_component_1 = require("./batch-create-power/batch-create-power.component");
 //import { AppConsts } from '@shared/AppConsts';
 //  import { FileDownloadService } from '@shared/utils/file-download.service';
 var PowerComponent = /** @class */ (function (_super) {
@@ -61,6 +62,15 @@ var PowerComponent = /** @class */ (function (_super) {
     PowerComponent.prototype.createOrEdit = function (id) {
         var _this = this;
         this.modalHelper.static(create_or_edit_power_component_1.CreateOrEditPowerComponent, { id: id })
+            .subscribe(function (result) {
+            if (result) {
+                _this.refresh();
+            }
+        });
+    };
+    PowerComponent.prototype.batchcreate = function () {
+        var _this = this;
+        this.modalHelper.static(batch_create_power_component_1.BatchCreatePowerComponent)
             .subscribe(function (result) {
             if (result) {
                 _this.refresh();

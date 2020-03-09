@@ -140,9 +140,11 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
     }
     CreateOrEditUserComponent.prototype.ngOnInit = function () {
         if (!this.id) {
-            this.setRandomPassword = true;
+            this.setRandomPassword = false;
             this.sendActivationEmail = true;
-        } // 初始化数据
+        }
+        else {
+        }
         this.init();
     };
     CreateOrEditUserComponent.prototype.ngAfterViewInit = function () { };
@@ -184,6 +186,7 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
         var _this = this;
         var input = new service_proxies_1.CreateOrUpdateUserInput();
         input.user = this.user;
+        input.user.emailAddress = '123@qq.com';
         input.setRandomPassword = this.setRandomPassword;
         input.sendActivationEmail = this.sendActivationEmail;
         input.assignedRoleNames = _.map(_.filter(this.roles, { isAssigned: true }), function (role) { return role.roleName; });

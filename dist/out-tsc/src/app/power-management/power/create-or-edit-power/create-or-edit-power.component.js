@@ -80,6 +80,8 @@ var CreateOrEditPowerComponent = /** @class */ (function (_super) {
             { title: "anticon anticon-usb", icon: 'usb' },
             { title: "anticon anticon-user", icon: 'user' },
         ];
+        _this.showselect = false;
+        _this.ismenu = false;
         return _this;
     }
     CreateOrEditPowerComponent.prototype.ngOnInit = function () {
@@ -98,8 +100,34 @@ var CreateOrEditPowerComponent = /** @class */ (function (_super) {
                 _this.menulist = result.items;
             });
             _this.entity = result.power;
+            if (_this.entity.category == service_proxies_1.PowerTypeEnum.Data) {
+                _this.showselect = true;
+            }
+            if (_this.entity.category == service_proxies_1.PowerTypeEnum.MENU) {
+                _this.ismenu = true;
+            }
             _this.menuId = result.power.menuId;
         });
+    };
+    CreateOrEditPowerComponent.prototype.catetorychange = function () {
+        this.entity.powerCode = '';
+        this.entity.powerName = '';
+        console.log(this.entity.category);
+        console.log(service_proxies_1.PowerTypeEnum.Data);
+        if (this.entity.category == service_proxies_1.PowerTypeEnum.Data) {
+            this.showselect = true;
+            this.ismenu = false;
+        }
+        else if (this.entity.category == service_proxies_1.PowerTypeEnum.MENU) {
+            this.ismenu = true;
+            this.showselect = false;
+            this.entity.powerName = '拥有菜单';
+            this.entity.powerCode = 'ownmenu';
+        }
+        else {
+            this.ismenu = false;
+            this.showselect = false;
+        }
     };
     CreateOrEditPowerComponent.prototype.onChange = function ($event) {
         // console.log($event)
