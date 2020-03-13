@@ -35,11 +35,12 @@ var token_service_1 = require("@abp/auth/token.service");
 var CreateOrEditUserComponent = /** @class */ (function (_super) {
     __extends(CreateOrEditUserComponent, _super);
     //#endregion
-    function CreateOrEditUserComponent(injector, _profileService, _userService, _tokenService) {
+    function CreateOrEditUserComponent(injector, _profileService, _userService, _tokenService, _branchService) {
         var _this = _super.call(this, injector) || this;
         _this._profileService = _profileService;
         _this._userService = _userService;
         _this._tokenService = _tokenService;
+        _this._branchService = _branchService;
         /**
          * 发送激活邮件
          */
@@ -88,6 +89,7 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
          * 预览头像Modal控制
          */
         _this.profilePreviewVisible = false;
+        _this.branchList = [];
         //#region 头像功能
         /**
          * 图片上传前
@@ -155,11 +157,17 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
         var _this = this;
         this._userService.getForEditTree(this.id).subscribe(function (result) {
             _this.user = result.user;
+            _this.getbranch();
             // 是否为管理员
-            _this.isAdmin =
-                result.user.userName === AppConsts_1.AppConsts.userManagement.defaultAdminUserName;
+            _this.isAdmin = result.user.userName === AppConsts_1.AppConsts.userManagement.defaultAdminUserName;
             // 角色
             _this.roles = result.roles;
+            _this.branchId = result.user.branchId;
+            for (var i = 0; i < _this.roles.length; i++) {
+                if (_this.roles[i].isAssigned) {
+                    _this.roleName = _this.roles[i].roleName;
+                }
+            }
             // 组织机构树
             _this.allOrganizationUnits = result.allOrganizationUnits;
             _this.memberedOrganizationUnits = result.memberedOrganizationUnits;
@@ -173,6 +181,14 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
             // 设置组织机构树
             // this.setOrganizationUnitTreeData();
             // console.log(this.uploadPictureUrl);
+        });
+    };
+    CreateOrEditUserComponent.prototype.getbranch = function () {
+        var _this = this;
+        console.log(10);
+        this._branchService.getPaged(null, 999, 0)
+            .subscribe(function (result) {
+            _this.branchList = result.items;
         });
     };
     CreateOrEditUserComponent.prototype.setOrganizationUnitTreeData = function () {
@@ -189,10 +205,20 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
         input.user.emailAddress = '123@qq.com';
         input.setRandomPassword = this.setRandomPassword;
         input.sendActivationEmail = this.sendActivationEmail;
-        input.assignedRoleNames = _.map(_.filter(this.roles, { isAssigned: true }), function (role) { return role.roleName; });
+        if (this.roleName) {
+            input.assignedRoleNames = [this.roleName];
+        }
+        else {
+            input.assignedRoleNames = [];
+        }
+        // input.assignedRoleNames = _.map(
+        //   _.filter(this.roles, { isAssigned: true }),
+        //   role => role.roleName
+        //   );
         // 组织机构
         // input.organizationUnits = this.organizationUnitTree.getSelectedOrganizations();
         input.organizationUnits = [];
+        input.branchId = this.branchId;
         this._userService
             .createOrUpdate(input)
             .finally(function () {
@@ -276,7 +302,8 @@ var CreateOrEditUserComponent = /** @class */ (function (_super) {
         __metadata("design:paramtypes", [core_1.Injector,
             service_proxies_1.ProfileServiceProxy,
             service_proxies_1.UserServiceProxy,
-            token_service_1.TokenService])
+            token_service_1.TokenService,
+            service_proxies_1.BranchServiceProxy])
     ], CreateOrEditUserComponent);
     return CreateOrEditUserComponent;
 }(modal_component_base_1.ModalComponentBase));

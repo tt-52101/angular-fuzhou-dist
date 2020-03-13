@@ -61,10 +61,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
+// import { AppSessionService } from '@shared/session/app-session.service';
 var service_proxies_2 = require("@shared/service-proxies/service-proxies");
 var UrlHelper_1 = require("@shared/helpers/UrlHelper");
 var AppConsts_1 = require("abpPro/AppConsts");
-var _ = require("lodash");
 var utils_service_1 = require("@abp/utils/utils.service");
 var message_service_1 = require("@abp/message/message.service");
 var log_service_1 = require("@abp/log/log.service");
@@ -166,20 +166,8 @@ var LoginService = /** @class */ (function () {
     };
     LoginService.prototype.initExternalLoginProviders = function (callback) {
         return __awaiter(this, void 0, void 0, function () {
-            var providers;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this._tokenAuthService
-                            .getExternalAuthenticationProviders()
-                            .toPromise()];
-                    case 1:
-                        providers = _a.sent();
-                        this.externalLoginProviders = _.map(providers, function (p) { return new ExternalLoginProvider(p); });
-                        if (callback) {
-                            callback();
-                        }
-                        return [2 /*return*/];
-                }
+                return [2 /*return*/];
             });
         });
     };
@@ -227,15 +215,16 @@ var LoginService = /** @class */ (function () {
             : undefined;
         this._tokenService.setToken(accessToken, tokenExpireDate);
         this._utilsService.setCookieValue(AppConsts_1.AppConsts.authorization.encrptedAuthTokenName, encryptedAccessToken, tokenExpireDate, abp.appPath);
+        // console.log(this._sessionService._user)
+        // this._sessionService._user=new UserLoginInfoDto()
         var initialUrl = UrlHelper_1.UrlHelper.initialUrl;
-        console.log(1);
         if (initialUrl.indexOf('/login') > 0) {
             initialUrl = AppConsts_1.AppConsts.appBaseUrl;
         }
-        console.log(2);
-        consolelog();
+        // http://localhost:8000/#/app/power-management/power
+        // console.log(initialUrl)
         location.href = initialUrl;
-        console.log(3);
+        // window.history.forward()
     };
     LoginService.twoFactorRememberClientTokenName = 'TwoFactorRememberClientToken';
     LoginService = __decorate([

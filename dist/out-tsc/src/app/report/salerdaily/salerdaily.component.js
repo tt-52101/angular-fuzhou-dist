@@ -30,30 +30,39 @@ var differenceInCalendarDays = require("date-fns/difference_in_calendar_days");
 var moment = require("moment");
 var SalerDailyComponent = /** @class */ (function (_super) {
     __extends(SalerDailyComponent, _super);
-    function SalerDailyComponent(injector, _sellerdailyService, _userService) {
+    function SalerDailyComponent(injector, _sellerdailyService, _userService, _scheduleService, _boatService, _ticketService) {
         var _this = _super.call(this, injector) || this;
         _this._sellerdailyService = _sellerdailyService;
         _this._userService = _userService;
+        _this._scheduleService = _scheduleService;
+        _this._boatService = _boatService;
+        _this._ticketService = _ticketService;
         _this.queryData = [{
+                field: "ScheduleId",
+                method: "=",
+                value: "",
+                logic: "and"
+            }, {
                 field: "CreatorUserId",
                 method: "=",
                 value: "",
                 logic: "and"
-            },
-            {
+            }, {
                 field: "CreationTime",
                 method: ">=",
                 value: "",
                 logic: "and"
-            },
-            {
+            }, {
                 field: "CreationTime",
                 method: "<=",
                 value: "",
                 logic: "and"
-            }
-        ];
+            }];
         _this.CreationTime = '';
+        _this.boatId = '';
+        _this.ticketId = '';
+        _this.boatList = [];
+        _this.ticketlarr = [];
         _this.orderlist = [];
         _this.ticketlist = [];
         _this.visible = false;
@@ -63,7 +72,11 @@ var SalerDailyComponent = /** @class */ (function (_super) {
             return differenceInCalendarDays(current, new Date()) > 0;
         };
         _this.userList = [];
+        _this.schedulelist = [];
         return _this;
+        // var test=sessionStorage.getItem('power')
+        // this.test=test
+        // console.log(test)
     }
     SalerDailyComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
         var _this = this;
@@ -73,17 +86,56 @@ var SalerDailyComponent = /** @class */ (function (_super) {
                 arr.push(new service_proxies_1.QueryData(this.queryData[i]));
             }
         }
-        this._sellerdailyService.getPaged(arr, null, request.maxResultCount, request.skipCount)
+        this._sellerdailyService.getPaged(arr, null, request.maxResultCount, request.skipCount, this.boatId, this.ticketId)
             .finally(function () {
             finishedCallback();
         })
             .subscribe(function (result) {
-            if (result.totalCount > 0) {
-                _this.dataList = result.items;
-                _this.showPaging(result);
-            }
+            // if(result.totalCount>0){
+            _this.dataList = result.items.concat(result.total);
+            _this.showPaging(result);
+            // }
         });
         this.getuser();
+        this.getschedule();
+        this.getboat();
+        this.getticket();
+    };
+    SalerDailyComponent.prototype.getticket = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetTicketsInput();
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._ticketService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.ticketlarr = result.items;
+        });
+    };
+    SalerDailyComponent.prototype.getboat = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetBoatsInput();
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._boatService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.boatList = result.items;
+        });
+    };
+    SalerDailyComponent.prototype.getschedule = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetSchedulesInput;
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._scheduleService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.schedulelist = result.items;
+        });
     };
     SalerDailyComponent.prototype.open = function (id) {
         var _this = this;
@@ -109,8 +161,8 @@ var SalerDailyComponent = /** @class */ (function (_super) {
         var month = myDate.getMonth() + 1;
         var date = myDate.getDate();
         var fulldate = year + '-' + month + '-' + date;
-        this.queryData[1].value = moment(fulldate).format('YYYY-MM-DD HH:mm:ss');
-        this.queryData[2].value = moment(fulldate).add(1, 'd').format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[2].value = moment(fulldate).format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[3].value = moment(fulldate).add(1, 'd').format('YYYY-MM-DD HH:mm:ss');
     };
     SalerDailyComponent.prototype.getuser = function () {
         var _this = this;
@@ -128,7 +180,10 @@ var SalerDailyComponent = /** @class */ (function (_super) {
         }),
         __metadata("design:paramtypes", [core_1.Injector,
             service_proxies_1.SellerDailyServiceProxy,
-            service_proxies_1.UserServiceProxy])
+            service_proxies_1.UserServiceProxy,
+            service_proxies_1.ScheduleServiceProxy,
+            service_proxies_1.BoatServiceProxy,
+            service_proxies_1.TicketServiceProxy])
     ], SalerDailyComponent);
     return SalerDailyComponent;
 }(paged_listing_component_base_1.PagedListingComponentBase));

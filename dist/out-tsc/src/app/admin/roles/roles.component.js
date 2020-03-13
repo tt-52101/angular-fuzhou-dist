@@ -29,20 +29,19 @@ var create_or_edit_role_component_1 = require("@app/admin/roles/create-or-edit-r
 var create_or_edit_power_role_component_1 = require("./create-or-edit-power-role/create-or-edit-power-role.component");
 var _ = require("lodash");
 var AppConsts_1 = require("abpPro/AppConsts");
-var abc_1 = require("@delon/abc");
+// import { ReuseTabService } from '@delon/abc';
 var RolesComponent = /** @class */ (function (_super) {
     __extends(RolesComponent, _super);
-    function RolesComponent(injector, _roleService, _reuseTabService) {
+    function RolesComponent(injector, _roleService) {
         var _this = _super.call(this, injector) || this;
         _this._roleService = _roleService;
-        _this._reuseTabService = _reuseTabService;
         _this.advancedFiltersVisible = false; // 是否显示高级过滤
         /**
          * 选中的权限过滤
          */
         _this.selectedPermission = [];
-        _this._reuseTabService.title = _this.l('角色管理');
         return _this;
+        // this._reuseTabService.title = this.l('角色管理');
     }
     RolesComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
         var _this = this;
@@ -144,8 +143,7 @@ var RolesComponent = /** @class */ (function (_super) {
             styles: [],
         }),
         __metadata("design:paramtypes", [core_1.Injector,
-            service_proxies_1.RoleServiceProxy,
-            abc_1.ReuseTabService])
+            service_proxies_1.RoleServiceProxy])
     ], RolesComponent);
     return RolesComponent;
 }(paged_listing_component_base_1.PagedListingComponentBase));

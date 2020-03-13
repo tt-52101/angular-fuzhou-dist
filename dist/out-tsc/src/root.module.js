@@ -64,6 +64,7 @@ function appInitializerFactory(injector) {
                 }, function (err) {
                     // 这里获取登陆信息报错了的话，退出登陆，并刷新浏览器
                     injector.get(auth_1.AppAuthService).logout(true);
+                    console.log('err');
                     reject(err);
                 });
             });

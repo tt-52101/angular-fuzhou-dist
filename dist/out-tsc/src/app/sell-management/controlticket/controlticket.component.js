@@ -37,6 +37,8 @@ var ControlTicketComponent = /** @class */ (function (_super) {
         _this._scheduleService = _scheduleService;
         _this._boatService = _boatService;
         _this._routeService = _routeService;
+        _this.isAllOperation = 'false';
+        _this.curmenupower = [];
         _this.routequery = [];
         _this.routeList = [];
         _this.boatquery = [];
@@ -73,8 +75,10 @@ var ControlTicketComponent = /** @class */ (function (_super) {
                 value: "",
                 logic: "and"
             }];
+        console.log(sessionStorage.getItem('curmenupower'));
         return _this;
-        // this._reuseTabService.title = this.l('控票管理');
+        // this.curmenupower=sessionStorage.getItem('curmenupower')
+        // this.isAllOperation=sessionStorage.getItem('isAllOperation')
     }
     ControlTicketComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
         //  this.getlist(request,pageNumber)

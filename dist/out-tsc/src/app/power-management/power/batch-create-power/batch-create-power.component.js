@@ -51,7 +51,20 @@ var BatchCreatePowerComponent = /** @class */ (function (_super) {
             }, {
                 label: '查看所有机构的数据',
                 value: 'viewallorgan',
-            },];
+            },
+            {
+                label: '添加或修改',
+                value: 'CreateOrUpdate',
+            },
+            {
+                label: '删除',
+                value: 'Delete',
+            },
+            {
+                label: '批量删除',
+                value: 'BatchDelete',
+            },
+        ];
         _this.powerCodeList = []; //选中权限
         _this.showselect = false;
         return _this;

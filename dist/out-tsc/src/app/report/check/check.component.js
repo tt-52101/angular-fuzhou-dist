@@ -62,7 +62,7 @@ var CheckComponent = /** @class */ (function (_super) {
                 value: "",
                 logic: "and"
             }, {
-                field: "Schedule.endtime",
+                field: "Schedule.starttime",
                 method: "<=",
                 value: "",
                 logic: "and"
@@ -88,7 +88,7 @@ var CheckComponent = /** @class */ (function (_super) {
             finishedCallback();
         })
             .subscribe(function (result) {
-            _this.dataList = result.items;
+            _this.dataList = result.items.concat(result.total);
             _this.showPaging(result);
         });
         this.getroute();

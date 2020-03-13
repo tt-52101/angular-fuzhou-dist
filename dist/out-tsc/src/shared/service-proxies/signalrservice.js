@@ -8,12 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var signalR = require("@aspnet/signalr");
+var AppConsts_1 = require("abpPro/AppConsts");
 var SignalRService = /** @class */ (function () {
     function SignalRService() {
         var _this = this;
         this.startConnection = function (groupname) {
             _this.hubConnection = new signalR.HubConnectionBuilder()
-                .withUrl('http://host.sweii.cn/signalr')
+                .withUrl(AppConsts_1.AppConsts.remoteServiceBaseUrl + '/signalr')
                 .build();
             _this.hubConnection.start()
                 .then(function () {
@@ -21,13 +22,18 @@ var SignalRService = /** @class */ (function () {
             })
                 .catch(function (err) { return console.log('Error while starting connection: ' + err); });
         };
-        this.addTransferChartDataListener = function () {
-            _this.hubConnection.on('messageReceived', function (username, message) {
-            });
-        };
         this.send = function (username, message) {
             _this.hubConnection.send('newMessage', username, message)
                 .catch(function (err) { return console.error(err); });
+        };
+        this.onclose = function () {
+            console.log('watchclosed');
+            _this.hubConnection.onclose(function (error) {
+                console.log(error);
+                setTimeout(function () {
+                    this.startConnection();
+                }, 3000);
+            });
         };
     }
     SignalRService = __decorate([

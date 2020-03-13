@@ -26,6 +26,7 @@ var AppSessionService = /** @class */ (function () {
     });
     Object.defineProperty(AppSessionService.prototype, "user", {
         get: function () {
+            // console.log(this._user)
             return this._user;
         },
         enumerable: true,
@@ -62,18 +63,32 @@ var AppSessionService = /** @class */ (function () {
     AppSessionService.prototype.init = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this._sessionService
-                .getCurrentLoginInformations()
+            _this._sessionService.getCurrentLoginInformations()
                 .toPromise()
                 .then(function (result) {
+                // console.log(result)
                 _this._application = result.application;
                 _this._user = result.user;
                 _this._tenant = result.tenant;
                 resolve(true);
             }, function (err) {
+                // console.log(err)
                 reject(err);
             });
         });
+        // this._sessionService.getCurrentLoginInformations()
+        // .toPromise()
+        // .then(
+        //   (result: GetCurrentLoginInformationsOutput) => {
+        //     console.log(result)
+        //     this._application = result.application;
+        //     this._user = result.user;
+        //     this._tenant = result.tenant;
+        //   },
+        //   err => {
+        //     console.log(err)
+        //   },
+        //   );
     };
     AppSessionService.prototype.changeTenantIfNeeded = function (tenantId) {
         if (this.isCurrentTenant(tenantId)) {

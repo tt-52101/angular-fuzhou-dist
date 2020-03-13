@@ -404,6 +404,130 @@ var AccountServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    AccountServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Account/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    AccountServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    AccountServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Account/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    AccountServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_1 = resultData200; _i < resultData200_1.length; _i++) {
+                        var item = resultData200_1[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @param input (optional)
      * @return Success
      */
@@ -1654,6 +1778,64 @@ var ActivityServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ActivityServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Activity/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Activity的分页列表信息
      * @param input (optional)
      * @return Success
@@ -1705,6 +1887,72 @@ var ActivityServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfActivityListDto.fromJS(resultData200) : new PagedResultDtoOfActivityListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ActivityServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Activity/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_2 = resultData200; _i < resultData200_2.length; _i++) {
+                        var item = resultData200_2[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -2214,6 +2462,64 @@ var ActivityTempServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ActivityTempServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ActivityTemp/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityTempServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取ActivityTemp的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -2270,6 +2576,72 @@ var ActivityTempServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfActivityTempListDto.fromJS(resultData200) : new PagedResultDtoOfActivityTempListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ActivityTempServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ActivityTemp/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityTempServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_3 = resultData200; _i < resultData200_3.length; _i++) {
+                        var item = resultData200_3[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -2443,14 +2815,16 @@ var HistoryServiceProxy = /** @class */ (function () {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
     /**
-     * 闸机记录
-     * @param queryData (optional) DeviceType, DeviceName, TicketType, Operator, Schedule
+     * 过闸统计
+     * @param queryData (optional) DeviceId 设备类型，Device.DeviceName 设备名称, CreatorUserId 操作员ID，CreationTime 检票时间
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param ticketId (optional) 票型ID
+     * @param scheduleId (optional) 航班ID
      * @return Success
      */
-    HistoryServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    HistoryServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, ticketId, scheduleId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/CheckTicket/History/GetPagedStat?";
         if (queryData !== undefined)
@@ -2466,6 +2840,10 @@ var HistoryServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
+        if (scheduleId !== undefined)
+            url_ += "scheduleId=" + encodeURIComponent("" + scheduleId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -2591,7 +2969,9 @@ var RecordServiceProxy = /** @class */ (function () {
     };
     /**
      * 过闸记录
-     * @param queryData (optional) DeviceCode,DeviceName,Port
+     * @param queryData (optional) DeviceId 设备类型，DeviceName 设备名称，TicketId 票型，
+    TicketNo 票码，CheckerId 操作员Id，StatusCode 检票状态，
+    CreationTime 检票时间
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
@@ -2653,7 +3033,7 @@ var RecordServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfGateRecordResultDto.fromJS(resultData200) : new PagedResultDtoOfGateRecordResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfGateRecordResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfGateRecordResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -3173,6 +3553,64 @@ var AccountDetailServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    AccountDetailServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/AccountDetail/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    AccountDetailServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取AccountDetail的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -3237,6 +3675,72 @@ var AccountDetailServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfAccountDetailListDto.fromJS(resultData200) : new PagedResultDtoOfAccountDetailListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    AccountDetailServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/AccountDetail/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    AccountDetailServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_4 = resultData200; _i < resultData200_4.length; _i++) {
+                        var item = resultData200_4[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -3553,6 +4057,64 @@ var ActivityDetailServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ActivityDetailServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ActivityDetail/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityDetailServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取ActivityDetail的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -3617,6 +4179,72 @@ var ActivityDetailServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfActivityDetailListDto.fromJS(resultData200) : new PagedResultDtoOfActivityDetailListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ActivityDetailServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ActivityDetail/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityDetailServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_5 = resultData200; _i < resultData200_5.length; _i++) {
+                        var item = resultData200_5[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -3933,6 +4561,64 @@ var ActivityTempDetailServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ActivityTempDetailServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ActivityTempDetail/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityTempDetailServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取ActivityTempDetail的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -3989,6 +4675,72 @@ var ActivityTempDetailServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfActivityTempDetailListDto.fromJS(resultData200) : new PagedResultDtoOfActivityTempDetailListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ActivityTempDetailServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ActivityTempDetail/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ActivityTempDetailServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_6 = resultData200; _i < resultData200_6.length; _i++) {
+                        var item = resultData200_6[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -4310,11 +5062,69 @@ var AuditLogServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_1 = resultData200; _i < resultData200_1.length; _i++) {
-                        var item = resultData200_1[_i];
+                    for (var _i = 0, resultData200_7 = resultData200; _i < resultData200_7.length; _i++) {
+                        var item = resultData200_7[_i];
                         result200.push(NameValueDto.fromJS(item));
                     }
                 }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    AuditLogServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/AuditLog/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    AuditLogServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
                 return rxjs_1.of(result200);
             }));
         }
@@ -4496,6 +5306,72 @@ var AuditLogServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfLoginLogModel.fromJS(resultData200) : new PagedResultDtoOfLoginLogModel();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    AuditLogServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/AuditLog/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    AuditLogServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_8 = resultData200; _i < resultData200_8.length; _i++) {
+                        var item = resultData200_8[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -4812,6 +5688,64 @@ var BoatServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    BoatServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Boat/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BoatServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Boat的分页列表信息
      * @param input (optional)
      * @return Success
@@ -4863,6 +5797,72 @@ var BoatServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfBoatListDto.fromJS(resultData200) : new PagedResultDtoOfBoatListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    BoatServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Boat/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BoatServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_9 = resultData200; _i < resultData200_9.length; _i++) {
+                        var item = resultData200_9[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -5242,6 +6242,64 @@ var BooksServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    BooksServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Books/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BooksServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Book的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -5298,6 +6356,72 @@ var BooksServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfBookListDto.fromJS(resultData200) : new PagedResultDtoOfBookListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    BooksServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Books/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BooksServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_10 = resultData200; _i < resultData200_10.length; _i++) {
+                        var item = resultData200_10[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -5614,6 +6738,64 @@ var BranchServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    BranchServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Branch/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BranchServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Branch的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -5670,6 +6852,72 @@ var BranchServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfBranchListDto.fromJS(resultData200) : new PagedResultDtoOfBranchListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    BranchServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Branch/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BranchServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_11 = resultData200; _i < resultData200_11.length; _i++) {
+                        var item = resultData200_11[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -5803,6 +7051,130 @@ var BranchListExcelExporterServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    BranchListExcelExporterServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/BranchListExcelExporter/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BranchListExcelExporterServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    BranchListExcelExporterServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/BranchListExcelExporter/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BranchListExcelExporterServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_12 = resultData200; _i < resultData200_12.length; _i++) {
+                        var item = resultData200_12[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -6119,6 +7491,64 @@ var BranchUserServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    BranchUserServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/BranchUser/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BranchUserServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取BranchUser的分页列表信息
      * @param queryData (optional) User.XX,Branch.XX
      * @param sorting (optional)
@@ -6183,6 +7613,72 @@ var BranchUserServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfBranchUserListDto.fromJS(resultData200) : new PagedResultDtoOfBranchUserListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    BranchUserServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/BranchUser/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    BranchUserServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_13 = resultData200; _i < resultData200_13.length; _i++) {
+                        var item = resultData200_13[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -6499,6 +7995,64 @@ var CheckRecordServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    CheckRecordServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CheckRecord/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CheckRecordServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取CheckRecord的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -6555,6 +8109,72 @@ var CheckRecordServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfCheckRecordListDto.fromJS(resultData200) : new PagedResultDtoOfCheckRecordListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    CheckRecordServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CheckRecord/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CheckRecordServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_14 = resultData200; _i < resultData200_14.length; _i++) {
+                        var item = resultData200_14[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -6871,6 +8491,64 @@ var ClientVersionServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ClientVersionServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ClientVersion/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ClientVersionServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取ClientVersion的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -6937,6 +8615,72 @@ var ClientVersionServiceProxy = /** @class */ (function () {
         }
         return rxjs_1.of(null);
     };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ClientVersionServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ClientVersion/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ClientVersionServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_15 = resultData200; _i < resultData200_15.length; _i++) {
+                        var item = resultData200_15[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     ClientVersionServiceProxy = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
@@ -6945,6 +8689,620 @@ var ClientVersionServiceProxy = /** @class */ (function () {
     return ClientVersionServiceProxy;
 }());
 exports.ClientVersionServiceProxy = ClientVersionServiceProxy;
+var CommonCustomerServiceProxy = /** @class */ (function () {
+    function CommonCustomerServiceProxy(http, baseUrl) {
+        this.jsonParseReviver = undefined;
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+    /**
+     * 批量删除CommonCustomer的方法
+     * @param input (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.batchDelete = function (input) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/BatchDelete";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(input);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processBatchDelete(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processBatchDelete(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processBatchDelete = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 创建常用游客
+     * @param input (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.createCommonCustomer = function (input) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/CreateCommonCustomer";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(input);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processCreateCommonCustomer(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processCreateCommonCustomer(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processCreateCommonCustomer = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 添加或者修改的公共方法
+     * @param input (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.createOrUpdate = function (input) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/CreateOrUpdate";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(input);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processCreateOrUpdate(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processCreateOrUpdate(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processCreateOrUpdate = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 删除信息
+     * @param id (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.delete = function (id) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/Delete?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({})
+        };
+        return this.http.request("delete", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processDelete(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processDelete(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processDelete = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 通过指定id获取CommonCustomerListDto信息
+     * @param id (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.getById = function (id) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/GetById?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetById(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetById(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processGetById = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? CommonCustomerListDto.fromJS(resultData200) : new CommonCustomerListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 获取编辑
+     * @param id (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.getForEdit = function (id) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/GetForEdit?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetForEdit(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetForEdit(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processGetForEdit = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? GetCommonCustomerForEditOutput.fromJS(resultData200) : new GetCommonCustomerForEditOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 获取的分页列表信息
+     * @param openId (optional) 主游客openId
+     * @param sorting (optional)
+     * @param maxResultCount (optional)
+     * @param skipCount (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.getPaged = function (openId, sorting, maxResultCount, skipCount) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/GetPaged?";
+        if (openId !== undefined)
+            url_ += "openId=" + encodeURIComponent("" + openId) + "&";
+        if (sorting !== undefined)
+            url_ += "sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (maxResultCount !== undefined)
+            url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (skipCount !== undefined)
+            url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPaged(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPaged(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processGetPaged = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? PagedResultDtoOfCommonCustomerListDto.fromJS(resultData200) : new PagedResultDtoOfCommonCustomerListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_16 = resultData200; _i < resultData200_16.length; _i++) {
+                        var item = resultData200_16[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 导出为excel文件
+     * @return Success
+     */
+    CommonCustomerServiceProxy.prototype.getToExcelFile = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonCustomer/GetToExcelFile";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetToExcelFile(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetToExcelFile(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonCustomerServiceProxy.prototype.processGetToExcelFile = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    CommonCustomerServiceProxy = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
+        __metadata("design:paramtypes", [http_1.HttpClient, String])
+    ], CommonCustomerServiceProxy);
+    return CommonCustomerServiceProxy;
+}());
+exports.CommonCustomerServiceProxy = CommonCustomerServiceProxy;
 var CommonLookupServiceProxy = /** @class */ (function () {
     function CommonLookupServiceProxy(http, baseUrl) {
         this.jsonParseReviver = undefined;
@@ -7130,6 +9488,130 @@ var CommonLookupServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    CommonLookupServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonLookup/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonLookupServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    CommonLookupServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CommonLookup/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CommonLookupServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_17 = resultData200; _i < resultData200_17.length; _i++) {
+                        var item = resultData200_17[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @return Success
      */
     CommonLookupServiceProxy.prototype.getValidateCodeTypesForCombobox = function () {
@@ -7291,6 +9773,63 @@ var CustomerServiceProxy = /** @class */ (function () {
         }));
     };
     CustomerServiceProxy.prototype.processCreateOrUpdate = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 官网注册
+     * @param input (optional)
+     * @return Success
+     */
+    CustomerServiceProxy.prototype.createUser = function (input) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Customer/CreateUserAsync";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(input);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processCreateUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processCreateUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CustomerServiceProxy.prototype.processCreateUser = function (response) {
         var status = response.status;
         var responseBlob = response instanceof http_1.HttpResponse ? response.body :
             response.error instanceof Blob ? response.error : undefined;
@@ -7492,6 +10031,67 @@ var CustomerServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 通过指定Openid获取CustomerListDto信息
+     * @param openId (optional)
+     * @return Success
+     */
+    CustomerServiceProxy.prototype.getByOpenId = function (openId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Customer/GetByOpenId?";
+        if (openId !== undefined)
+            url_ += "openId=" + encodeURIComponent("" + openId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetByOpenId(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetByOpenId(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CustomerServiceProxy.prototype.processGetByOpenId = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? CustomerListDto.fromJS(resultData200) : new CustomerListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取编辑 Customer
      * @param id (optional)
      * @return Success
@@ -7542,6 +10142,64 @@ var CustomerServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? GetCustomerForEditOutput.fromJS(resultData200) : new GetCustomerForEditOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    CustomerServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Customer/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CustomerServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
                 return rxjs_1.of(result200);
             }));
         }
@@ -7604,6 +10262,72 @@ var CustomerServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfCustomerListDto.fromJS(resultData200) : new PagedResultDtoOfCustomerListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    CustomerServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Customer/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CustomerServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_18 = resultData200; _i < resultData200_18.length; _i++) {
+                        var item = resultData200_18[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -7862,6 +10586,130 @@ var CustomListExcelExporterServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    CustomListExcelExporterServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CustomListExcelExporter/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CustomListExcelExporterServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    CustomListExcelExporterServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/CustomListExcelExporter/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    CustomListExcelExporterServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_19 = resultData200; _i < resultData200_19.length; _i++) {
+                        var item = resultData200_19[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -8178,6 +11026,64 @@ var DateDictionaryServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    DateDictionaryServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/DateDictionary/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    DateDictionaryServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取DateDictionary的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -8242,6 +11148,72 @@ var DateDictionaryServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfDateDictionaryListDto.fromJS(resultData200) : new PagedResultDtoOfDateDictionaryListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    DateDictionaryServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/DateDictionary/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    DateDictionaryServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_20 = resultData200; _i < resultData200_20.length; _i++) {
+                        var item = resultData200_20[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -8558,6 +11530,64 @@ var DeviceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    DeviceServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Device/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    DeviceServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Device的分页列表信息--Post方法
      * @param input (optional)
      * @return Success
@@ -8684,6 +11714,72 @@ var DeviceServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfDeviceListDto.fromJS(resultData200) : new PagedResultDtoOfDeviceListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    DeviceServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Device/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    DeviceServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_21 = resultData200; _i < resultData200_21.length; _i++) {
+                        var item = resultData200_21[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -8936,8 +12032,8 @@ var EditionServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_2 = resultData200; _i < resultData200_2.length; _i++) {
-                        var item = resultData200_2[_i];
+                    for (var _i = 0, resultData200_22 = resultData200; _i < resultData200_22.length; _i++) {
+                        var item = resultData200_22[_i];
                         result200.push(SubscribableEditionComboboxItemDto.fromJS(item));
                     }
                 }
@@ -9058,6 +12154,130 @@ var EditionServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? ListResultDtoOfEditionListDto.fromJS(resultData200) : new ListResultDtoOfEditionListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    EditionServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Edition/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    EditionServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    EditionServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Edition/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    EditionServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_23 = resultData200; _i < resultData200_23.length; _i++) {
+                        var item = resultData200_23[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -9192,6 +12412,282 @@ var EditionServiceProxy = /** @class */ (function () {
     return EditionServiceProxy;
 }());
 exports.EditionServiceProxy = EditionServiceProxy;
+var EnumsServiceProxy = /** @class */ (function () {
+    function EnumsServiceProxy(http, baseUrl) {
+        this.jsonParseReviver = undefined;
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    EnumsServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Enums/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    EnumsServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    EnumsServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Enums/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    EnumsServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_24 = resultData200; _i < resultData200_24.length; _i++) {
+                        var item = resultData200_24[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    EnumsServiceProxy = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
+        __metadata("design:paramtypes", [http_1.HttpClient, String])
+    ], EnumsServiceProxy);
+    return EnumsServiceProxy;
+}());
+exports.EnumsServiceProxy = EnumsServiceProxy;
+var EpplusExcelExporterBaseServiceProxy = /** @class */ (function () {
+    function EpplusExcelExporterBaseServiceProxy(http, baseUrl) {
+        this.jsonParseReviver = undefined;
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    EpplusExcelExporterBaseServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/EpplusExcelExporterBase/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    EpplusExcelExporterBaseServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    EpplusExcelExporterBaseServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/EpplusExcelExporterBase/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    EpplusExcelExporterBaseServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_25 = resultData200; _i < resultData200_25.length; _i++) {
+                        var item = resultData200_25[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    EpplusExcelExporterBaseServiceProxy = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
+        __metadata("design:paramtypes", [http_1.HttpClient, String])
+    ], EpplusExcelExporterBaseServiceProxy);
+    return EpplusExcelExporterBaseServiceProxy;
+}());
+exports.EpplusExcelExporterBaseServiceProxy = EpplusExcelExporterBaseServiceProxy;
 var GateRecordServiceProxy = /** @class */ (function () {
     function GateRecordServiceProxy(http, baseUrl) {
         this.jsonParseReviver = undefined;
@@ -9490,6 +12986,64 @@ var GateRecordServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    GateRecordServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/GateRecord/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    GateRecordServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取GateRecord的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -9546,6 +13100,72 @@ var GateRecordServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfGateRecordListDto.fromJS(resultData200) : new PagedResultDtoOfGateRecordListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    GateRecordServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/GateRecord/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    GateRecordServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_26 = resultData200; _i < resultData200_26.length; _i++) {
+                        var item = resultData200_26[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -10082,6 +13702,130 @@ var HangfireServiceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    HangfireServiceServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/HangfireService/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    HangfireServiceServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    HangfireServiceServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/HangfireService/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    HangfireServiceServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_27 = resultData200; _i < resultData200_27.length; _i++) {
+                        var item = resultData200_27[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取重试的作业数据
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -10511,6 +14255,130 @@ var HostCachingServiceProxy = /** @class */ (function () {
         }
         return rxjs_1.of(null);
     };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    HostCachingServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/HostCaching/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    HostCachingServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    HostCachingServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/HostCaching/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    HostCachingServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_28 = resultData200; _i < resultData200_28.length; _i++) {
+                        var item = resultData200_28[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     HostCachingServiceProxy = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
@@ -10572,6 +14440,130 @@ var HostSettingsServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? HostSettingsEditDto.fromJS(resultData200) : new HostSettingsEditDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    HostSettingsServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/HostSettings/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    HostSettingsServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    HostSettingsServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/HostSettings/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    HostSettingsServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_29 = resultData200; _i < resultData200_29.length; _i++) {
+                        var item = resultData200_29[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -10759,6 +14751,130 @@ var InvalidUserExporterServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    InvalidUserExporterServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/InvalidUserExporter/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    InvalidUserExporterServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    InvalidUserExporterServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/InvalidUserExporter/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    InvalidUserExporterServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_30 = resultData200; _i < resultData200_30.length; _i++) {
+                        var item = resultData200_30[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -11142,6 +15258,130 @@ var LanguageServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfLanguageTextListDto.fromJS(resultData200) : new PagedResultDtoOfLanguageTextListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    LanguageServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Language/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    LanguageServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    LanguageServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Language/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    LanguageServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_31 = resultData200; _i < resultData200_31.length; _i++) {
+                        var item = resultData200_31[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -11619,11 +15859,69 @@ var MenuServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_3 = resultData200; _i < resultData200_3.length; _i++) {
-                        var item = resultData200_3[_i];
+                    for (var _i = 0, resultData200_32 = resultData200; _i < resultData200_32.length; _i++) {
+                        var item = resultData200_32[_i];
                         result200.push(MenuDropDownDto.fromJS(item));
                     }
                 }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    MenuServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Menu/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    MenuServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
                 return rxjs_1.of(result200);
             }));
         }
@@ -11683,8 +15981,8 @@ var MenuServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_4 = resultData200; _i < resultData200_4.length; _i++) {
-                        var item = resultData200_4[_i];
+                    for (var _i = 0, resultData200_33 = resultData200; _i < resultData200_33.length; _i++) {
+                        var item = resultData200_33[_i];
                         result200.push(MenuTreeDto.fromJS(item));
                     }
                 }
@@ -11835,6 +16133,72 @@ var MenuServiceProxy = /** @class */ (function () {
         }
         return rxjs_1.of(null);
     };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    MenuServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Menu/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    MenuServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_34 = resultData200; _i < resultData200_34.length; _i++) {
+                        var item = resultData200_34[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     MenuServiceProxy = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
@@ -11895,6 +16259,64 @@ var NotificationServiceProxy = /** @class */ (function () {
         if (status === 200) {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    NotificationServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Notification/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    NotificationServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
             }));
         }
         else if (status !== 200 && status !== 204) {
@@ -12017,6 +16439,72 @@ var NotificationServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? GetNotificationsOutput.fromJS(resultData200) : new GetNotificationsOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    NotificationServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Notification/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    NotificationServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_35 = resultData200; _i < resultData200_35.length; _i++) {
+                        var item = resultData200_35[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -12733,6 +17221,64 @@ var OrganizationUnitServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    OrganizationUnitServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    OrganizationUnitServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取角色列表
      * @param id (optional)
      * @param filterText (optional)
@@ -12867,6 +17413,72 @@ var OrganizationUnitServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfOrganizationUnitUserListDto.fromJS(resultData200) : new PagedResultDtoOfOrganizationUnitUserListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    OrganizationUnitServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    OrganizationUnitServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_36 = resultData200; _i < resultData200_36.length; _i++) {
+                        var item = resultData200_36[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -13543,6 +18155,64 @@ var PayMethodServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    PayMethodServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/PayMethod/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PayMethodServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取PayMethod的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -13610,14 +18280,83 @@ var PayMethodServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    PayMethodServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/PayMethod/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PayMethodServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_37 = resultData200; _i < resultData200_37.length; _i++) {
+                        var item = resultData200_37[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 支付方式统计接口
-     * @param queryData (optional) PayMethodId, Schedule, Boat, TicketType
+     * @param queryData (optional) PayMethodId, CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param routeId (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    PayMethodServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    PayMethodServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, routeId, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/PayMethod/GetPagedStat?";
         if (queryData !== undefined)
@@ -13633,6 +18372,12 @@ var PayMethodServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (routeId !== undefined)
+            url_ += "routeId=" + encodeURIComponent("" + routeId) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -13673,7 +18418,7 @@ var PayMethodServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfGetPayMethodResultDto.fromJS(resultData200) : new PagedResultDtoOfGetPayMethodResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfGetPayMethodResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfGetPayMethodResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -13736,8 +18481,8 @@ var PayMethodServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_5 = resultData200; _i < resultData200_5.length; _i++) {
-                        var item = resultData200_5[_i];
+                    for (var _i = 0, resultData200_38 = resultData200; _i < resultData200_38.length; _i++) {
+                        var item = resultData200_38[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -13869,6 +18614,130 @@ var PermissionServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? ListResultDtoOfTreePermissionDto.fromJS(resultData200) : new ListResultDtoOfTreePermissionDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    PermissionServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Permission/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PermissionServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    PermissionServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Permission/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PermissionServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_39 = resultData200; _i < resultData200_39.length; _i++) {
+                        var item = resultData200_39[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -14245,6 +19114,64 @@ var PowerServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    PowerServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Power/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PowerServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Power的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -14301,6 +19228,72 @@ var PowerServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfPowerListDto.fromJS(resultData200) : new PagedResultDtoOfPowerListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    PowerServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Power/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PowerServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_40 = resultData200; _i < resultData200_40.length; _i++) {
+                        var item = resultData200_40[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -14677,6 +19670,64 @@ var PowerRoleServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    PowerRoleServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/PowerRole/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PowerRoleServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取PowerRole的分页列表信息
      * @param queryData (optional) User.XX,Branch.XX
      * @param sorting (optional)
@@ -14741,6 +19792,72 @@ var PowerRoleServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfPowerRoleListDto.fromJS(resultData200) : new PagedResultDtoOfPowerRoleListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    PowerRoleServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/PowerRole/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PowerRoleServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_41 = resultData200; _i < resultData200_41.length; _i++) {
+                        var item = resultData200_41[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -15119,6 +20236,64 @@ var PriceAuditServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    PriceAuditServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/PriceAudit/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PriceAuditServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取PriceAudit的分页列表信息——票总票价审核
      * @param input (optional)
      * @return Success
@@ -15170,6 +20345,72 @@ var PriceAuditServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfPriceAuditListDto.fromJS(resultData200) : new PagedResultDtoOfPriceAuditListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    PriceAuditServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/PriceAudit/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    PriceAuditServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_42 = resultData200; _i < resultData200_42.length; _i++) {
+                        var item = resultData200_42[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -15523,6 +20764,130 @@ var ProfileServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? CurrentUserProfileEditDto.fromJS(resultData200) : new CurrentUserProfileEditDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ProfileServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Profile/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ProfileServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ProfileServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Profile/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ProfileServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_43 = resultData200; _i < resultData200_43.length; _i++) {
+                        var item = resultData200_43[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -16011,6 +21376,64 @@ var RechargeRecordServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    RechargeRecordServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/RechargeRecord/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    RechargeRecordServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取RechargeRecord的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -16137,6 +21560,72 @@ var RechargeRecordServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfRechargeRecordListDto.fromJS(resultData200) : new PagedResultDtoOfRechargeRecordListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    RechargeRecordServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/RechargeRecord/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    RechargeRecordServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_44 = resultData200; _i < resultData200_44.length; _i++) {
+                        var item = resultData200_44[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -16450,6 +21939,64 @@ var RoleServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    RoleServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Role/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    RoleServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @param permissionNames (optional) 权限名称
      * @param filterText (optional)
      * @param sorting (optional)
@@ -16511,6 +22058,72 @@ var RoleServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfRoleListDto.fromJS(resultData200) : new PagedResultDtoOfRoleListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    RoleServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Role/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    RoleServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_45 = resultData200; _i < resultData200_45.length; _i++) {
+                        var item = resultData200_45[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -16943,6 +22556,64 @@ var RouteServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    RouteServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Route/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    RouteServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Route的分页列表信息
      * @param input (optional)
      * @return Success
@@ -16994,6 +22665,72 @@ var RouteServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfRouteListDto.fromJS(resultData200) : new PagedResultDtoOfRouteListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    RouteServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Route/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    RouteServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_46 = resultData200; _i < resultData200_46.length; _i++) {
+                        var item = resultData200_46[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -17373,6 +23110,64 @@ var ScenicSpotServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ScenicSpotServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ScenicSpot/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ScenicSpotServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取ScenicSpot的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -17437,6 +23232,72 @@ var ScenicSpotServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfScenicSpotListDto.fromJS(resultData200) : new PagedResultDtoOfScenicSpotListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ScenicSpotServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/ScenicSpot/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ScenicSpotServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_47 = resultData200; _i < resultData200_47.length; _i++) {
+                        var item = resultData200_47[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -17753,6 +23614,64 @@ var ScheduleServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    ScheduleServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Schedule/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ScheduleServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Schedule的分页列表信息
      * @param input (optional)
      * @return Success
@@ -17866,6 +23785,72 @@ var ScheduleServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfScheduleListDto.fromJS(resultData200) : new PagedResultDtoOfScheduleListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    ScheduleServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Schedule/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    ScheduleServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_48 = resultData200; _i < resultData200_48.length; _i++) {
+                        var item = resultData200_48[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -18055,13 +24040,16 @@ var ScheduleServiceProxy = /** @class */ (function () {
     };
     /**
      * 航线统计
-     * @param queryData (optional) DeviceType, DeviceName, TicketType, Operator, Schedule
+     * @param queryData (optional) CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param routeId (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    ScheduleServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    ScheduleServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, routeId, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/Schedule/GetPagedStat?";
         if (queryData !== undefined)
@@ -18077,6 +24065,12 @@ var ScheduleServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (routeId !== undefined)
+            url_ += "routeId=" + encodeURIComponent("" + routeId) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -18117,7 +24111,7 @@ var ScheduleServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfScheduleResultDto.fromJS(resultData200) : new PagedResultDtoOfScheduleResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfScheduleResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfScheduleResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -18178,7 +24172,7 @@ var ScheduleServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfScheduleDetailResultDto.fromJS(resultData200) : new PagedResultDtoOfScheduleDetailResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfScheduleDetailResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfScheduleDetailResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -18250,6 +24244,130 @@ var SessionServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? GetCurrentLoginInformationsOutput.fromJS(resultData200) : new GetCurrentLoginInformationsOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    SessionServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Session/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    SessionServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    SessionServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Session/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    SessionServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_49 = resultData200; _i < resultData200_49.length; _i++) {
+                        var item = resultData200_49[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -18388,6 +24506,130 @@ var SettingsAppServiceBaseServiceProxy = /** @class */ (function () {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    SettingsAppServiceBaseServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/SettingsAppServiceBase/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    SettingsAppServiceBaseServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    SettingsAppServiceBaseServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/SettingsAppServiceBase/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    SettingsAppServiceBaseServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_50 = resultData200; _i < resultData200_50.length; _i++) {
+                        var item = resultData200_50[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     /**
      * @param input (optional)
      * @return Success
@@ -18750,6 +24992,64 @@ var SourceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    SourceServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Source/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    SourceServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Source的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -18806,6 +25106,72 @@ var SourceServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfSourceListDto.fromJS(resultData200) : new PagedResultDtoOfSourceListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    SourceServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Source/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    SourceServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_51 = resultData200; _i < resultData200_51.length; _i++) {
+                        var item = resultData200_51[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -19057,6 +25423,64 @@ var TenantServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TenantServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Tenant/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TenantServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @param subscriptionStart (optional)
      * @param subscriptionEnd (optional)
      * @param creationDateStart (optional)
@@ -19130,6 +25554,72 @@ var TenantServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTenantListDto.fromJS(resultData200) : new PagedResultDtoOfTenantListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TenantServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Tenant/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TenantServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_52 = resultData200; _i < resultData200_52.length; _i++) {
+                        var item = resultData200_52[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -19439,6 +25929,130 @@ var TenantRegistrationServiceProxy = /** @class */ (function () {
         this.baseUrl = baseUrl ? baseUrl : "";
     }
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TenantRegistrationServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TenantRegistration/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TenantRegistrationServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TenantRegistrationServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TenantRegistration/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TenantRegistrationServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_53 = resultData200; _i < resultData200_53.length; _i++) {
+                        var item = resultData200_53[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 注册租户信息
      * @param input (optional)
      * @return Success
@@ -19664,6 +26278,130 @@ var TenantSettingsServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? TenantSettingsEditDto.fromJS(resultData200) : new TenantSettingsEditDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TenantSettingsServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TenantSettings/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TenantSettingsServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TenantSettingsServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TenantSettings/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TenantSettingsServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_54 = resultData200; _i < resultData200_54.length; _i++) {
+                        var item = resultData200_54[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -20093,6 +26831,64 @@ var TicketServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Ticket/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Ticket的分页列表信息
      * @param input (optional)
      * @return Success
@@ -20218,6 +27014,72 @@ var TicketServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketListDto.fromJS(resultData200) : new PagedResultDtoOfTicketListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Ticket/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_55 = resultData200; _i < resultData200_55.length; _i++) {
+                        var item = resultData200_55[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -20587,8 +27449,8 @@ var TicketAccountServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_6 = resultData200; _i < resultData200_6.length; _i++) {
-                        var item = resultData200_6[_i];
+                    for (var _i = 0, resultData200_56 = resultData200; _i < resultData200_56.length; _i++) {
+                        var item = resultData200_56[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -20664,6 +27526,64 @@ var TicketAccountServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketAccountServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketAccount/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketAccountServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketAccount的分页列表信息
      * @param input (optional)
      * @return Success
@@ -20726,6 +27646,72 @@ var TicketAccountServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketAccountServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketAccount/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketAccountServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_57 = resultData200; _i < resultData200_57.length; _i++) {
+                        var item = resultData200_57[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @param activityId (optional)
      * @return Success
      */
@@ -20776,8 +27762,8 @@ var TicketAccountServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_7 = resultData200; _i < resultData200_7.length; _i++) {
-                        var item = resultData200_7[_i];
+                    for (var _i = 0, resultData200_58 = resultData200; _i < resultData200_58.length; _i++) {
+                        var item = resultData200_58[_i];
                         result200.push(TicketDetailListDto.fromJS(item));
                     }
                 }
@@ -21097,6 +28083,64 @@ var TicketDetailServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketDetailServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketDetail/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketDetailServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketDetail的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -21161,6 +28205,72 @@ var TicketDetailServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketDetailListDto.fromJS(resultData200) : new PagedResultDtoOfTicketDetailListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketDetailServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketDetail/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketDetailServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_59 = resultData200; _i < resultData200_59.length; _i++) {
+                        var item = resultData200_59[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -21539,6 +28649,64 @@ var TicketDetailHistoryServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketDetailHistoryServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketDetailHistory/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketDetailHistoryServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketDetailHistory的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -21603,6 +28771,72 @@ var TicketDetailHistoryServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketDetailHistoryListDto.fromJS(resultData200) : new PagedResultDtoOfTicketDetailHistoryListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketDetailHistoryServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketDetailHistory/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketDetailHistoryServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_60 = resultData200; _i < resultData200_60.length; _i++) {
+                        var item = resultData200_60[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -21919,6 +29153,64 @@ var TicketIntroduceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketIntroduceServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketIntroduce/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketIntroduceServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketIntroduce的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -21983,6 +29275,72 @@ var TicketIntroduceServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketIntroduceListDto.fromJS(resultData200) : new PagedResultDtoOfTicketIntroduceListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketIntroduceServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketIntroduce/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketIntroduceServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_61 = resultData200; _i < resultData200_61.length; _i++) {
+                        var item = resultData200_61[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -22299,6 +29657,64 @@ var TicketPriceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketPriceServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketPrice/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketPriceServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketPrice的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -22436,6 +29852,72 @@ var TicketPriceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketPriceServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketPrice/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketPriceServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_62 = resultData200; _i < resultData200_62.length; _i++) {
+                        var item = resultData200_62[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 设置票型价格的启用状态
      * @param ticketPriceId (optional) 票型价格Id
      * @param isEnabled (optional) 启用状态
@@ -22501,6 +29983,560 @@ var TicketPriceServiceProxy = /** @class */ (function () {
     return TicketPriceServiceProxy;
 }());
 exports.TicketPriceServiceProxy = TicketPriceServiceProxy;
+var TicketRoleServiceProxy = /** @class */ (function () {
+    function TicketRoleServiceProxy(http, baseUrl) {
+        this.jsonParseReviver = undefined;
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+    /**
+     * 批量删除TicketRole的方法
+     * @param input (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.batchDelete = function (input) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/BatchDelete";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(input);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processBatchDelete(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processBatchDelete(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processBatchDelete = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 添加或者修改的公共方法
+     * @param input (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.createOrUpdate = function (input) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/CreateOrUpdate";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(input);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processCreateOrUpdate(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processCreateOrUpdate(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processCreateOrUpdate = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 删除信息
+     * @param id (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.delete = function (id) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/Delete?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({})
+        };
+        return this.http.request("delete", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processDelete(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processDelete(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processDelete = function (response) {
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return rxjs_1.of(null);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 通过指定id获取TicketRoleListDto信息
+     * @param id (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.getById = function (id) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/GetById?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetById(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetById(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processGetById = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? TicketRoleListDto.fromJS(resultData200) : new TicketRoleListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 获取编辑
+     * @param id (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.getForEdit = function (id) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/GetForEdit?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetForEdit(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetForEdit(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processGetForEdit = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? GetTicketRoleForEditOutput.fromJS(resultData200) : new GetTicketRoleForEditOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 获取的分页列表信息
+     * @param sorting (optional)
+     * @param maxResultCount (optional)
+     * @param skipCount (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.getPaged = function (sorting, maxResultCount, skipCount) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/GetPaged?";
+        if (sorting !== undefined)
+            url_ += "sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (maxResultCount !== undefined)
+            url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (skipCount !== undefined)
+            url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPaged(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPaged(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processGetPaged = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? PagedResultDtoOfTicketRoleListDto.fromJS(resultData200) : new PagedResultDtoOfTicketRoleListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_63 = resultData200; _i < resultData200_63.length; _i++) {
+                        var item = resultData200_63[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 导出为excel文件
+     * @return Success
+     */
+    TicketRoleServiceProxy.prototype.getToExcelFile = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketRole/GetToExcelFile";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetToExcelFile(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetToExcelFile(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketRoleServiceProxy.prototype.processGetToExcelFile = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? FileDto.fromJS(resultData200) : new FileDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    TicketRoleServiceProxy = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
+        __metadata("design:paramtypes", [http_1.HttpClient, String])
+    ], TicketRoleServiceProxy);
+    return TicketRoleServiceProxy;
+}());
+exports.TicketRoleServiceProxy = TicketRoleServiceProxy;
 var TicketScheduleEnableServiceProxy = /** @class */ (function () {
     function TicketScheduleEnableServiceProxy(http, baseUrl) {
         this.jsonParseReviver = undefined;
@@ -22799,6 +30835,64 @@ var TicketScheduleEnableServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketScheduleEnableServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketScheduleEnable/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketScheduleEnableServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketScheduleEnable的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -22855,6 +30949,72 @@ var TicketScheduleEnableServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketScheduleEnableListDto.fromJS(resultData200) : new PagedResultDtoOfTicketScheduleEnableListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketScheduleEnableServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketScheduleEnable/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketScheduleEnableServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_64 = resultData200; _i < resultData200_64.length; _i++) {
+                        var item = resultData200_64[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -23171,6 +31331,64 @@ var TicketStationServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketStationServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketStation/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketStationServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketStation的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -23235,6 +31453,72 @@ var TicketStationServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketStationListDto.fromJS(resultData200) : new PagedResultDtoOfTicketStationListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketStationServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketStation/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketStationServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_65 = resultData200; _i < resultData200_65.length; _i++) {
+                        var item = resultData200_65[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -23551,6 +31835,64 @@ var TicketStationEnableServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketStationEnableServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketStationEnable/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketStationEnableServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketStationEnable的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -23607,6 +31949,72 @@ var TicketStationEnableServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTicketStationEnableListDto.fromJS(resultData200) : new PagedResultDtoOfTicketStationEnableListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketStationEnableServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketStationEnable/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketStationEnableServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_66 = resultData200; _i < resultData200_66.length; _i++) {
+                        var item = resultData200_66[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -23923,6 +32331,64 @@ var TicketUserEnableServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TicketUserEnableServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketUserEnable/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketUserEnableServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TicketUserEnable的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -23989,6 +32455,72 @@ var TicketUserEnableServiceProxy = /** @class */ (function () {
         }
         return rxjs_1.of(null);
     };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TicketUserEnableServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TicketUserEnable/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TicketUserEnableServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_67 = resultData200; _i < resultData200_67.length; _i++) {
+                        var item = resultData200_67[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     TicketUserEnableServiceProxy = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
@@ -24003,6 +32535,130 @@ var TimingServiceProxy = /** @class */ (function () {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TimingServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Timing/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TimingServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TimingServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Timing/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TimingServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_68 = resultData200; _i < resultData200_68.length; _i++) {
+                        var item = resultData200_68[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     /**
      * @param selectedTimezoneId (optional)
      * @return Success
@@ -24054,8 +32710,8 @@ var TimingServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_8 = resultData200; _i < resultData200_8.length; _i++) {
-                        var item = resultData200_8[_i];
+                    for (var _i = 0, resultData200_69 = resultData200; _i < resultData200_69.length; _i++) {
+                        var item = resultData200_69[_i];
                         result200.push(ComboboxItemDto.fromJS(item));
                     }
                 }
@@ -24436,6 +33092,64 @@ var TravelAgencyServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TravelAgencyServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TravelAgency/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TravelAgencyServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TravelAgency的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -24573,14 +33287,83 @@ var TravelAgencyServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TravelAgencyServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TravelAgency/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TravelAgencyServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_70 = resultData200; _i < resultData200_70.length; _i++) {
+                        var item = resultData200_70[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 旅行社售票统计
-     * @param queryData (optional) TravelAgencyId, Shedule, BoatId, TicketType
+     * @param queryData (optional) TravelAgencyId, CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param routeId (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    TravelAgencyServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    TravelAgencyServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, routeId, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/TravelAgency/GetPagedStat?";
         if (queryData !== undefined)
@@ -24596,6 +33379,12 @@ var TravelAgencyServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (routeId !== undefined)
+            url_ += "routeId=" + encodeURIComponent("" + routeId) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -24636,7 +33425,7 @@ var TravelAgencyServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfTravelAgencyResultDto.fromJS(resultData200) : new PagedResultDtoOfTravelAgencyResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfTravelAgencyResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfTravelAgencyResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -24699,8 +33488,8 @@ var TravelAgencyServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_9 = resultData200; _i < resultData200_9.length; _i++) {
-                        var item = resultData200_9[_i];
+                    for (var _i = 0, resultData200_71 = resultData200; _i < resultData200_71.length; _i++) {
+                        var item = resultData200_71[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -25020,6 +33809,64 @@ var TravelTicketDetailServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    TravelTicketDetailServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TravelTicketDetail/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TravelTicketDetailServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取TravelTicketDetail的分页列表信息
      * @param queryData (optional) DeviceCode,DeviceName,Port
      * @param sorting (optional)
@@ -25084,6 +33931,72 @@ var TravelTicketDetailServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfTravelTicketDetailListDto.fromJS(resultData200) : new PagedResultDtoOfTravelTicketDetailListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    TravelTicketDetailServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/TravelTicketDetail/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TravelTicketDetailServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_72 = resultData200; _i < resultData200_72.length; _i++) {
+                        var item = resultData200_72[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -25337,6 +34250,64 @@ var UserServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    UserServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/User/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 分页获取所有用户
      * @param permission (optional) 权限
      * @param role (optional) 检索角色Id列表
@@ -25472,6 +34443,72 @@ var UserServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? GetUserPermissionsTreeForEditOutput.fromJS(resultData200) : new GetUserPermissionsTreeForEditOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    UserServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/User/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_73 = resultData200; _i < resultData200_73.length; _i++) {
+                        var item = resultData200_73[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -25970,6 +35007,130 @@ var UserLinkServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    UserLinkServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/UserLink/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserLinkServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    UserLinkServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/UserLink/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserLinkServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_74 = resultData200; _i < resultData200_74.length; _i++) {
+                        var item = resultData200_74[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @return Success
      */
     UserLinkServiceProxy.prototype.getRecentlyUsedLinkedUsers = function () {
@@ -26213,6 +35374,130 @@ var UserListExcelExporterServiceProxy = /** @class */ (function () {
         }
         return rxjs_1.of(null);
     };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    UserListExcelExporterServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/UserListExcelExporter/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserListExcelExporterServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    UserListExcelExporterServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/UserListExcelExporter/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserListExcelExporterServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_75 = resultData200; _i < resultData200_75.length; _i++) {
+                        var item = resultData200_75[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     UserListExcelExporterServiceProxy = __decorate([
         core_1.Injectable(),
         __param(0, core_1.Inject(http_1.HttpClient)), __param(1, core_1.Optional()), __param(1, core_1.Inject(exports.API_BASE_URL)),
@@ -26227,6 +35512,130 @@ var UserLoginServiceProxy = /** @class */ (function () {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    UserLoginServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/UserLogin/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserLoginServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    UserLoginServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/UserLogin/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    UserLoginServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_76 = resultData200; _i < resultData200_76.length; _i++) {
+                        var item = resultData200_76[_i];
+                        result200.push(item);
+                    }
+                }
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
     /**
      * @return Success
      */
@@ -26590,6 +35999,64 @@ var VerifiableSetServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    VerifiableSetServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/VerifiableSet/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    VerifiableSetServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取VerifiableSet的分页列表信息
      * @param sorting (optional)
      * @param maxResultCount (optional)
@@ -26646,6 +36113,72 @@ var VerifiableSetServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfVerifiableSetListDto.fromJS(resultData200) : new PagedResultDtoOfVerifiableSetListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    VerifiableSetServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/VerifiableSet/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    VerifiableSetServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_77 = resultData200; _i < resultData200_77.length; _i++) {
+                        var item = resultData200_77[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -26776,6 +36309,130 @@ var WebSiteLogServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? GetLatestWebLogsOutput.fromJS(resultData200) : new GetLatestWebLogsOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    WebSiteLogServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WebSiteLog/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WebSiteLogServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    WebSiteLogServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WebSiteLog/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WebSiteLogServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_78 = resultData200; _i < resultData200_78.length; _i++) {
+                        var item = resultData200_78[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -27092,6 +36749,64 @@ var WechatAppConfigServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    WechatAppConfigServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WechatAppConfig/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatAppConfigServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取WechatAppConfig的分页列表信息
      * @param filterText (optional)
      * @param sorting (optional)
@@ -27151,6 +36866,72 @@ var WechatAppConfigServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfWechatAppConfigListDto.fromJS(resultData200) : new PagedResultDtoOfWechatAppConfigListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    WechatAppConfigServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WechatAppConfig/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatAppConfigServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_79 = resultData200; _i < resultData200_79.length; _i++) {
+                        var item = resultData200_79[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -27406,6 +37187,64 @@ var WechatMediaServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    WechatMediaServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WechatMedia/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatMediaServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @param input (optional)
      * @return Success
      */
@@ -27456,6 +37295,72 @@ var WechatMediaServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfMediaList_Others_Item.fromJS(resultData200) : new PagedResultDtoOfMediaList_Others_Item();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    WechatMediaServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WechatMedia/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatMediaServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_80 = resultData200; _i < resultData200_80.length; _i++) {
+                        var item = resultData200_80[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -27594,6 +37499,64 @@ var WechatMenuAppSeviceServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    WechatMenuAppSeviceServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WechatMenuAppSevice/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatMenuAppSeviceServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * @param appId (optional)
      * @return Success
      */
@@ -27643,6 +37606,72 @@ var WechatMenuAppSeviceServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? GetWechatMenuForEditOutput.fromJS(resultData200) : new GetWechatMenuForEditOutput();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    WechatMenuAppSeviceServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/WechatMenuAppSevice/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WechatMenuAppSeviceServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_81 = resultData200; _i < resultData200_81.length; _i++) {
+                        var item = resultData200_81[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -27959,6 +37988,64 @@ var WharfServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
+     * 根据用户权限生成菜单查询条件
+     * @return Success
+     */
+    WharfServiceProxy.prototype.getMenuExpressionByUser = function () {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Wharf/GetMenuExpressionByUser";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetMenuExpressionByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetMenuExpressionByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WharfServiceProxy.prototype.processGetMenuExpressionByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? ExpressionOfFuncOfMenuAndBoolean.fromJS(resultData200) : new ExpressionOfFuncOfMenuAndBoolean();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
      * 获取Wharf的分页列表信息
      * @param input (optional)
      * @return Success
@@ -28010,6 +38097,72 @@ var WharfServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? PagedResultDtoOfWharfListDto.fromJS(resultData200) : new PagedResultDtoOfWharfListDto();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * @param menuId (optional)
+     * @return Success
+     */
+    WharfServiceProxy.prototype.getPowerCodeByUser = function (menuId) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/services/app/Wharf/GetPowerCodeByUser?";
+        if (menuId !== undefined)
+            url_ += "menuId=" + encodeURIComponent("" + menuId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+        var options_ = {
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processGetPowerCodeByUser(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processGetPowerCodeByUser(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    WharfServiceProxy.prototype.processGetPowerCodeByUser = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                if (resultData200 && resultData200.constructor === Array) {
+                    result200 = [];
+                    for (var _i = 0, resultData200_82 = resultData200; _i < resultData200_82.length; _i++) {
+                        var item = resultData200_82[_i];
+                        result200.push(item);
+                    }
+                }
                 return rxjs_1.of(result200);
             }));
         }
@@ -28146,8 +38299,8 @@ var OperServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_10 = resultData200; _i < resultData200_10.length; _i++) {
-                        var item = resultData200_10[_i];
+                    for (var _i = 0, resultData200_83 = resultData200; _i < resultData200_83.length; _i++) {
+                        var item = resultData200_83[_i];
                         result200.push(BoatRunningStatusDto.fromJS(item));
                     }
                 }
@@ -28281,8 +38434,8 @@ var OperServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_11 = resultData200; _i < resultData200_11.length; _i++) {
-                        var item = resultData200_11[_i];
+                    for (var _i = 0, resultData200_84 = resultData200; _i < resultData200_84.length; _i++) {
+                        var item = resultData200_84[_i];
                         result200.push(ScheduleAnalResultDto.fromJS(item));
                     }
                 }
@@ -28349,8 +38502,8 @@ var OperServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_12 = resultData200; _i < resultData200_12.length; _i++) {
-                        var item = resultData200_12[_i];
+                    for (var _i = 0, resultData200_85 = resultData200; _i < resultData200_85.length; _i++) {
+                        var item = resultData200_85[_i];
                         result200.push(TicketRatesResult.fromJS(item));
                     }
                 }
@@ -28380,13 +38533,16 @@ var OrderSourceServiceProxy = /** @class */ (function () {
     }
     /**
      * 订单来源统计
-     * @param queryData (optional) SourceId, ScheduleId, BoatId
+     * @param queryData (optional) SourceId, CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param routeId (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    OrderSourceServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    OrderSourceServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, routeId, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/OrderSource/GetPagedStat?";
         if (queryData !== undefined)
@@ -28402,6 +38558,12 @@ var OrderSourceServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (routeId !== undefined)
+            url_ += "routeId=" + encodeURIComponent("" + routeId) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -28442,7 +38604,7 @@ var OrderSourceServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfGetOrderSourceResultDto.fromJS(resultData200) : new PagedResultDtoOfGetOrderSourceResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfGetOrderSourceResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfGetOrderSourceResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -28505,8 +38667,8 @@ var OrderSourceServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_13 = resultData200; _i < resultData200_13.length; _i++) {
-                        var item = resultData200_13[_i];
+                    for (var _i = 0, resultData200_86 = resultData200; _i < resultData200_86.length; _i++) {
+                        var item = resultData200_86[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -28536,13 +38698,16 @@ var OtaServiceProxy = /** @class */ (function () {
     }
     /**
      * Ota统计
-     * @param queryData (optional) SourceId, ScheduleId, BoatId
+     * @param queryData (optional) SourceId, CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param routeId (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    OtaServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    OtaServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, routeId, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/Ota/GetPagedStat?";
         if (queryData !== undefined)
@@ -28558,6 +38723,12 @@ var OtaServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (routeId !== undefined)
+            url_ += "routeId=" + encodeURIComponent("" + routeId) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -28598,7 +38769,7 @@ var OtaServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfGetOrderSourceResultDto.fromJS(resultData200) : new PagedResultDtoOfGetOrderSourceResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfGetOrderSourceResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfGetOrderSourceResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -28661,8 +38832,8 @@ var OtaServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_14 = resultData200; _i < resultData200_14.length; _i++) {
-                        var item = resultData200_14[_i];
+                    for (var _i = 0, resultData200_87 = resultData200; _i < resultData200_87.length; _i++) {
+                        var item = resultData200_87[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -28692,7 +38863,8 @@ var ScheduleCheckServiceProxy = /** @class */ (function () {
     }
     /**
      * 航班检票统计
-     * @param queryData (optional) ScheduleId, BoatId, RouteId
+     * @param queryData (optional) ScheduleCode 航班班次， RouteId 航线Id， BoatId 游船Id， StartTime 航行日期，
+    Route.StartWharfId 检票地点ID
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
@@ -28754,7 +38926,7 @@ var ScheduleCheckServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfScheduleCheckResultDto.fromJS(resultData200) : new PagedResultDtoOfScheduleCheckResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfScheduleCheckResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfScheduleCheckResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -28842,13 +39014,14 @@ var ScheduleTicketServiceProxy = /** @class */ (function () {
     }
     /**
      * 航班售票统计
-     * @param queryData (optional) ScheduleId, BoatId, RouteId
+     * @param queryData (optional) ScheduleCode 航班班次， RouteId 航线Id， BoatId 游船Id， StartTime 航行日期
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    ScheduleTicketServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount) {
+    ScheduleTicketServiceProxy.prototype.getPagedStat = function (queryData, sorting, maxResultCount, skipCount, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/ScheduleTicket/GetPagedStat?";
         if (queryData !== undefined)
@@ -28864,6 +39037,8 @@ var ScheduleTicketServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -28904,7 +39079,7 @@ var ScheduleTicketServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfScheduleTicketResultDto.fromJS(resultData200) : new PagedResultDtoOfScheduleTicketResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfScheduleTicketResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfScheduleTicketResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -29042,8 +39217,8 @@ var SellerDailyServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_15 = resultData200; _i < resultData200_15.length; _i++) {
-                        var item = resultData200_15[_i];
+                    for (var _i = 0, resultData200_88 = resultData200; _i < resultData200_88.length; _i++) {
+                        var item = resultData200_88[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -29059,13 +39234,15 @@ var SellerDailyServiceProxy = /** @class */ (function () {
     };
     /**
      * 销售员日结统计
-     * @param queryData (optional) CreatorUserId,CreationTime
+     * @param queryData (optional) ScheduleId, CreatorId,CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    SellerDailyServiceProxy.prototype.getPaged = function (queryData, sorting, maxResultCount, skipCount) {
+    SellerDailyServiceProxy.prototype.getPaged = function (queryData, sorting, maxResultCount, skipCount, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/SellerDaily/GetPaged?";
         if (queryData !== undefined)
@@ -29081,6 +39258,10 @@ var SellerDailyServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -29121,7 +39302,7 @@ var SellerDailyServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfSellerDailyResultDto.fromJS(resultData200) : new PagedResultDtoOfSellerDailyResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfSellerDailyResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfSellerDailyResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -29148,13 +39329,15 @@ var SellerTicketServiceProxy = /** @class */ (function () {
     }
     /**
      * 售票员售票统计
-     * @param queryData (optional) CreatorUserId,CreationTime
+     * @param queryData (optional) ScheduleId, CreatorId,CreationTime
      * @param sorting (optional)
      * @param maxResultCount (optional)
      * @param skipCount (optional)
+     * @param boatId (optional)
+     * @param ticketId (optional)
      * @return Success
      */
-    SellerTicketServiceProxy.prototype.getPaged = function (queryData, sorting, maxResultCount, skipCount) {
+    SellerTicketServiceProxy.prototype.getPaged = function (queryData, sorting, maxResultCount, skipCount, boatId, ticketId) {
         var _this = this;
         var url_ = this.baseUrl + "/api/Stats/SellerTicket/GetPaged?";
         if (queryData !== undefined)
@@ -29170,6 +39353,10 @@ var SellerTicketServiceProxy = /** @class */ (function () {
             url_ += "maxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (boatId !== undefined)
+            url_ += "boatId=" + encodeURIComponent("" + boatId) + "&";
+        if (ticketId !== undefined)
+            url_ += "ticketId=" + encodeURIComponent("" + ticketId) + "&";
         url_ = url_.replace(/[?&]$/, "");
         var options_ = {
             observe: "response",
@@ -29210,7 +39397,7 @@ var SellerTicketServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfSellerTicketResultDto.fromJS(resultData200) : new PagedResultDtoOfSellerTicketResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfSellerTicketResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfSellerTicketResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -29222,7 +39409,7 @@ var SellerTicketServiceProxy = /** @class */ (function () {
         return rxjs_1.of(null);
     };
     /**
-     * 销售员售票统计
+     * 销售员售票统计——详情
      * @param userId (optional)
      * @return Success
      */
@@ -29271,7 +39458,7 @@ var SellerTicketServiceProxy = /** @class */ (function () {
             return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfScheduleTicketDetailResultDto.fromJS(resultData200) : new PagedResultDtoOfScheduleTicketDetailResultDto();
+                result200 = resultData200 ? StatsPagedResultDtoOfScheduleTicketDetailResultDto.fromJS(resultData200) : new StatsPagedResultDtoOfScheduleTicketDetailResultDto();
                 return rxjs_1.of(result200);
             }));
         }
@@ -29348,8 +39535,8 @@ var FinanceServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_16 = resultData200; _i < resultData200_16.length; _i++) {
-                        var item = resultData200_16[_i];
+                    for (var _i = 0, resultData200_89 = resultData200; _i < resultData200_89.length; _i++) {
+                        var item = resultData200_89[_i];
                         result200.push(AccountDetailDto.fromJS(item));
                     }
                 }
@@ -29666,8 +39853,8 @@ var TokenAuthServiceProxy = /** @class */ (function () {
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 if (resultData200 && resultData200.constructor === Array) {
                     result200 = [];
-                    for (var _i = 0, resultData200_17 = resultData200; _i < resultData200_17.length; _i++) {
-                        var item = resultData200_17[_i];
+                    for (var _i = 0, resultData200_90 = resultData200; _i < resultData200_90.length; _i++) {
+                        var item = resultData200_90[_i];
                         result200.push(ExternalLoginProviderInfoModel.fromJS(item));
                     }
                 }
@@ -29791,6 +39978,68 @@ var TokenAuthServiceProxy = /** @class */ (function () {
                 var result200 = null;
                 var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
                 result200 = resultData200 ? SwitchedAccountAuthenticateResultModel.fromJS(resultData200) : new SwitchedAccountAuthenticateResultModel();
+                return rxjs_1.of(result200);
+            }));
+        }
+        else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return rxjs_1.of(null);
+    };
+    /**
+     * 官网登录接口，以后需要填写游客信息（用户名密码，手机号验证码）才能登录，现在直接登录
+     * @param login (optional)
+     * @return Success
+     */
+    TokenAuthServiceProxy.prototype.webtLogin = function (login) {
+        var _this = this;
+        var url_ = this.baseUrl + "/api/TokenAuth/WebtLogin";
+        url_ = url_.replace(/[?&]$/, "");
+        var content_ = JSON.stringify(login);
+        var options_ = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new http_1.HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+        return this.http.request("post", url_, options_).pipe(operators_1.mergeMap(function (response_) {
+            return _this.processWebtLogin(response_);
+        })).pipe(operators_1.catchError(function (response_) {
+            if (response_ instanceof http_1.HttpResponseBase) {
+                try {
+                    return _this.processWebtLogin(response_);
+                }
+                catch (e) {
+                    return rxjs_1.throwError(e);
+                }
+            }
+            else
+                return rxjs_1.throwError(response_);
+        }));
+    };
+    TokenAuthServiceProxy.prototype.processWebtLogin = function (response) {
+        var _this = this;
+        var status = response.status;
+        var responseBlob = response instanceof http_1.HttpResponse ? response.body :
+            response.error instanceof Blob ? response.error : undefined;
+        var _headers = {};
+        if (response.headers) {
+            for (var _i = 0, _a = response.headers.keys(); _i < _a.length; _i++) {
+                var key = _a[_i];
+                _headers[key] = response.headers.get(key);
+            }
+        }
+        ;
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(operators_1.mergeMap(function (_responseText) {
+                var result200 = null;
+                var resultData200 = _responseText === "" ? null : JSON.parse(_responseText, _this.jsonParseReviver);
+                result200 = resultData200 ? AuthenticateResultModel.fromJS(resultData200) : new AuthenticateResultModel();
                 return rxjs_1.of(result200);
             }));
         }
@@ -31540,8 +41789,8 @@ var DeviceStatusEnum;
     DeviceStatusEnum[DeviceStatusEnum["Using"] = "Using"] = "Using";
     DeviceStatusEnum[DeviceStatusEnum["Closing"] = "Closing"] = "Closing";
 })(DeviceStatusEnum = exports.DeviceStatusEnum || (exports.DeviceStatusEnum = {}));
-var PagedResultDtoOfGateRecordResultDto = /** @class */ (function () {
-    function PagedResultDtoOfGateRecordResultDto(data) {
+var StatsPagedResultDtoOfGateRecordResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfGateRecordResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -31549,8 +41798,16 @@ var PagedResultDtoOfGateRecordResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfGateRecordResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfGateRecordResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? GateRecordResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -31561,14 +41818,22 @@ var PagedResultDtoOfGateRecordResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfGateRecordResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfGateRecordResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfGateRecordResultDto();
+        var result = new StatsPagedResultDtoOfGateRecordResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfGateRecordResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfGateRecordResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -31579,15 +41844,15 @@ var PagedResultDtoOfGateRecordResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfGateRecordResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfGateRecordResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfGateRecordResultDto();
+        var result = new StatsPagedResultDtoOfGateRecordResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfGateRecordResultDto;
+    return StatsPagedResultDtoOfGateRecordResultDto;
 }());
-exports.PagedResultDtoOfGateRecordResultDto = PagedResultDtoOfGateRecordResultDto;
+exports.StatsPagedResultDtoOfGateRecordResultDto = StatsPagedResultDtoOfGateRecordResultDto;
 var GateRecordResultDto = /** @class */ (function () {
     function GateRecordResultDto(data) {
         if (data) {
@@ -31758,6 +42023,234 @@ var ImpersonateOutput = /** @class */ (function () {
     return ImpersonateOutput;
 }());
 exports.ImpersonateOutput = ImpersonateOutput;
+var ExpressionOfFuncOfMenuAndBoolean = /** @class */ (function () {
+    function ExpressionOfFuncOfMenuAndBoolean(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    ExpressionOfFuncOfMenuAndBoolean.prototype.init = function (data) {
+        if (data) {
+            this.type = data["type"];
+            this.nodeType = data["nodeType"];
+            if (data["parameters"] && data["parameters"].constructor === Array) {
+                this.parameters = [];
+                for (var _i = 0, _a = data["parameters"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.parameters.push(ParameterExpression.fromJS(item));
+                }
+            }
+            this.name = data["name"];
+            this.body = data["body"] ? Expression.fromJS(data["body"]) : undefined;
+            this.returnType = data["returnType"];
+            this.tailCall = data["tailCall"];
+            this.canReduce = data["canReduce"];
+        }
+    };
+    ExpressionOfFuncOfMenuAndBoolean.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new ExpressionOfFuncOfMenuAndBoolean();
+        result.init(data);
+        return result;
+    };
+    ExpressionOfFuncOfMenuAndBoolean.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["nodeType"] = this.nodeType;
+        if (this.parameters && this.parameters.constructor === Array) {
+            data["parameters"] = [];
+            for (var _i = 0, _a = this.parameters; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["parameters"].push(item.toJSON());
+            }
+        }
+        data["name"] = this.name;
+        data["body"] = this.body ? this.body.toJSON() : undefined;
+        data["returnType"] = this.returnType;
+        data["tailCall"] = this.tailCall;
+        data["canReduce"] = this.canReduce;
+        return data;
+    };
+    ExpressionOfFuncOfMenuAndBoolean.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new ExpressionOfFuncOfMenuAndBoolean();
+        result.init(json);
+        return result;
+    };
+    return ExpressionOfFuncOfMenuAndBoolean;
+}());
+exports.ExpressionOfFuncOfMenuAndBoolean = ExpressionOfFuncOfMenuAndBoolean;
+var ExpressionType;
+(function (ExpressionType) {
+    ExpressionType[ExpressionType["Add"] = "Add"] = "Add";
+    ExpressionType[ExpressionType["AddChecked"] = "AddChecked"] = "AddChecked";
+    ExpressionType[ExpressionType["And"] = "And"] = "And";
+    ExpressionType[ExpressionType["AndAlso"] = "AndAlso"] = "AndAlso";
+    ExpressionType[ExpressionType["ArrayLength"] = "ArrayLength"] = "ArrayLength";
+    ExpressionType[ExpressionType["ArrayIndex"] = "ArrayIndex"] = "ArrayIndex";
+    ExpressionType[ExpressionType["Call"] = "Call"] = "Call";
+    ExpressionType[ExpressionType["Coalesce"] = "Coalesce"] = "Coalesce";
+    ExpressionType[ExpressionType["Conditional"] = "Conditional"] = "Conditional";
+    ExpressionType[ExpressionType["Constant"] = "Constant"] = "Constant";
+    ExpressionType[ExpressionType["Convert"] = "Convert"] = "Convert";
+    ExpressionType[ExpressionType["ConvertChecked"] = "ConvertChecked"] = "ConvertChecked";
+    ExpressionType[ExpressionType["Divide"] = "Divide"] = "Divide";
+    ExpressionType[ExpressionType["Equal"] = "Equal"] = "Equal";
+    ExpressionType[ExpressionType["ExclusiveOr"] = "ExclusiveOr"] = "ExclusiveOr";
+    ExpressionType[ExpressionType["GreaterThan"] = "GreaterThan"] = "GreaterThan";
+    ExpressionType[ExpressionType["GreaterThanOrEqual"] = "GreaterThanOrEqual"] = "GreaterThanOrEqual";
+    ExpressionType[ExpressionType["Invoke"] = "Invoke"] = "Invoke";
+    ExpressionType[ExpressionType["Lambda"] = "Lambda"] = "Lambda";
+    ExpressionType[ExpressionType["LeftShift"] = "LeftShift"] = "LeftShift";
+    ExpressionType[ExpressionType["LessThan"] = "LessThan"] = "LessThan";
+    ExpressionType[ExpressionType["LessThanOrEqual"] = "LessThanOrEqual"] = "LessThanOrEqual";
+    ExpressionType[ExpressionType["ListInit"] = "ListInit"] = "ListInit";
+    ExpressionType[ExpressionType["MemberAccess"] = "MemberAccess"] = "MemberAccess";
+    ExpressionType[ExpressionType["MemberInit"] = "MemberInit"] = "MemberInit";
+    ExpressionType[ExpressionType["Modulo"] = "Modulo"] = "Modulo";
+    ExpressionType[ExpressionType["Multiply"] = "Multiply"] = "Multiply";
+    ExpressionType[ExpressionType["MultiplyChecked"] = "MultiplyChecked"] = "MultiplyChecked";
+    ExpressionType[ExpressionType["Negate"] = "Negate"] = "Negate";
+    ExpressionType[ExpressionType["UnaryPlus"] = "UnaryPlus"] = "UnaryPlus";
+    ExpressionType[ExpressionType["NegateChecked"] = "NegateChecked"] = "NegateChecked";
+    ExpressionType[ExpressionType["New"] = "New"] = "New";
+    ExpressionType[ExpressionType["NewArrayInit"] = "NewArrayInit"] = "NewArrayInit";
+    ExpressionType[ExpressionType["NewArrayBounds"] = "NewArrayBounds"] = "NewArrayBounds";
+    ExpressionType[ExpressionType["Not"] = "Not"] = "Not";
+    ExpressionType[ExpressionType["NotEqual"] = "NotEqual"] = "NotEqual";
+    ExpressionType[ExpressionType["Or"] = "Or"] = "Or";
+    ExpressionType[ExpressionType["OrElse"] = "OrElse"] = "OrElse";
+    ExpressionType[ExpressionType["Parameter"] = "Parameter"] = "Parameter";
+    ExpressionType[ExpressionType["Power"] = "Power"] = "Power";
+    ExpressionType[ExpressionType["Quote"] = "Quote"] = "Quote";
+    ExpressionType[ExpressionType["RightShift"] = "RightShift"] = "RightShift";
+    ExpressionType[ExpressionType["Subtract"] = "Subtract"] = "Subtract";
+    ExpressionType[ExpressionType["SubtractChecked"] = "SubtractChecked"] = "SubtractChecked";
+    ExpressionType[ExpressionType["TypeAs"] = "TypeAs"] = "TypeAs";
+    ExpressionType[ExpressionType["TypeIs"] = "TypeIs"] = "TypeIs";
+    ExpressionType[ExpressionType["Assign"] = "Assign"] = "Assign";
+    ExpressionType[ExpressionType["Block"] = "Block"] = "Block";
+    ExpressionType[ExpressionType["DebugInfo"] = "DebugInfo"] = "DebugInfo";
+    ExpressionType[ExpressionType["Decrement"] = "Decrement"] = "Decrement";
+    ExpressionType[ExpressionType["Dynamic"] = "Dynamic"] = "Dynamic";
+    ExpressionType[ExpressionType["Default"] = "Default"] = "Default";
+    ExpressionType[ExpressionType["Extension"] = "Extension"] = "Extension";
+    ExpressionType[ExpressionType["Goto"] = "Goto"] = "Goto";
+    ExpressionType[ExpressionType["Increment"] = "Increment"] = "Increment";
+    ExpressionType[ExpressionType["Index"] = "Index"] = "Index";
+    ExpressionType[ExpressionType["Label"] = "Label"] = "Label";
+    ExpressionType[ExpressionType["RuntimeVariables"] = "RuntimeVariables"] = "RuntimeVariables";
+    ExpressionType[ExpressionType["Loop"] = "Loop"] = "Loop";
+    ExpressionType[ExpressionType["Switch"] = "Switch"] = "Switch";
+    ExpressionType[ExpressionType["Throw"] = "Throw"] = "Throw";
+    ExpressionType[ExpressionType["Try"] = "Try"] = "Try";
+    ExpressionType[ExpressionType["Unbox"] = "Unbox"] = "Unbox";
+    ExpressionType[ExpressionType["AddAssign"] = "AddAssign"] = "AddAssign";
+    ExpressionType[ExpressionType["AndAssign"] = "AndAssign"] = "AndAssign";
+    ExpressionType[ExpressionType["DivideAssign"] = "DivideAssign"] = "DivideAssign";
+    ExpressionType[ExpressionType["ExclusiveOrAssign"] = "ExclusiveOrAssign"] = "ExclusiveOrAssign";
+    ExpressionType[ExpressionType["LeftShiftAssign"] = "LeftShiftAssign"] = "LeftShiftAssign";
+    ExpressionType[ExpressionType["ModuloAssign"] = "ModuloAssign"] = "ModuloAssign";
+    ExpressionType[ExpressionType["MultiplyAssign"] = "MultiplyAssign"] = "MultiplyAssign";
+    ExpressionType[ExpressionType["OrAssign"] = "OrAssign"] = "OrAssign";
+    ExpressionType[ExpressionType["PowerAssign"] = "PowerAssign"] = "PowerAssign";
+    ExpressionType[ExpressionType["RightShiftAssign"] = "RightShiftAssign"] = "RightShiftAssign";
+    ExpressionType[ExpressionType["SubtractAssign"] = "SubtractAssign"] = "SubtractAssign";
+    ExpressionType[ExpressionType["AddAssignChecked"] = "AddAssignChecked"] = "AddAssignChecked";
+    ExpressionType[ExpressionType["MultiplyAssignChecked"] = "MultiplyAssignChecked"] = "MultiplyAssignChecked";
+    ExpressionType[ExpressionType["SubtractAssignChecked"] = "SubtractAssignChecked"] = "SubtractAssignChecked";
+    ExpressionType[ExpressionType["PreIncrementAssign"] = "PreIncrementAssign"] = "PreIncrementAssign";
+    ExpressionType[ExpressionType["PreDecrementAssign"] = "PreDecrementAssign"] = "PreDecrementAssign";
+    ExpressionType[ExpressionType["PostIncrementAssign"] = "PostIncrementAssign"] = "PostIncrementAssign";
+    ExpressionType[ExpressionType["PostDecrementAssign"] = "PostDecrementAssign"] = "PostDecrementAssign";
+    ExpressionType[ExpressionType["TypeEqual"] = "TypeEqual"] = "TypeEqual";
+    ExpressionType[ExpressionType["OnesComplement"] = "OnesComplement"] = "OnesComplement";
+    ExpressionType[ExpressionType["IsTrue"] = "IsTrue"] = "IsTrue";
+    ExpressionType[ExpressionType["IsFalse"] = "IsFalse"] = "IsFalse";
+})(ExpressionType = exports.ExpressionType || (exports.ExpressionType = {}));
+var ParameterExpression = /** @class */ (function () {
+    function ParameterExpression(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    ParameterExpression.prototype.init = function (data) {
+        if (data) {
+            this.type = data["type"];
+            this.nodeType = data["nodeType"];
+            this.name = data["name"];
+            this.isByRef = data["isByRef"];
+            this.canReduce = data["canReduce"];
+        }
+    };
+    ParameterExpression.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new ParameterExpression();
+        result.init(data);
+        return result;
+    };
+    ParameterExpression.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["nodeType"] = this.nodeType;
+        data["name"] = this.name;
+        data["isByRef"] = this.isByRef;
+        data["canReduce"] = this.canReduce;
+        return data;
+    };
+    ParameterExpression.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new ParameterExpression();
+        result.init(json);
+        return result;
+    };
+    return ParameterExpression;
+}());
+exports.ParameterExpression = ParameterExpression;
+var Expression = /** @class */ (function () {
+    function Expression(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    Expression.prototype.init = function (data) {
+        if (data) {
+            this.nodeType = data["nodeType"];
+            this.type = data["type"];
+            this.canReduce = data["canReduce"];
+        }
+    };
+    Expression.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new Expression();
+        result.init(data);
+        return result;
+    };
+    Expression.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["nodeType"] = this.nodeType;
+        data["type"] = this.type;
+        data["canReduce"] = this.canReduce;
+        return data;
+    };
+    Expression.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new Expression();
+        result.init(json);
+        return result;
+    };
+    return Expression;
+}());
+exports.Expression = Expression;
 var ImpersonateInput = /** @class */ (function () {
     function ImpersonateInput(data) {
         if (data) {
@@ -36230,6 +46723,300 @@ var PagedResultDtoOfClientVersionListDto = /** @class */ (function () {
     return PagedResultDtoOfClientVersionListDto;
 }());
 exports.PagedResultDtoOfClientVersionListDto = PagedResultDtoOfClientVersionListDto;
+var CreateOrUpdateCommonCustomerInput = /** @class */ (function () {
+    function CreateOrUpdateCommonCustomerInput(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+        if (!data) {
+            this.commonCustomer = new CommonCustomerEditDto();
+        }
+    }
+    CreateOrUpdateCommonCustomerInput.prototype.init = function (data) {
+        if (data) {
+            this.commonCustomer = data["commonCustomer"] ? CommonCustomerEditDto.fromJS(data["commonCustomer"]) : new CommonCustomerEditDto();
+        }
+    };
+    CreateOrUpdateCommonCustomerInput.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new CreateOrUpdateCommonCustomerInput();
+        result.init(data);
+        return result;
+    };
+    CreateOrUpdateCommonCustomerInput.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["commonCustomer"] = this.commonCustomer ? this.commonCustomer.toJSON() : undefined;
+        return data;
+    };
+    CreateOrUpdateCommonCustomerInput.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new CreateOrUpdateCommonCustomerInput();
+        result.init(json);
+        return result;
+    };
+    return CreateOrUpdateCommonCustomerInput;
+}());
+exports.CreateOrUpdateCommonCustomerInput = CreateOrUpdateCommonCustomerInput;
+/** 的列表DTO Yozeev.BusinessLogic.CommonCustomer */
+var CommonCustomerEditDto = /** @class */ (function () {
+    function CommonCustomerEditDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    CommonCustomerEditDto.prototype.init = function (data) {
+        if (data) {
+            this.id = data["id"];
+            this.mainCustomerId = data["mainCustomerId"];
+            this.viceCustomerId = data["viceCustomerId"];
+            this.customerName = data["customerName"];
+            this.mobile = data["mobile"];
+            this.sex = data["sex"];
+            this.certificatesNum = data["certificatesNum"];
+            this.verifiableType = data["verifiableType"];
+        }
+    };
+    CommonCustomerEditDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new CommonCustomerEditDto();
+        result.init(data);
+        return result;
+    };
+    CommonCustomerEditDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["mainCustomerId"] = this.mainCustomerId;
+        data["viceCustomerId"] = this.viceCustomerId;
+        data["customerName"] = this.customerName;
+        data["mobile"] = this.mobile;
+        data["sex"] = this.sex;
+        data["certificatesNum"] = this.certificatesNum;
+        data["verifiableType"] = this.verifiableType;
+        return data;
+    };
+    CommonCustomerEditDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new CommonCustomerEditDto();
+        result.init(json);
+        return result;
+    };
+    return CommonCustomerEditDto;
+}());
+exports.CommonCustomerEditDto = CommonCustomerEditDto;
+/** 的编辑DTO Yozeev.BusinessLogic.CommonCustomer */
+var CommonCustomerListDto = /** @class */ (function () {
+    function CommonCustomerListDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    CommonCustomerListDto.prototype.init = function (data) {
+        if (data) {
+            this.branchId = data["branchId"];
+            this.mainCustomerId = data["mainCustomerId"];
+            this.viceCustomerId = data["viceCustomerId"];
+            this.viceCustomer = data["viceCustomer"] ? Customer.fromJS(data["viceCustomer"]) : undefined;
+            this.customerName = data["customerName"];
+            this.mobile = data["mobile"];
+            this.sex = data["sex"];
+            this.certificatesNum = data["certificatesNum"];
+            this.verifiableType = data["verifiableType"];
+            this.creatorUser = data["creatorUser"] ? User.fromJS(data["creatorUser"]) : undefined;
+            this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    };
+    CommonCustomerListDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new CommonCustomerListDto();
+        result.init(data);
+        return result;
+    };
+    CommonCustomerListDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["branchId"] = this.branchId;
+        data["mainCustomerId"] = this.mainCustomerId;
+        data["viceCustomerId"] = this.viceCustomerId;
+        data["viceCustomer"] = this.viceCustomer ? this.viceCustomer.toJSON() : undefined;
+        data["customerName"] = this.customerName;
+        data["mobile"] = this.mobile;
+        data["sex"] = this.sex;
+        data["certificatesNum"] = this.certificatesNum;
+        data["verifiableType"] = this.verifiableType;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : undefined;
+        data["branch"] = this.branch ? this.branch.toJSON() : undefined;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data;
+    };
+    CommonCustomerListDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new CommonCustomerListDto();
+        result.init(json);
+        return result;
+    };
+    return CommonCustomerListDto;
+}());
+exports.CommonCustomerListDto = CommonCustomerListDto;
+/** 读取可编辑的Dto */
+var GetCommonCustomerForEditOutput = /** @class */ (function () {
+    function GetCommonCustomerForEditOutput(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    GetCommonCustomerForEditOutput.prototype.init = function (data) {
+        if (data) {
+            this.commonCustomer = data["commonCustomer"] ? CommonCustomerEditDto.fromJS(data["commonCustomer"]) : undefined;
+            if (data["sexEnumTypeEnum"] && data["sexEnumTypeEnum"].constructor === Array) {
+                this.sexEnumTypeEnum = [];
+                for (var _i = 0, _a = data["sexEnumTypeEnum"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.sexEnumTypeEnum.push(KeyValuePairOfStringAndString.fromJS(item));
+                }
+            }
+            if (data["verifiableTypeEnumTypeEnum"] && data["verifiableTypeEnumTypeEnum"].constructor === Array) {
+                this.verifiableTypeEnumTypeEnum = [];
+                for (var _b = 0, _c = data["verifiableTypeEnumTypeEnum"]; _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    this.verifiableTypeEnumTypeEnum.push(KeyValuePairOfStringAndString.fromJS(item));
+                }
+            }
+        }
+    };
+    GetCommonCustomerForEditOutput.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new GetCommonCustomerForEditOutput();
+        result.init(data);
+        return result;
+    };
+    GetCommonCustomerForEditOutput.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["commonCustomer"] = this.commonCustomer ? this.commonCustomer.toJSON() : undefined;
+        if (this.sexEnumTypeEnum && this.sexEnumTypeEnum.constructor === Array) {
+            data["sexEnumTypeEnum"] = [];
+            for (var _i = 0, _a = this.sexEnumTypeEnum; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["sexEnumTypeEnum"].push(item.toJSON());
+            }
+        }
+        if (this.verifiableTypeEnumTypeEnum && this.verifiableTypeEnumTypeEnum.constructor === Array) {
+            data["verifiableTypeEnumTypeEnum"] = [];
+            for (var _b = 0, _c = this.verifiableTypeEnumTypeEnum; _b < _c.length; _b++) {
+                var item = _c[_b];
+                data["verifiableTypeEnumTypeEnum"].push(item.toJSON());
+            }
+        }
+        return data;
+    };
+    GetCommonCustomerForEditOutput.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new GetCommonCustomerForEditOutput();
+        result.init(json);
+        return result;
+    };
+    return GetCommonCustomerForEditOutput;
+}());
+exports.GetCommonCustomerForEditOutput = GetCommonCustomerForEditOutput;
+var KeyValuePairOfStringAndString = /** @class */ (function () {
+    function KeyValuePairOfStringAndString(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    KeyValuePairOfStringAndString.prototype.init = function (data) {
+        if (data) {
+            this.key = data["key"];
+            this.value = data["value"];
+        }
+    };
+    KeyValuePairOfStringAndString.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new KeyValuePairOfStringAndString();
+        result.init(data);
+        return result;
+    };
+    KeyValuePairOfStringAndString.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["key"] = this.key;
+        data["value"] = this.value;
+        return data;
+    };
+    KeyValuePairOfStringAndString.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new KeyValuePairOfStringAndString();
+        result.init(json);
+        return result;
+    };
+    return KeyValuePairOfStringAndString;
+}());
+exports.KeyValuePairOfStringAndString = KeyValuePairOfStringAndString;
+var PagedResultDtoOfCommonCustomerListDto = /** @class */ (function () {
+    function PagedResultDtoOfCommonCustomerListDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    PagedResultDtoOfCommonCustomerListDto.prototype.init = function (data) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (var _i = 0, _a = data["items"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.items.push(CommonCustomerListDto.fromJS(item));
+                }
+            }
+        }
+    };
+    PagedResultDtoOfCommonCustomerListDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new PagedResultDtoOfCommonCustomerListDto();
+        result.init(data);
+        return result;
+    };
+    PagedResultDtoOfCommonCustomerListDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (var _i = 0, _a = this.items; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["items"].push(item.toJSON());
+            }
+        }
+        return data;
+    };
+    PagedResultDtoOfCommonCustomerListDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new PagedResultDtoOfCommonCustomerListDto();
+        result.init(json);
+        return result;
+    };
+    return PagedResultDtoOfCommonCustomerListDto;
+}());
+exports.PagedResultDtoOfCommonCustomerListDto = PagedResultDtoOfCommonCustomerListDto;
 var CommonLookupFindUsersInput = /** @class */ (function () {
     function CommonLookupFindUsersInput(data) {
         if (data) {
@@ -36537,6 +47324,7 @@ var CreateOrUpdateCustomerInput = /** @class */ (function () {
     CreateOrUpdateCustomerInput.prototype.init = function (data) {
         if (data) {
             this.customer = data["customer"] ? CustomerEditDto.fromJS(data["customer"]) : new CustomerEditDto();
+            this.setRandomPassword = data["setRandomPassword"];
         }
     };
     CreateOrUpdateCustomerInput.fromJS = function (data) {
@@ -36548,6 +47336,7 @@ var CreateOrUpdateCustomerInput = /** @class */ (function () {
     CreateOrUpdateCustomerInput.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
         data["customer"] = this.customer ? this.customer.toJSON() : undefined;
+        data["setRandomPassword"] = this.setRandomPassword;
         return data;
     };
     CreateOrUpdateCustomerInput.prototype.clone = function () {
@@ -40989,6 +51778,14 @@ var MenuTreeDto = /** @class */ (function () {
                     this.childrens.push(MenuTreeDto.fromJS(item));
                 }
             }
+            this.isAllOperation = data["isAllOperation"];
+            if (data["operationNames"] && data["operationNames"].constructor === Array) {
+                this.operationNames = [];
+                for (var _b = 0, _c = data["operationNames"]; _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    this.operationNames.push(item);
+                }
+            }
         }
     };
     MenuTreeDto.fromJS = function (data) {
@@ -41010,6 +51807,14 @@ var MenuTreeDto = /** @class */ (function () {
             for (var _i = 0, _a = this.childrens; _i < _a.length; _i++) {
                 var item = _a[_i];
                 data["childrens"].push(item.toJSON());
+            }
+        }
+        data["isAllOperation"] = this.isAllOperation;
+        if (this.operationNames && this.operationNames.constructor === Array) {
+            data["operationNames"] = [];
+            for (var _b = 0, _c = this.operationNames; _b < _c.length; _b++) {
+                var item = _c[_b];
+                data["operationNames"].push(item);
             }
         }
         return data;
@@ -43710,6 +54515,13 @@ var CreateOrUpdateRoleInput = /** @class */ (function () {
                     this.grantedPermissionNames.push(item);
                 }
             }
+            if (data["ticketPriceIds"] && data["ticketPriceIds"].constructor === Array) {
+                this.ticketPriceIds = [];
+                for (var _b = 0, _c = data["ticketPriceIds"]; _b < _c.length; _b++) {
+                    var item = _c[_b];
+                    this.ticketPriceIds.push(item);
+                }
+            }
         }
     };
     CreateOrUpdateRoleInput.fromJS = function (data) {
@@ -43726,6 +54538,13 @@ var CreateOrUpdateRoleInput = /** @class */ (function () {
             for (var _i = 0, _a = this.grantedPermissionNames; _i < _a.length; _i++) {
                 var item = _a[_i];
                 data["grantedPermissionNames"].push(item);
+            }
+        }
+        if (this.ticketPriceIds && this.ticketPriceIds.constructor === Array) {
+            data["ticketPriceIds"] = [];
+            for (var _b = 0, _c = this.ticketPriceIds; _b < _c.length; _b++) {
+                var item = _c[_b];
+                data["ticketPriceIds"].push(item);
             }
         }
         return data;
@@ -43893,6 +54712,13 @@ var GetRoleForEditOutput = /** @class */ (function () {
                     this.grantedPermissionNames.push(item);
                 }
             }
+            if (data["ticketPriceIds"] && data["ticketPriceIds"].constructor === Array) {
+                this.ticketPriceIds = [];
+                for (var _d = 0, _e = data["ticketPriceIds"]; _d < _e.length; _d++) {
+                    var item = _e[_d];
+                    this.ticketPriceIds.push(item);
+                }
+            }
         }
     };
     GetRoleForEditOutput.fromJS = function (data) {
@@ -43916,6 +54742,13 @@ var GetRoleForEditOutput = /** @class */ (function () {
             for (var _b = 0, _c = this.grantedPermissionNames; _b < _c.length; _b++) {
                 var item = _c[_b];
                 data["grantedPermissionNames"].push(item);
+            }
+        }
+        if (this.ticketPriceIds && this.ticketPriceIds.constructor === Array) {
+            data["ticketPriceIds"] = [];
+            for (var _d = 0, _e = this.ticketPriceIds; _d < _e.length; _d++) {
+                var item = _e[_d];
+                data["ticketPriceIds"].push(item);
             }
         }
         return data;
@@ -44786,7 +55619,7 @@ var ScheduleListDto = /** @class */ (function () {
                 this.ticketPrices = [];
                 for (var _b = 0, _c = data["ticketPrices"]; _b < _c.length; _b++) {
                     var item = _c[_b];
-                    this.ticketPrices.push(TicketPrice.fromJS(item));
+                    this.ticketPrices.push(TicketPriceListDto.fromJS(item));
                 }
             }
             this.saleDateStr = data["saleDateStr"];
@@ -44863,6 +55696,148 @@ var ScheduleListDto = /** @class */ (function () {
     return ScheduleListDto;
 }());
 exports.ScheduleListDto = ScheduleListDto;
+var TicketPriceListDto = /** @class */ (function () {
+    function TicketPriceListDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    TicketPriceListDto.prototype.init = function (data) {
+        if (data) {
+            this.branchId = data["branchId"];
+            this.ticketId = data["ticketId"];
+            this.ticket = data["ticket"] ? Ticket.fromJS(data["ticket"]) : undefined;
+            this.isEnabled = data["isEnabled"];
+            this.sort = data["sort"];
+            this.price = data["price"];
+            this.discount = data["discount"];
+            this.upperTime = data["upperTime"] ? moment(data["upperTime"].toString()) : undefined;
+            this.rDiscount = data["rDiscount"];
+            this.lowerTime = data["lowerTime"] ? moment(data["lowerTime"].toString()) : undefined;
+            this.position = data["position"];
+            this.ticketName = data["ticketName"];
+            this.ticketIntroduce = data["ticketIntroduce"] ? TicketIntroduce.fromJS(data["ticketIntroduce"]) : undefined;
+            this.upperTimeStr = data["upperTimeStr"];
+            this.lowerTimeStr = data["lowerTimeStr"];
+            this.creationTimeStr = data["creationTimeStr"];
+            this.creatorUser = data["creatorUser"] ? User.fromJS(data["creatorUser"]) : undefined;
+            this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    };
+    TicketPriceListDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new TicketPriceListDto();
+        result.init(data);
+        return result;
+    };
+    TicketPriceListDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["branchId"] = this.branchId;
+        data["ticketId"] = this.ticketId;
+        data["ticket"] = this.ticket ? this.ticket.toJSON() : undefined;
+        data["isEnabled"] = this.isEnabled;
+        data["sort"] = this.sort;
+        data["price"] = this.price;
+        data["discount"] = this.discount;
+        data["upperTime"] = this.upperTime ? this.upperTime.toISOString() : undefined;
+        data["rDiscount"] = this.rDiscount;
+        data["lowerTime"] = this.lowerTime ? this.lowerTime.toISOString() : undefined;
+        data["position"] = this.position;
+        data["ticketName"] = this.ticketName;
+        data["ticketIntroduce"] = this.ticketIntroduce ? this.ticketIntroduce.toJSON() : undefined;
+        data["upperTimeStr"] = this.upperTimeStr;
+        data["lowerTimeStr"] = this.lowerTimeStr;
+        data["creationTimeStr"] = this.creationTimeStr;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : undefined;
+        data["branch"] = this.branch ? this.branch.toJSON() : undefined;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data;
+    };
+    TicketPriceListDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new TicketPriceListDto();
+        result.init(json);
+        return result;
+    };
+    return TicketPriceListDto;
+}());
+exports.TicketPriceListDto = TicketPriceListDto;
+var TicketIntroduce = /** @class */ (function () {
+    function TicketIntroduce(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    TicketIntroduce.prototype.init = function (data) {
+        if (data) {
+            this.branchId = data["branchId"];
+            this.ticketId = data["ticketId"];
+            this.ticket = data["ticket"] ? Ticket.fromJS(data["ticket"]) : undefined;
+            this.scenicSpotId = data["scenicSpotId"];
+            this.scenicSpot = data["scenicSpot"] ? ScenicSpot.fromJS(data["scenicSpot"]) : undefined;
+            this.tradeName = data["tradeName"];
+            this.tradeInfo = data["tradeInfo"];
+            this.address = data["address"];
+            this.coverMap = data["coverMap"];
+            this.abstract = data["abstract"];
+            this.notice = data["notice"];
+            this.refundRule = data["refundRule"];
+            this.isOnLine = data["isOnLine"];
+            this.creatorUser = data["creatorUser"] ? User.fromJS(data["creatorUser"]) : undefined;
+            this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    };
+    TicketIntroduce.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new TicketIntroduce();
+        result.init(data);
+        return result;
+    };
+    TicketIntroduce.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["branchId"] = this.branchId;
+        data["ticketId"] = this.ticketId;
+        data["ticket"] = this.ticket ? this.ticket.toJSON() : undefined;
+        data["scenicSpotId"] = this.scenicSpotId;
+        data["scenicSpot"] = this.scenicSpot ? this.scenicSpot.toJSON() : undefined;
+        data["tradeName"] = this.tradeName;
+        data["tradeInfo"] = this.tradeInfo;
+        data["address"] = this.address;
+        data["coverMap"] = this.coverMap;
+        data["abstract"] = this.abstract;
+        data["notice"] = this.notice;
+        data["refundRule"] = this.refundRule;
+        data["isOnLine"] = this.isOnLine;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : undefined;
+        data["branch"] = this.branch ? this.branch.toJSON() : undefined;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data;
+    };
+    TicketIntroduce.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new TicketIntroduce();
+        result.init(json);
+        return result;
+    };
+    return TicketIntroduce;
+}());
+exports.TicketIntroduce = TicketIntroduce;
 var GetScheduleForEditOutput = /** @class */ (function () {
     function GetScheduleForEditOutput(data) {
         if (data) {
@@ -48824,78 +59799,6 @@ var TicketPriceEditDto = /** @class */ (function () {
     return TicketPriceEditDto;
 }());
 exports.TicketPriceEditDto = TicketPriceEditDto;
-var TicketPriceListDto = /** @class */ (function () {
-    function TicketPriceListDto(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    TicketPriceListDto.prototype.init = function (data) {
-        if (data) {
-            this.branchId = data["branchId"];
-            this.ticketId = data["ticketId"];
-            this.ticket = data["ticket"] ? Ticket.fromJS(data["ticket"]) : undefined;
-            this.isEnabled = data["isEnabled"];
-            this.sort = data["sort"];
-            this.price = data["price"];
-            this.discount = data["discount"];
-            this.upperTime = data["upperTime"] ? moment(data["upperTime"].toString()) : undefined;
-            this.rDiscount = data["rDiscount"];
-            this.lowerTime = data["lowerTime"] ? moment(data["lowerTime"].toString()) : undefined;
-            this.position = data["position"];
-            this.ticketName = data["ticketName"];
-            this.upperTimeStr = data["upperTimeStr"];
-            this.lowerTimeStr = data["lowerTimeStr"];
-            this.creationTimeStr = data["creationTimeStr"];
-            this.creatorUser = data["creatorUser"] ? User.fromJS(data["creatorUser"]) : undefined;
-            this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : undefined;
-            this.creatorUserId = data["creatorUserId"];
-            this.id = data["id"];
-        }
-    };
-    TicketPriceListDto.fromJS = function (data) {
-        data = typeof data === 'object' ? data : {};
-        var result = new TicketPriceListDto();
-        result.init(data);
-        return result;
-    };
-    TicketPriceListDto.prototype.toJSON = function (data) {
-        data = typeof data === 'object' ? data : {};
-        data["branchId"] = this.branchId;
-        data["ticketId"] = this.ticketId;
-        data["ticket"] = this.ticket ? this.ticket.toJSON() : undefined;
-        data["isEnabled"] = this.isEnabled;
-        data["sort"] = this.sort;
-        data["price"] = this.price;
-        data["discount"] = this.discount;
-        data["upperTime"] = this.upperTime ? this.upperTime.toISOString() : undefined;
-        data["rDiscount"] = this.rDiscount;
-        data["lowerTime"] = this.lowerTime ? this.lowerTime.toISOString() : undefined;
-        data["position"] = this.position;
-        data["ticketName"] = this.ticketName;
-        data["upperTimeStr"] = this.upperTimeStr;
-        data["lowerTimeStr"] = this.lowerTimeStr;
-        data["creationTimeStr"] = this.creationTimeStr;
-        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : undefined;
-        data["branch"] = this.branch ? this.branch.toJSON() : undefined;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined;
-        data["creatorUserId"] = this.creatorUserId;
-        data["id"] = this.id;
-        return data;
-    };
-    TicketPriceListDto.prototype.clone = function () {
-        var json = this.toJSON();
-        var result = new TicketPriceListDto();
-        result.init(json);
-        return result;
-    };
-    return TicketPriceListDto;
-}());
-exports.TicketPriceListDto = TicketPriceListDto;
 var GetTicketPriceForEditOutput = /** @class */ (function () {
     function GetTicketPriceForEditOutput(data) {
         if (data) {
@@ -49030,6 +59933,218 @@ var GetTicketPricesInput = /** @class */ (function () {
     return GetTicketPricesInput;
 }());
 exports.GetTicketPricesInput = GetTicketPricesInput;
+var CreateOrUpdateTicketRoleInput = /** @class */ (function () {
+    function CreateOrUpdateTicketRoleInput(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+        if (!data) {
+            this.ticketRole = new TicketRoleEditDto();
+        }
+    }
+    CreateOrUpdateTicketRoleInput.prototype.init = function (data) {
+        if (data) {
+            this.ticketRole = data["ticketRole"] ? TicketRoleEditDto.fromJS(data["ticketRole"]) : new TicketRoleEditDto();
+        }
+    };
+    CreateOrUpdateTicketRoleInput.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new CreateOrUpdateTicketRoleInput();
+        result.init(data);
+        return result;
+    };
+    CreateOrUpdateTicketRoleInput.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["ticketRole"] = this.ticketRole ? this.ticketRole.toJSON() : undefined;
+        return data;
+    };
+    CreateOrUpdateTicketRoleInput.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new CreateOrUpdateTicketRoleInput();
+        result.init(json);
+        return result;
+    };
+    return CreateOrUpdateTicketRoleInput;
+}());
+exports.CreateOrUpdateTicketRoleInput = CreateOrUpdateTicketRoleInput;
+/** 的列表DTO Yozeev.BusinessLogic.TicketRole */
+var TicketRoleEditDto = /** @class */ (function () {
+    function TicketRoleEditDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    TicketRoleEditDto.prototype.init = function (data) {
+        if (data) {
+            this.id = data["id"];
+            this.roleId = data["roleId"];
+            this.ticketPriceId = data["ticketPriceId"];
+        }
+    };
+    TicketRoleEditDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new TicketRoleEditDto();
+        result.init(data);
+        return result;
+    };
+    TicketRoleEditDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["roleId"] = this.roleId;
+        data["ticketPriceId"] = this.ticketPriceId;
+        return data;
+    };
+    TicketRoleEditDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new TicketRoleEditDto();
+        result.init(json);
+        return result;
+    };
+    return TicketRoleEditDto;
+}());
+exports.TicketRoleEditDto = TicketRoleEditDto;
+/** 的编辑DTO Yozeev.BusinessLogic.TicketRole */
+var TicketRoleListDto = /** @class */ (function () {
+    function TicketRoleListDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    TicketRoleListDto.prototype.init = function (data) {
+        if (data) {
+            this.branchId = data["branchId"];
+            this.roleId = data["roleId"];
+            this.role = data["role"] ? Role.fromJS(data["role"]) : undefined;
+            this.ticketPriceId = data["ticketPriceId"];
+            this.ticketPrice = data["ticketPrice"] ? TicketPrice.fromJS(data["ticketPrice"]) : undefined;
+            this.creatorUser = data["creatorUser"] ? User.fromJS(data["creatorUser"]) : undefined;
+            this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    };
+    TicketRoleListDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new TicketRoleListDto();
+        result.init(data);
+        return result;
+    };
+    TicketRoleListDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["branchId"] = this.branchId;
+        data["roleId"] = this.roleId;
+        data["role"] = this.role ? this.role.toJSON() : undefined;
+        data["ticketPriceId"] = this.ticketPriceId;
+        data["ticketPrice"] = this.ticketPrice ? this.ticketPrice.toJSON() : undefined;
+        data["creatorUser"] = this.creatorUser ? this.creatorUser.toJSON() : undefined;
+        data["branch"] = this.branch ? this.branch.toJSON() : undefined;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data;
+    };
+    TicketRoleListDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new TicketRoleListDto();
+        result.init(json);
+        return result;
+    };
+    return TicketRoleListDto;
+}());
+exports.TicketRoleListDto = TicketRoleListDto;
+/** 读取可编辑的Dto */
+var GetTicketRoleForEditOutput = /** @class */ (function () {
+    function GetTicketRoleForEditOutput(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    GetTicketRoleForEditOutput.prototype.init = function (data) {
+        if (data) {
+            this.ticketRole = data["ticketRole"] ? TicketRoleEditDto.fromJS(data["ticketRole"]) : undefined;
+        }
+    };
+    GetTicketRoleForEditOutput.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new GetTicketRoleForEditOutput();
+        result.init(data);
+        return result;
+    };
+    GetTicketRoleForEditOutput.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["ticketRole"] = this.ticketRole ? this.ticketRole.toJSON() : undefined;
+        return data;
+    };
+    GetTicketRoleForEditOutput.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new GetTicketRoleForEditOutput();
+        result.init(json);
+        return result;
+    };
+    return GetTicketRoleForEditOutput;
+}());
+exports.GetTicketRoleForEditOutput = GetTicketRoleForEditOutput;
+var PagedResultDtoOfTicketRoleListDto = /** @class */ (function () {
+    function PagedResultDtoOfTicketRoleListDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    PagedResultDtoOfTicketRoleListDto.prototype.init = function (data) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (var _i = 0, _a = data["items"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.items.push(TicketRoleListDto.fromJS(item));
+                }
+            }
+        }
+    };
+    PagedResultDtoOfTicketRoleListDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new PagedResultDtoOfTicketRoleListDto();
+        result.init(data);
+        return result;
+    };
+    PagedResultDtoOfTicketRoleListDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (var _i = 0, _a = this.items; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["items"].push(item.toJSON());
+            }
+        }
+        return data;
+    };
+    PagedResultDtoOfTicketRoleListDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new PagedResultDtoOfTicketRoleListDto();
+        result.init(json);
+        return result;
+    };
+    return PagedResultDtoOfTicketRoleListDto;
+}());
+exports.PagedResultDtoOfTicketRoleListDto = PagedResultDtoOfTicketRoleListDto;
 var CreateOrUpdateTicketScheduleEnableInput = /** @class */ (function () {
     function CreateOrUpdateTicketScheduleEnableInput(data) {
         if (data) {
@@ -50525,6 +61640,7 @@ var CreateOrUpdateUserInput = /** @class */ (function () {
             }
             this.sendActivationEmail = data["sendActivationEmail"];
             this.setRandomPassword = data["setRandomPassword"];
+            this.branchId = data["branchId"];
         }
     };
     CreateOrUpdateUserInput.fromJS = function (data) {
@@ -50552,6 +61668,7 @@ var CreateOrUpdateUserInput = /** @class */ (function () {
         }
         data["sendActivationEmail"] = this.sendActivationEmail;
         data["setRandomPassword"] = this.setRandomPassword;
+        data["branchId"] = this.branchId;
         return data;
     };
     CreateOrUpdateUserInput.prototype.clone = function () {
@@ -50585,6 +61702,7 @@ var UserEditDto = /** @class */ (function () {
             this.profilePictureId = data["profilePictureId"];
             this.isTwoFactorEnabled = data["isTwoFactorEnabled"];
             this.isActive = data["isActive"];
+            this.branchId = data["branchId"];
         }
     };
     UserEditDto.fromJS = function (data) {
@@ -50605,6 +61723,7 @@ var UserEditDto = /** @class */ (function () {
         data["profilePictureId"] = this.profilePictureId;
         data["isTwoFactorEnabled"] = this.isTwoFactorEnabled;
         data["isActive"] = this.isActive;
+        data["branchId"] = this.branchId;
         return data;
     };
     UserEditDto.prototype.clone = function () {
@@ -50649,6 +61768,7 @@ var GetUserForEditTreeOutput = /** @class */ (function () {
                     this.memberedOrganizationUnits.push(item);
                 }
             }
+            this.branch = data["branch"] ? Branch.fromJS(data["branch"]) : undefined;
         }
     };
     GetUserForEditTreeOutput.fromJS = function (data) {
@@ -50681,6 +61801,7 @@ var GetUserForEditTreeOutput = /** @class */ (function () {
                 data["memberedOrganizationUnits"].push(item);
             }
         }
+        data["branch"] = this.branch ? this.branch.toJSON() : undefined;
         return data;
     };
     GetUserForEditTreeOutput.prototype.clone = function () {
@@ -52696,42 +63817,6 @@ var GetWechatMenuForEditOutput = /** @class */ (function () {
     return GetWechatMenuForEditOutput;
 }());
 exports.GetWechatMenuForEditOutput = GetWechatMenuForEditOutput;
-var KeyValuePairOfStringAndString = /** @class */ (function () {
-    function KeyValuePairOfStringAndString(data) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    this[property] = data[property];
-            }
-        }
-    }
-    KeyValuePairOfStringAndString.prototype.init = function (data) {
-        if (data) {
-            this.key = data["key"];
-            this.value = data["value"];
-        }
-    };
-    KeyValuePairOfStringAndString.fromJS = function (data) {
-        data = typeof data === 'object' ? data : {};
-        var result = new KeyValuePairOfStringAndString();
-        result.init(data);
-        return result;
-    };
-    KeyValuePairOfStringAndString.prototype.toJSON = function (data) {
-        data = typeof data === 'object' ? data : {};
-        data["key"] = this.key;
-        data["value"] = this.value;
-        return data;
-    };
-    KeyValuePairOfStringAndString.prototype.clone = function () {
-        var json = this.toJSON();
-        var result = new KeyValuePairOfStringAndString();
-        result.init(json);
-        return result;
-    };
-    return KeyValuePairOfStringAndString;
-}());
-exports.KeyValuePairOfStringAndString = KeyValuePairOfStringAndString;
 var CreateOrUpdateWharfInput = /** @class */ (function () {
     function CreateOrUpdateWharfInput(data) {
         if (data) {
@@ -53289,8 +64374,8 @@ var TicketRatesResult = /** @class */ (function () {
     return TicketRatesResult;
 }());
 exports.TicketRatesResult = TicketRatesResult;
-var PagedResultDtoOfGetOrderSourceResultDto = /** @class */ (function () {
-    function PagedResultDtoOfGetOrderSourceResultDto(data) {
+var StatsPagedResultDtoOfGetOrderSourceResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfGetOrderSourceResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -53298,8 +64383,16 @@ var PagedResultDtoOfGetOrderSourceResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfGetOrderSourceResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfGetOrderSourceResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? GetOrderSourceResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -53310,14 +64403,22 @@ var PagedResultDtoOfGetOrderSourceResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfGetOrderSourceResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfGetOrderSourceResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfGetOrderSourceResultDto();
+        var result = new StatsPagedResultDtoOfGetOrderSourceResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfGetOrderSourceResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfGetOrderSourceResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -53328,15 +64429,15 @@ var PagedResultDtoOfGetOrderSourceResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfGetOrderSourceResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfGetOrderSourceResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfGetOrderSourceResultDto();
+        var result = new StatsPagedResultDtoOfGetOrderSourceResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfGetOrderSourceResultDto;
+    return StatsPagedResultDtoOfGetOrderSourceResultDto;
 }());
-exports.PagedResultDtoOfGetOrderSourceResultDto = PagedResultDtoOfGetOrderSourceResultDto;
+exports.StatsPagedResultDtoOfGetOrderSourceResultDto = StatsPagedResultDtoOfGetOrderSourceResultDto;
 var GetOrderSourceResultDto = /** @class */ (function () {
     function GetOrderSourceResultDto(data) {
         if (data) {
@@ -53383,8 +64484,8 @@ var GetOrderSourceResultDto = /** @class */ (function () {
     return GetOrderSourceResultDto;
 }());
 exports.GetOrderSourceResultDto = GetOrderSourceResultDto;
-var PagedResultDtoOfGetPayMethodResultDto = /** @class */ (function () {
-    function PagedResultDtoOfGetPayMethodResultDto(data) {
+var StatsPagedResultDtoOfGetPayMethodResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfGetPayMethodResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -53392,8 +64493,16 @@ var PagedResultDtoOfGetPayMethodResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfGetPayMethodResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfGetPayMethodResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? GetPayMethodResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -53404,14 +64513,22 @@ var PagedResultDtoOfGetPayMethodResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfGetPayMethodResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfGetPayMethodResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfGetPayMethodResultDto();
+        var result = new StatsPagedResultDtoOfGetPayMethodResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfGetPayMethodResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfGetPayMethodResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -53422,15 +64539,15 @@ var PagedResultDtoOfGetPayMethodResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfGetPayMethodResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfGetPayMethodResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfGetPayMethodResultDto();
+        var result = new StatsPagedResultDtoOfGetPayMethodResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfGetPayMethodResultDto;
+    return StatsPagedResultDtoOfGetPayMethodResultDto;
 }());
-exports.PagedResultDtoOfGetPayMethodResultDto = PagedResultDtoOfGetPayMethodResultDto;
+exports.StatsPagedResultDtoOfGetPayMethodResultDto = StatsPagedResultDtoOfGetPayMethodResultDto;
 var GetPayMethodResultDto = /** @class */ (function () {
     function GetPayMethodResultDto(data) {
         if (data) {
@@ -53477,8 +64594,8 @@ var GetPayMethodResultDto = /** @class */ (function () {
     return GetPayMethodResultDto;
 }());
 exports.GetPayMethodResultDto = GetPayMethodResultDto;
-var PagedResultDtoOfScheduleResultDto = /** @class */ (function () {
-    function PagedResultDtoOfScheduleResultDto(data) {
+var StatsPagedResultDtoOfScheduleResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfScheduleResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -53486,8 +64603,16 @@ var PagedResultDtoOfScheduleResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfScheduleResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfScheduleResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? ScheduleResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -53498,14 +64623,22 @@ var PagedResultDtoOfScheduleResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfScheduleResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfScheduleResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfScheduleResultDto();
+        var result = new StatsPagedResultDtoOfScheduleResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfScheduleResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfScheduleResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -53516,15 +64649,15 @@ var PagedResultDtoOfScheduleResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfScheduleResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfScheduleResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfScheduleResultDto();
+        var result = new StatsPagedResultDtoOfScheduleResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfScheduleResultDto;
+    return StatsPagedResultDtoOfScheduleResultDto;
 }());
-exports.PagedResultDtoOfScheduleResultDto = PagedResultDtoOfScheduleResultDto;
+exports.StatsPagedResultDtoOfScheduleResultDto = StatsPagedResultDtoOfScheduleResultDto;
 /** 航线统计Dto */
 var ScheduleResultDto = /** @class */ (function () {
     function ScheduleResultDto(data) {
@@ -53625,8 +64758,8 @@ var BoatInfo = /** @class */ (function () {
     return BoatInfo;
 }());
 exports.BoatInfo = BoatInfo;
-var PagedResultDtoOfScheduleDetailResultDto = /** @class */ (function () {
-    function PagedResultDtoOfScheduleDetailResultDto(data) {
+var StatsPagedResultDtoOfScheduleDetailResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfScheduleDetailResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -53634,8 +64767,16 @@ var PagedResultDtoOfScheduleDetailResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfScheduleDetailResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfScheduleDetailResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? ScheduleDetailResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -53646,14 +64787,22 @@ var PagedResultDtoOfScheduleDetailResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfScheduleDetailResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfScheduleDetailResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfScheduleDetailResultDto();
+        var result = new StatsPagedResultDtoOfScheduleDetailResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfScheduleDetailResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfScheduleDetailResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -53664,15 +64813,15 @@ var PagedResultDtoOfScheduleDetailResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfScheduleDetailResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfScheduleDetailResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfScheduleDetailResultDto();
+        var result = new StatsPagedResultDtoOfScheduleDetailResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfScheduleDetailResultDto;
+    return StatsPagedResultDtoOfScheduleDetailResultDto;
 }());
-exports.PagedResultDtoOfScheduleDetailResultDto = PagedResultDtoOfScheduleDetailResultDto;
+exports.StatsPagedResultDtoOfScheduleDetailResultDto = StatsPagedResultDtoOfScheduleDetailResultDto;
 /** 航线统计详情 */
 var ScheduleDetailResultDto = /** @class */ (function () {
     function ScheduleDetailResultDto(data) {
@@ -53750,8 +64899,8 @@ var ScheduleDetailResultDto = /** @class */ (function () {
     return ScheduleDetailResultDto;
 }());
 exports.ScheduleDetailResultDto = ScheduleDetailResultDto;
-var PagedResultDtoOfScheduleCheckResultDto = /** @class */ (function () {
-    function PagedResultDtoOfScheduleCheckResultDto(data) {
+var StatsPagedResultDtoOfScheduleCheckResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfScheduleCheckResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -53759,8 +64908,16 @@ var PagedResultDtoOfScheduleCheckResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfScheduleCheckResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfScheduleCheckResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? ScheduleCheckResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -53771,14 +64928,22 @@ var PagedResultDtoOfScheduleCheckResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfScheduleCheckResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfScheduleCheckResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfScheduleCheckResultDto();
+        var result = new StatsPagedResultDtoOfScheduleCheckResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfScheduleCheckResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfScheduleCheckResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -53789,15 +64954,15 @@ var PagedResultDtoOfScheduleCheckResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfScheduleCheckResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfScheduleCheckResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfScheduleCheckResultDto();
+        var result = new StatsPagedResultDtoOfScheduleCheckResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfScheduleCheckResultDto;
+    return StatsPagedResultDtoOfScheduleCheckResultDto;
 }());
-exports.PagedResultDtoOfScheduleCheckResultDto = PagedResultDtoOfScheduleCheckResultDto;
+exports.StatsPagedResultDtoOfScheduleCheckResultDto = StatsPagedResultDtoOfScheduleCheckResultDto;
 var ScheduleCheckResultDto = /** @class */ (function () {
     function ScheduleCheckResultDto(data) {
         if (data) {
@@ -53932,8 +65097,8 @@ var ScheduleCheckDetailDto = /** @class */ (function () {
     return ScheduleCheckDetailDto;
 }());
 exports.ScheduleCheckDetailDto = ScheduleCheckDetailDto;
-var PagedResultDtoOfScheduleTicketResultDto = /** @class */ (function () {
-    function PagedResultDtoOfScheduleTicketResultDto(data) {
+var StatsPagedResultDtoOfScheduleTicketResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfScheduleTicketResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -53941,8 +65106,16 @@ var PagedResultDtoOfScheduleTicketResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfScheduleTicketResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfScheduleTicketResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? ScheduleTicketResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -53953,14 +65126,22 @@ var PagedResultDtoOfScheduleTicketResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfScheduleTicketResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfScheduleTicketResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfScheduleTicketResultDto();
+        var result = new StatsPagedResultDtoOfScheduleTicketResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfScheduleTicketResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfScheduleTicketResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -53971,15 +65152,15 @@ var PagedResultDtoOfScheduleTicketResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfScheduleTicketResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfScheduleTicketResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfScheduleTicketResultDto();
+        var result = new StatsPagedResultDtoOfScheduleTicketResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfScheduleTicketResultDto;
+    return StatsPagedResultDtoOfScheduleTicketResultDto;
 }());
-exports.PagedResultDtoOfScheduleTicketResultDto = PagedResultDtoOfScheduleTicketResultDto;
+exports.StatsPagedResultDtoOfScheduleTicketResultDto = StatsPagedResultDtoOfScheduleTicketResultDto;
 var ScheduleTicketResultDto = /** @class */ (function () {
     function ScheduleTicketResultDto(data) {
         if (data) {
@@ -54120,8 +65301,8 @@ var ScheduleTicketDetailResultDto = /** @class */ (function () {
     return ScheduleTicketDetailResultDto;
 }());
 exports.ScheduleTicketDetailResultDto = ScheduleTicketDetailResultDto;
-var PagedResultDtoOfSellerDailyResultDto = /** @class */ (function () {
-    function PagedResultDtoOfSellerDailyResultDto(data) {
+var StatsPagedResultDtoOfSellerDailyResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfSellerDailyResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -54129,8 +65310,16 @@ var PagedResultDtoOfSellerDailyResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfSellerDailyResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfSellerDailyResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? SellerDailyResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -54141,14 +65330,22 @@ var PagedResultDtoOfSellerDailyResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfSellerDailyResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfSellerDailyResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfSellerDailyResultDto();
+        var result = new StatsPagedResultDtoOfSellerDailyResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfSellerDailyResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfSellerDailyResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -54159,15 +65356,15 @@ var PagedResultDtoOfSellerDailyResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfSellerDailyResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfSellerDailyResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfSellerDailyResultDto();
+        var result = new StatsPagedResultDtoOfSellerDailyResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfSellerDailyResultDto;
+    return StatsPagedResultDtoOfSellerDailyResultDto;
 }());
-exports.PagedResultDtoOfSellerDailyResultDto = PagedResultDtoOfSellerDailyResultDto;
+exports.StatsPagedResultDtoOfSellerDailyResultDto = StatsPagedResultDtoOfSellerDailyResultDto;
 var SellerDailyResultDto = /** @class */ (function () {
     function SellerDailyResultDto(data) {
         if (data) {
@@ -54230,8 +65427,8 @@ var SellerDailyResultDto = /** @class */ (function () {
     return SellerDailyResultDto;
 }());
 exports.SellerDailyResultDto = SellerDailyResultDto;
-var PagedResultDtoOfSellerTicketResultDto = /** @class */ (function () {
-    function PagedResultDtoOfSellerTicketResultDto(data) {
+var StatsPagedResultDtoOfSellerTicketResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfSellerTicketResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -54239,8 +65436,16 @@ var PagedResultDtoOfSellerTicketResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfSellerTicketResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfSellerTicketResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? SellerTicketResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
@@ -54251,14 +65456,22 @@ var PagedResultDtoOfSellerTicketResultDto = /** @class */ (function () {
             }
         }
     };
-    PagedResultDtoOfSellerTicketResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfSellerTicketResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfSellerTicketResultDto();
+        var result = new StatsPagedResultDtoOfSellerTicketResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfSellerTicketResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfSellerTicketResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -54269,15 +65482,15 @@ var PagedResultDtoOfSellerTicketResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfSellerTicketResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfSellerTicketResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfSellerTicketResultDto();
+        var result = new StatsPagedResultDtoOfSellerTicketResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfSellerTicketResultDto;
+    return StatsPagedResultDtoOfSellerTicketResultDto;
 }());
-exports.PagedResultDtoOfSellerTicketResultDto = PagedResultDtoOfSellerTicketResultDto;
+exports.StatsPagedResultDtoOfSellerTicketResultDto = StatsPagedResultDtoOfSellerTicketResultDto;
 /** 售票员售票统计 */
 var SellerTicketResultDto = /** @class */ (function () {
     function SellerTicketResultDto(data) {
@@ -54361,8 +65574,8 @@ var SellerTicketResultDto = /** @class */ (function () {
     return SellerTicketResultDto;
 }());
 exports.SellerTicketResultDto = SellerTicketResultDto;
-var PagedResultDtoOfTravelAgencyResultDto = /** @class */ (function () {
-    function PagedResultDtoOfTravelAgencyResultDto(data) {
+var StatsPagedResultDtoOfScheduleTicketDetailResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfScheduleTicketDetailResultDto(data) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -54370,26 +65583,42 @@ var PagedResultDtoOfTravelAgencyResultDto = /** @class */ (function () {
             }
         }
     }
-    PagedResultDtoOfTravelAgencyResultDto.prototype.init = function (data) {
+    StatsPagedResultDtoOfScheduleTicketDetailResultDto.prototype.init = function (data) {
         if (data) {
+            this.total = data["total"] ? ScheduleTicketDetailResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
             this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (var _i = 0, _a = data["items"]; _i < _a.length; _i++) {
                     var item = _a[_i];
-                    this.items.push(TravelAgencyResultDto.fromJS(item));
+                    this.items.push(ScheduleTicketDetailResultDto.fromJS(item));
                 }
             }
         }
     };
-    PagedResultDtoOfTravelAgencyResultDto.fromJS = function (data) {
+    StatsPagedResultDtoOfScheduleTicketDetailResultDto.fromJS = function (data) {
         data = typeof data === 'object' ? data : {};
-        var result = new PagedResultDtoOfTravelAgencyResultDto();
+        var result = new StatsPagedResultDtoOfScheduleTicketDetailResultDto();
         result.init(data);
         return result;
     };
-    PagedResultDtoOfTravelAgencyResultDto.prototype.toJSON = function (data) {
+    StatsPagedResultDtoOfScheduleTicketDetailResultDto.prototype.toJSON = function (data) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
         data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
@@ -54400,15 +65629,79 @@ var PagedResultDtoOfTravelAgencyResultDto = /** @class */ (function () {
         }
         return data;
     };
-    PagedResultDtoOfTravelAgencyResultDto.prototype.clone = function () {
+    StatsPagedResultDtoOfScheduleTicketDetailResultDto.prototype.clone = function () {
         var json = this.toJSON();
-        var result = new PagedResultDtoOfTravelAgencyResultDto();
+        var result = new StatsPagedResultDtoOfScheduleTicketDetailResultDto();
         result.init(json);
         return result;
     };
-    return PagedResultDtoOfTravelAgencyResultDto;
+    return StatsPagedResultDtoOfScheduleTicketDetailResultDto;
 }());
-exports.PagedResultDtoOfTravelAgencyResultDto = PagedResultDtoOfTravelAgencyResultDto;
+exports.StatsPagedResultDtoOfScheduleTicketDetailResultDto = StatsPagedResultDtoOfScheduleTicketDetailResultDto;
+var StatsPagedResultDtoOfTravelAgencyResultDto = /** @class */ (function () {
+    function StatsPagedResultDtoOfTravelAgencyResultDto(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+    }
+    StatsPagedResultDtoOfTravelAgencyResultDto.prototype.init = function (data) {
+        if (data) {
+            this.total = data["total"] ? TravelAgencyResultDto.fromJS(data["total"]) : undefined;
+            if (data["filters"]) {
+                this.filters = {};
+                for (var key in data["filters"]) {
+                    if (data["filters"].hasOwnProperty(key))
+                        this.filters[key] = data["filters"][key] !== undefined ? data["filters"][key] : [];
+                }
+            }
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (var _i = 0, _a = data["items"]; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    this.items.push(TravelAgencyResultDto.fromJS(item));
+                }
+            }
+        }
+    };
+    StatsPagedResultDtoOfTravelAgencyResultDto.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new StatsPagedResultDtoOfTravelAgencyResultDto();
+        result.init(data);
+        return result;
+    };
+    StatsPagedResultDtoOfTravelAgencyResultDto.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total ? this.total.toJSON() : undefined;
+        if (this.filters) {
+            data["filters"] = {};
+            for (var key in this.filters) {
+                if (this.filters.hasOwnProperty(key))
+                    data["filters"][key] = this.filters[key];
+            }
+        }
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (var _i = 0, _a = this.items; _i < _a.length; _i++) {
+                var item = _a[_i];
+                data["items"].push(item.toJSON());
+            }
+        }
+        return data;
+    };
+    StatsPagedResultDtoOfTravelAgencyResultDto.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new StatsPagedResultDtoOfTravelAgencyResultDto();
+        result.init(json);
+        return result;
+    };
+    return StatsPagedResultDtoOfTravelAgencyResultDto;
+}());
+exports.StatsPagedResultDtoOfTravelAgencyResultDto = StatsPagedResultDtoOfTravelAgencyResultDto;
 var TravelAgencyResultDto = /** @class */ (function () {
     function TravelAgencyResultDto(data) {
         if (data) {
@@ -54859,6 +66152,53 @@ var SwitchedAccountAuthenticateResultModel = /** @class */ (function () {
     return SwitchedAccountAuthenticateResultModel;
 }());
 exports.SwitchedAccountAuthenticateResultModel = SwitchedAccountAuthenticateResultModel;
+var Login = /** @class */ (function () {
+    function Login(data) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    this[property] = data[property];
+            }
+        }
+        if (!data) {
+            this.sourceCode = "Reception";
+        }
+    }
+    Login.prototype.init = function (data) {
+        if (data) {
+            this.loginName = data["loginName"];
+            this.loginPwd = data["loginPwd"];
+            this.verificationCode = data["verificationCode"];
+            this.rememberClient = data["rememberClient"];
+            this.returnUrl = data["returnUrl"];
+            this.sourceCode = data["sourceCode"] !== undefined ? data["sourceCode"] : "Reception";
+        }
+    };
+    Login.fromJS = function (data) {
+        data = typeof data === 'object' ? data : {};
+        var result = new Login();
+        result.init(data);
+        return result;
+    };
+    Login.prototype.toJSON = function (data) {
+        data = typeof data === 'object' ? data : {};
+        data["loginName"] = this.loginName;
+        data["loginPwd"] = this.loginPwd;
+        data["verificationCode"] = this.verificationCode;
+        data["rememberClient"] = this.rememberClient;
+        data["returnUrl"] = this.returnUrl;
+        data["sourceCode"] = this.sourceCode;
+        return data;
+    };
+    Login.prototype.clone = function () {
+        var json = this.toJSON();
+        var result = new Login();
+        result.init(json);
+        return result;
+    };
+    return Login;
+}());
+exports.Login = Login;
 var CaptchaType;
 (function (CaptchaType) {
     CaptchaType[CaptchaType["Defulat"] = "Defulat"] = "Defulat";

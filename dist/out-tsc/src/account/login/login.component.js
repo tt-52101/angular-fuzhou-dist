@@ -68,13 +68,15 @@ var UrlHelper_1 = require("@shared/helpers/UrlHelper");
 var AppEnums_1 = require("abpPro/AppEnums");
 var captcha_component_1 = require("account/component/captcha/captcha.component");
 var AppConsts_1 = require("abpPro/AppConsts");
+var app_session_service_1 = require("@shared/session/app-session.service");
 var LoginComponent = /** @class */ (function (_super) {
     __extends(LoginComponent, _super);
-    function LoginComponent(injector, loginService, _abpSessionService, _sessionAppService) {
+    function LoginComponent(injector, loginService, _abpSessionService, _sessionAppService, _sessionService) {
         var _this = _super.call(this, injector) || this;
         _this.loginService = loginService;
         _this._abpSessionService = _abpSessionService;
         _this._sessionAppService = _sessionAppService;
+        _this._sessionService = _sessionService;
         _this.submitting = false;
         _this.hidepwd = true;
         _this.verificationImgUrl = '../assets/images/captcha.png';
@@ -178,7 +180,7 @@ var LoginComponent = /** @class */ (function (_super) {
                     case 0: return [4 /*yield*/, this.loginService.initExternalLoginProviders()];
                     case 1:
                         _a.sent();
-                        this.titleSrvice.setTitle(this.l('LogIn'));
+                        // this.titleSrvice.setTitle(this.l('LogIn'));
                         if (this._abpSessionService.userId > 0 && UrlHelper_1.UrlHelper.getReturnUrl()) {
                             this._sessionAppService
                                 .updateUserSignInToken()
@@ -218,6 +220,8 @@ var LoginComponent = /** @class */ (function (_super) {
                 // 登陆失败,刷新验证码
                 _this.clearimg();
             }
+            _this._sessionService.init();
+            // console.log(this._sessionService,new Date().getTime())
             _this.submitting = false;
         });
     };
@@ -280,7 +284,8 @@ var LoginComponent = /** @class */ (function (_super) {
         __metadata("design:paramtypes", [core_1.Injector,
             login_service_1.LoginService,
             abp_session_service_1.AbpSessionService,
-            service_proxies_1.SessionServiceProxy])
+            service_proxies_1.SessionServiceProxy,
+            app_session_service_1.AppSessionService])
     ], LoginComponent);
     return LoginComponent;
 }(app_component_base_1.AppComponentBase));

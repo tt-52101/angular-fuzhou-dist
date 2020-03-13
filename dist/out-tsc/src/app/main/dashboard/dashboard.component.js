@@ -63,7 +63,7 @@ var DashboardComponent = /** @class */ (function (_super) {
         return _this;
     }
     DashboardComponent.prototype.ngOnInit = function () {
-        console.log('haslogin');
+        // console.log('haslogin')
         var that = this;
         setTimeout(function () {
             that.setecharts1();
@@ -111,7 +111,8 @@ var DashboardComponent = /** @class */ (function (_super) {
     };
     DashboardComponent.prototype.setecharts1 = function () {
         var _this = this;
-        this._operService.revenueAnal(new Date().toLocaleString(), this.range1)
+        var datestr = new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate();
+        this._operService.revenueAnal(datestr, this.range1)
             .subscribe(function (result) {
             var date1 = result.customerAnal.timeSpan;
             var data1 = result.customerAnal.count;
@@ -171,21 +172,21 @@ var DashboardComponent = /** @class */ (function (_super) {
                             color: '#495BE6'
                         },
                         yAxisIndex: 0,
-                        areaStyle: {
-                            color: {
-                                type: 'radial',
-                                x: 0.9,
-                                y: 0.9,
-                                r: 0.9,
-                                colorStops: [{
-                                        offset: 0,
-                                        color: '#CAD2FC'
-                                    }, {
-                                        offset: 1,
-                                        color: '#F1EBFF'
-                                    }],
-                            }
-                        },
+                        // areaStyle: {
+                        //   color: {
+                        //     type: 'radial',
+                        //     x: 0.9,
+                        //     y: 0.9,
+                        //     r: 0.9,
+                        //     colorStops: [{
+                        //       offset: 0,
+                        //       color: '#CAD2FC'
+                        //     }, {
+                        //       offset: 1,
+                        //       color: '#F1EBFF'
+                        //     }],
+                        //   }
+                        // },
                         // data: [100, 200, 300, 400, 600, 1000, 700, 300, 410, 510, 610, 810, 510, 710, 510, 710, 200, 500, 200, 400, 500, 300, 800, 1000]
                         data: data1
                     }, {
@@ -198,21 +199,21 @@ var DashboardComponent = /** @class */ (function (_super) {
                             color: '#41baff'
                         },
                         yAxisIndex: 1,
-                        areaStyle: {
-                            color: {
-                                type: 'radial',
-                                x: 0.9,
-                                y: 0.9,
-                                r: 0.9,
-                                colorStops: [{
-                                        offset: 0,
-                                        color: '#8abaeb'
-                                    }, {
-                                        offset: 1,
-                                        color: '#65a6e4'
-                                    }],
-                            }
-                        },
+                        // areaStyle: {
+                        //   color: {
+                        //     type: 'radial',
+                        //     x: 0.9,
+                        //     y: 0.9,
+                        //     r: 0.9,
+                        //     colorStops: [{
+                        //       offset: 0,
+                        //       color: '#8abaeb'
+                        //     }, {
+                        //       offset: 1,
+                        //       color: '#65a6e4'
+                        //     }],
+                        //   }
+                        // },
                         // data: [8000, 7100, 1000, 6100, 10000, 10000, 11000, 12000, 18000, 10000, 12000, 13000, 6100, 12000, 15000, 12000, 13000, 17000, 16000, 13000, 14000, 1000, 12000, 11000]
                         data: data2
                     },

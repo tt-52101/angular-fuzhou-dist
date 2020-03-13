@@ -116,8 +116,8 @@ var CreateOrEditScheduleComponent = /** @class */ (function (_super) {
             else {
                 _this.sDStr = new Date();
                 _this.sStr = new Date();
-                _this.eStr = new Date();
-                _this.cSStr = new Date();
+                _this.eStr = new Date(new Date().getTime() + 7200000);
+                _this.cSStr = new Date(new Date().getTime() - 3600000);
                 _this.cEStr = new Date();
                 result.schedule.routeId = '';
                 result.schedule.boatId = '';

@@ -26,6 +26,8 @@ var core_1 = require("@angular/core");
 var routerTransition_1 = require("@shared/animations/routerTransition");
 var paged_listing_component_base_1 = require("@shared/component-base/paged-listing-component-base");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
+var moment = require("moment");
+var differenceInCalendarDays = require("date-fns/difference_in_calendar_days");
 var RouteComponent = /** @class */ (function (_super) {
     __extends(RouteComponent, _super);
     function RouteComponent(injector, _scheduleService, _boatService, _routeService) {
@@ -33,27 +35,21 @@ var RouteComponent = /** @class */ (function (_super) {
         _this._scheduleService = _scheduleService;
         _this._boatService = _boatService;
         _this._routeService = _routeService;
+        _this.collectionTime = '';
         _this.queryData = [{
-                field: "routeId",
-                method: "=",
-                value: "",
-                logic: "and"
-            }, {
-                field: "boatId",
-                method: "=",
-                value: "",
-                logic: "and"
-            }, {
-                field: "starttime",
+                field: "CreationTime",
                 method: ">=",
                 value: "",
                 logic: "and"
             }, {
-                field: "endtime",
+                field: "CreationTime",
                 method: "<=",
                 value: "",
                 logic: "and"
             }];
+        _this.boatId = '';
+        _this.routeId = '';
+        _this.ticketId = '';
         _this.routequery = [];
         _this.routeList = [];
         _this.boatquery = [];
@@ -61,6 +57,10 @@ var RouteComponent = /** @class */ (function (_super) {
         _this.boattime = '';
         _this.ticketinfo = [];
         _this.visible = false;
+        _this.disabledDate = function (current) {
+            // Can not select days before today and today
+            return differenceInCalendarDays(current, new Date()) > 0;
+        };
         return _this;
     }
     RouteComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -71,20 +71,31 @@ var RouteComponent = /** @class */ (function (_super) {
                 arr.push(new service_proxies_1.QueryData(this.queryData[i]));
             }
         }
-        this._scheduleService.getPagedStat(arr, null, request.maxResultCount, request.skipCount)
+        this._scheduleService.getPagedStat(arr, null, 9, request.skipCount, this.routeId, this.boatId, this.ticketId)
             .finally(function () {
             finishedCallback();
         })
             .subscribe(function (result) {
-            _this.dataList = result.items;
+            _this.dataList = result.items.concat(result.total);
             _this.showPaging(result);
         });
         this.getroute();
         this.getboat();
     };
     RouteComponent.prototype.datechange = function ($event) {
-        this.queryData[2].value = $event[0];
-        this.queryData[3].value = $event[1];
+        if ($event[0].getTime() == $event[1].getTime()) {
+            $event[1] = new Date($event[1].getTime() + 24 * 60 * 60 * 1000);
+        }
+        var year = $event[0].getFullYear();
+        var month = $event[0].getMonth() + 1;
+        var day = $event[0].getDate();
+        var fulldate1 = year + '-' + month + '-' + day;
+        var year = $event[1].getFullYear();
+        var month = $event[1].getMonth() + 1;
+        var day = $event[1].getDate();
+        var fulldate2 = year + '-' + month + '-' + day;
+        this.queryData[0].value = moment(fulldate1).format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[1].value = moment(fulldate2).format('YYYY-MM-DD HH:mm:ss');
     };
     RouteComponent.prototype.getroute = function () {
         var _this = this;

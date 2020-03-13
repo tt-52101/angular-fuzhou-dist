@@ -29,9 +29,10 @@ var permission_tree_component_1 = require("@app/admin/shared/permission-tree/per
 var modal_component_base_1 = require("@shared/component-base/modal-component-base");
 var CreateOrEditRoleComponent = /** @class */ (function (_super) {
     __extends(CreateOrEditRoleComponent, _super);
-    function CreateOrEditRoleComponent(injector, _roleService) {
+    function CreateOrEditRoleComponent(injector, _roleService, _ticketPriceService) {
         var _this = _super.call(this, injector) || this;
         _this._roleService = _roleService;
+        _this._ticketPriceService = _ticketPriceService;
         /**
          * 用户实体
          */
@@ -40,6 +41,8 @@ var CreateOrEditRoleComponent = /** @class */ (function (_super) {
          * 角色实体
          */
         _this.role = new service_proxies_1.RoleEditDto();
+        _this.ticketlist = [];
+        _this.ticketPriceIds = [];
         return _this;
     }
     CreateOrEditRoleComponent.prototype.ngOnInit = function () {
@@ -50,10 +53,27 @@ var CreateOrEditRoleComponent = /** @class */ (function (_super) {
      * 初始化
      */
     CreateOrEditRoleComponent.prototype.init = function () {
+        var _this = this;
         var self = this;
         self._roleService.getForEdit(self.id).subscribe(function (result) {
             self.role = result.role;
+            self.ticketPriceIds = result.ticketPriceIds;
+            _this.getticket();
             // self.permissionTree.editData = result;
+        });
+    };
+    CreateOrEditRoleComponent.prototype.getticket = function () {
+        var _this = this;
+        var arr = [];
+        arr.push(new service_proxies_1.QueryData({
+            field: "isEnabled",
+            method: "=",
+            value: 'true',
+            logic: "and"
+        }));
+        this._ticketPriceService.getPaged(arr, null, 999, 0)
+            .subscribe(function (result) {
+            _this.ticketlist = result.items;
         });
     };
     /**
@@ -67,6 +87,7 @@ var CreateOrEditRoleComponent = /** @class */ (function (_super) {
         input.role = this.role;
         // input.grantedPermissionNames = this.permissionTree.getGrantedPermissionNames();
         input.grantedPermissionNames = [];
+        input.ticketPriceIds = this.ticketPriceIds;
         this.saving = true;
         this._roleService
             .createOrUpdate(input)
@@ -86,7 +107,9 @@ var CreateOrEditRoleComponent = /** @class */ (function (_super) {
             templateUrl: './create-or-edit-role.component.html',
             styles: []
         }),
-        __metadata("design:paramtypes", [core_1.Injector, service_proxies_1.RoleServiceProxy])
+        __metadata("design:paramtypes", [core_1.Injector,
+            service_proxies_1.RoleServiceProxy,
+            service_proxies_1.TicketPriceServiceProxy])
     ], CreateOrEditRoleComponent);
     return CreateOrEditRoleComponent;
 }(modal_component_base_1.ModalComponentBase));

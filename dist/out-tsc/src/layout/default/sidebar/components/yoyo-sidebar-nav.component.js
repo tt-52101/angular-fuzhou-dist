@@ -71,6 +71,11 @@ var YoYoSidebarNavComponent = /** @class */ (function () {
         configurable: true
     });
     YoYoSidebarNavComponent.prototype.click = function (item) {
+        if (item) {
+            console.log(item);
+            sessionStorage.setItem('curmenupower', item.operationNames);
+            sessionStorage.setItem('isAllOperation', item.isAllOperation);
+        }
         if (this.isPad && !this.collapsed) {
             this.settings.setLayout('collapsed', !this.settings.layout.collapsed);
         }

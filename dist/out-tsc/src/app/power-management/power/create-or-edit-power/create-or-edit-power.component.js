@@ -112,8 +112,8 @@ var CreateOrEditPowerComponent = /** @class */ (function (_super) {
     CreateOrEditPowerComponent.prototype.catetorychange = function () {
         this.entity.powerCode = '';
         this.entity.powerName = '';
-        console.log(this.entity.category);
-        console.log(service_proxies_1.PowerTypeEnum.Data);
+        // console.log(this.entity.category)
+        // console.log(PowerTypeEnum.Data)
         if (this.entity.category == service_proxies_1.PowerTypeEnum.Data) {
             this.showselect = true;
             this.ismenu = false;
@@ -127,6 +127,21 @@ var CreateOrEditPowerComponent = /** @class */ (function (_super) {
         else {
             this.ismenu = false;
             this.showselect = false;
+        }
+    };
+    CreateOrEditPowerComponent.prototype.powerCodeselect = function ($event) {
+        console.log($event);
+        if ($event == "viewown") {
+            this.entity.powerName = "仅查看自己的数据";
+        }
+        else if ($event == "viewownorgan") {
+            this.entity.powerName = "仅查看所在机构的数据";
+        }
+        else if ($event == "viewsuborgan") {
+            this.entity.powerName = "仅查看所在机构的子机构的数据";
+        }
+        else if ($event == "viewallorgan") {
+            this.entity.powerName = "查看所有机构的数据";
         }
     };
     CreateOrEditPowerComponent.prototype.onChange = function ($event) {

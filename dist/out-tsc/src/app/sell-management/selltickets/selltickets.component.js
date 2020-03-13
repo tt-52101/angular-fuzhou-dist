@@ -83,12 +83,12 @@ var SellTicketsComponent = /** @class */ (function (_super) {
                 value: "",
                 logic: "and"
             }, {
-                field: "starttime",
+                field: "saleDate",
                 method: ">=",
                 value: "",
                 logic: "and"
             }, {
-                field: "endtime",
+                field: "saleDate",
                 method: "<=",
                 value: "",
                 logic: "and"
@@ -118,7 +118,15 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         _this.paymethodList = [];
         _this.sourceId = '';
         _this.scheduleId = '';
-        _this.schedule = {};
+        _this.schedule = {
+            scheduleCode: '',
+            route: {
+                routeName: ''
+            },
+            startTimeStr: '',
+            endTimeStr: '',
+            saleDateStr: ''
+        };
         _this.orderdetail = [];
         _this.curticket = {};
         _this.orderinfo = {
@@ -134,7 +142,6 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         _this.calendardate = '';
         _this.groupid = 0;
         _this.disabledDate = function (current) {
-            // Can not select days before today and today
             return differenceInCalendarDays(current, new Date()) < 0;
         };
         _this._reuseTabService.title = _this.l('航班售票');
@@ -144,26 +151,16 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         this.showcalendar = !this.showcalendar;
     };
     SellTicketsComponent.prototype.clear = function () {
-        // console.log(this.hangbanquery[4].value)
-        // this.hangbanquery[4].value=''
         for (var i = 0; i < 6; i++) {
             this.hangbanquery[i].value = '';
         }
-        // console.log(this.hangbanquery[4].value)
     };
     SellTicketsComponent.prototype.calendarChange = function ($event) {
         // console.log($event)
         var now = new Date($event);
-        // console.log(now)
-        // console.log(now.getDay())
-        // if(now.getDay()>0){
-        //   this.starttimestamp=now.getTime() - now.getDay() * 86400000;
-        // }else{
         this.starttimestamp = now.getTime();
-        // }
         this.settime(0);
         this.showcalendar = !this.showcalendar;
-        // var timestamp = (new Date(now)).getTime();
         var now = new Date(now);
         var year = now.getFullYear();
         var month = now.getMonth() + 1;
@@ -207,13 +204,49 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         var now = new Date();
         this.starttimestamp = now.getTime();
         this.settime(0);
+        var groupidtemp = localStorage.getItem('groupid');
+        if (groupidtemp) {
+            this.groupid = parseInt(groupidtemp);
+        }
+        else {
+            var groupid = new Date().getTime();
+            this.groupid = groupid;
+            localStorage.setItem('groupid', groupid + '');
+        }
+        this.signalRService.startConnection(this.groupid);
     };
     SellTicketsComponent.prototype.openguest = function () {
-        var groupid = new Date().getTime();
-        this.groupid = groupid;
-        console.log(this.groupid);
-        this.signalRService.startConnection(groupid);
-        window.open("/#/guest/guestdisplay?gn=" + groupid, '_blank', "menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+        window.open("/#/guest/guestdisplay?gn=" + this.groupid, '_blank', "menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+        var that = this;
+        setTimeout(function () {
+            if (that.schedule.scheduleCode) {
+                that.updateSchedule();
+            }
+            if (that.orderdetail.length > 0) {
+                for (var i = 0; i < that.orderdetail.length; i++) {
+                    that.addTicket(that.orderdetail[i]);
+                }
+            }
+        }, 4000);
+    };
+    SellTicketsComponent.prototype.updateSchedule = function () {
+        var data = {
+            scheduleCode: this.schedule.scheduleCode,
+            routeName: this.schedule.route.routeName,
+            startTimeStr: this.schedule.startTimeStr.split(' ')[1],
+            endTimeStr: this.schedule.endTimeStr.split(' ')[1],
+            saleDateStr: this.schedule.saleDateStr.split(' ')[0]
+        };
+        this.signalRService.send(this.groupid, 'updateSchedule' + '&' + JSON.stringify(data));
+    };
+    SellTicketsComponent.prototype.addTicket = function (ticketitem) {
+        this.signalRService.send(this.groupid, 'addTicket&' + JSON.stringify(ticketitem));
+    };
+    SellTicketsComponent.prototype.replace = function (data) {
+        this.signalRService.send(this.groupid, 'replace&' + JSON.stringify(data));
+    };
+    SellTicketsComponent.prototype.deletet = function (i) {
+        this.signalRService.send(this.groupid, 'deleteTicket&' + i);
     };
     SellTicketsComponent.prototype.settlement = function () {
         var _this = this;
@@ -312,15 +345,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
                     _this.schedule = item;
                     _this.scheduleId = item.id;
                     _this.orderdetail = [];
-                    var data = {
-                        scheduleCode: item.scheduleCode,
-                        routeName: item.route.routeName,
-                        startTimeStr: item.startTimeStr.split(' ')[1],
-                        endTimeStr: item.endTimeStr.split(' ')[1],
-                        saleDateStr: item.saleDateStr.split(' ')[0]
-                    };
-                    console.log(_this.groupid);
-                    _this.signalRService.send(_this.groupid, 'updateSchedule' + '&' + JSON.stringify(data));
+                    _this.updateSchedule();
                     _this.createcustomer();
                 }
             });
@@ -331,14 +356,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         else if (!this.scheduleId) {
             this.scheduleId = item.id;
             this.schedule = item;
-            var data = {
-                scheduleCode: item.scheduleCode,
-                routeName: item.route.routeName,
-                startTimeStr: item.startTimeStr.split(' ')[1],
-                endTimeStr: item.endTimeStr.split(' ')[1],
-                saleDateStr: item.saleDateStr.split(' ')[0]
-            };
-            this.signalRService.send(this.groupid, 'updateSchedule' + '&' + JSON.stringify(data));
+            this.updateSchedule();
             this.createcustomer();
         }
     };
@@ -372,7 +390,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
                                 info: item,
                                 index: hadindex
                             };
-                            _this.signalRService.send(_this.groupid, 'replace&' + JSON.stringify(data));
+                            _this.replace(data);
                             _this.countprice();
                         }
                     });
@@ -384,7 +402,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
                         ticket: _this.curticket
                     };
                     _this.orderdetail.push(ticketitem);
-                    _this.signalRService.send(_this.groupid, 'addTicket&' + JSON.stringify(ticketitem));
+                    _this.addTicket(ticketitem);
                     _this.countprice();
                 }
             }
@@ -400,7 +418,7 @@ var SellTicketsComponent = /** @class */ (function (_super) {
     };
     SellTicketsComponent.prototype.deleteticket = function (i) {
         this.orderdetail.splice(i, 1);
-        this.signalRService.send(this.groupid, 'deleteTicket&' + i);
+        this.deletet(i);
         this.countprice();
     };
     SellTicketsComponent.prototype.settime = function (e) {
@@ -412,7 +430,10 @@ var SellTicketsComponent = /** @class */ (function (_super) {
         if (e == 1) {
             var starttimestamp = this.starttimestamp - 7 * 86400000;
             if (starttimestamp < this.today) {
-                abp.message.warn(this.l('TicketSaleClose'));
+                var now = new Date();
+                this.starttimestamp = now.getTime();
+                this.calendarChange(now);
+                // abp.message.warn(this.l('TicketSaleClose'))
                 return;
             }
         }

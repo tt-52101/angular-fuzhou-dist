@@ -27,7 +27,7 @@ var AccountRoutingModule = /** @class */ (function () {
                         path: '',
                         component: account_component_1.AccountComponent,
                         children: [
-                            { path: 'login', component: login_component_1.LoginComponent },
+                            { path: 'login', component: login_component_1.LoginComponent, data: { title: '登录' } },
                             { path: 'login-callback', component: login_callback_component_1.LoginCallbackComponent },
                             { path: 'register', component: register_component_1.RegisterComponent },
                             { path: 'forgot-password', component: forgot_password_component_1.ForgotPasswordComponent },

@@ -26,15 +26,25 @@ var core_1 = require("@angular/core");
 var routerTransition_1 = require("@shared/animations/routerTransition");
 var paged_listing_component_base_1 = require("@shared/component-base/paged-listing-component-base");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
+var moment = require("moment");
+var differenceInCalendarDays = require("date-fns/difference_in_calendar_days");
 var SalerTicketComponent = /** @class */ (function (_super) {
     __extends(SalerTicketComponent, _super);
-    function SalerTicketComponent(injector, _sellerticketService, _userService) {
+    function SalerTicketComponent(injector, _sellerticketService, _userService, _scheduleService, _boatService, _ticketService) {
         var _this = _super.call(this, injector) || this;
         _this._sellerticketService = _sellerticketService;
         _this._userService = _userService;
+        _this._scheduleService = _scheduleService;
+        _this._boatService = _boatService;
+        _this._ticketService = _ticketService;
         _this.visible = false;
         _this.ticketinfo = [];
         _this.queryData = [{
+                field: "ScheduleId",
+                method: "=",
+                value: "",
+                logic: "and"
+            }, {
                 field: "CreatorUserId",
                 method: "=",
                 value: "",
@@ -49,8 +59,18 @@ var SalerTicketComponent = /** @class */ (function (_super) {
                 method: "<=",
                 value: "",
                 logic: "and"
-            }];
+            },];
         _this.userList = [];
+        _this.schedulelist = [];
+        _this.boatId = '';
+        _this.ticketId = '';
+        _this.boatList = [];
+        _this.ticketlist = [];
+        _this.collectionTime = '';
+        _this.disabledDate = function (current) {
+            // Can not select days before today and today
+            return differenceInCalendarDays(current, new Date()) > 0;
+        };
         return _this;
     }
     SalerTicketComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -61,29 +81,69 @@ var SalerTicketComponent = /** @class */ (function (_super) {
                 arr.push(new service_proxies_1.QueryData(this.queryData[i]));
             }
         }
-        this._sellerticketService.getPaged(arr, null, request.maxResultCount, request.skipCount)
+        this._sellerticketService.getPaged(arr, null, request.maxResultCount, request.skipCount, this.boatId, this.ticketId)
             .finally(function () {
             finishedCallback();
         })
             .subscribe(function (result) {
-            _this.dataList = result.items;
+            _this.dataList = result.items.concat(result.total);
             _this.showPaging(result);
         });
         this.getuser();
+        this.getschedule();
+        this.getboat();
+        this.getticket();
     };
-    SalerTicketComponent.prototype.search = function () {
+    SalerTicketComponent.prototype.getticket = function () {
         var _this = this;
-        var arr = [];
-        for (var i = this.queryData.length - 1; i >= 0; i--) {
-            if (this.queryData[i].value) {
-                arr.push(new service_proxies_1.QueryData(this.queryData[i]));
-            }
-        }
-        this._sellerticketService.getPaged(arr, null, 999, 0)
+        var formdata = new service_proxies_1.GetTicketsInput();
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._ticketService.getPaged(formdata)
             .subscribe(function (result) {
-            _this.dataList = result.items;
-            _this.showPaging(result);
+            _this.ticketlist = result.items;
         });
+    };
+    SalerTicketComponent.prototype.getboat = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetBoatsInput();
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._boatService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.boatList = result.items;
+        });
+    };
+    SalerTicketComponent.prototype.getschedule = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetSchedulesInput;
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._scheduleService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.schedulelist = result.items;
+        });
+    };
+    SalerTicketComponent.prototype.datechange = function ($event) {
+        if ($event[0].getTime() == $event[1].getTime()) {
+            $event[1] = new Date($event[1].getTime() + 24 * 60 * 60 * 1000);
+        }
+        var year = $event[0].getFullYear();
+        var month = $event[0].getMonth() + 1;
+        var day = $event[0].getDate();
+        var fulldate1 = year + '-' + month + '-' + day;
+        var year = $event[1].getFullYear();
+        var month = $event[1].getMonth() + 1;
+        var day = $event[1].getDate();
+        var fulldate2 = year + '-' + month + '-' + day;
+        this.queryData[2].value = moment(fulldate1).format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[3].value = moment(fulldate2).format('YYYY-MM-DD HH:mm:ss');
     };
     SalerTicketComponent.prototype.getuser = function () {
         var _this = this;
@@ -113,7 +173,10 @@ var SalerTicketComponent = /** @class */ (function (_super) {
         }),
         __metadata("design:paramtypes", [core_1.Injector,
             service_proxies_1.SellerTicketServiceProxy,
-            service_proxies_1.UserServiceProxy])
+            service_proxies_1.UserServiceProxy,
+            service_proxies_1.ScheduleServiceProxy,
+            service_proxies_1.BoatServiceProxy,
+            service_proxies_1.TicketServiceProxy])
     ], SalerTicketComponent);
     return SalerTicketComponent;
 }(paged_listing_component_base_1.PagedListingComponentBase));

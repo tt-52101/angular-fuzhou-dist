@@ -26,36 +26,48 @@ var core_1 = require("@angular/core");
 var routerTransition_1 = require("@shared/animations/routerTransition");
 var paged_listing_component_base_1 = require("@shared/component-base/paged-listing-component-base");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
+var moment = require("moment");
+var differenceInCalendarDays = require("date-fns/difference_in_calendar_days");
 var PayMethodComponent = /** @class */ (function (_super) {
     __extends(PayMethodComponent, _super);
-    function PayMethodComponent(injector, _payMethodService, _routeService, _boatService) {
+    function PayMethodComponent(injector, _payMethodService, _routeService, _boatService, _ticketService) {
         var _this = _super.call(this, injector) || this;
         _this._payMethodService = _payMethodService;
         _this._routeService = _routeService;
         _this._boatService = _boatService;
+        _this._ticketService = _ticketService;
         _this.queryData = [{
                 field: "PayMethodId",
                 method: "=",
                 value: "",
                 logic: "and"
             }, {
-                field: "routeId",
-                method: "=",
+                field: "CreationTime",
+                method: ">=",
                 value: "",
                 logic: "and"
             }, {
-                field: "boatId",
-                method: "=",
+                field: "CreationTime",
+                method: "<=",
                 value: "",
                 logic: "and"
             }];
         _this.payMethodList = [];
+        _this.boatId = '';
+        _this.ticketId = '';
+        _this.routeId = '';
+        _this.boatList = [];
+        _this.ticketarr = [];
         _this.routelist = [];
-        _this.boatlist = [];
         _this.orderlist = [];
         _this.ticketlist = [];
         _this.visible = false;
         _this.childvisible = false;
+        _this.collectionTime = '';
+        _this.disabledDate = function (current) {
+            // Can not select days before today and today
+            return differenceInCalendarDays(current, new Date()) > 0;
+        };
         return _this;
     }
     PayMethodComponent.prototype.fetchDataList = function (request, pageNumber, finishedCallback) {
@@ -66,17 +78,33 @@ var PayMethodComponent = /** @class */ (function (_super) {
                 arr.push(new service_proxies_1.QueryData(this.queryData[i]));
             }
         }
-        this._payMethodService.getPagedStat(arr, request.sorting, request.maxResultCount, request.skipCount)
+        this._payMethodService.getPagedStat(arr, request.sorting, request.maxResultCount, request.skipCount, this.routeId, this.boatId, this.ticketId)
             .finally(function () {
             finishedCallback();
         })
             .subscribe(function (result) {
-            _this.dataList = result.items;
+            _this.dataList = result.items.concat(result.total);
             _this.showPaging(result);
         });
         this.getpaymethod();
         this.getroute();
         this.getboat();
+        this.getticket();
+    };
+    PayMethodComponent.prototype.datechange = function ($event) {
+        if ($event[0].getTime() == $event[1].getTime()) {
+            $event[1] = new Date($event[1].getTime() + 24 * 60 * 60 * 1000);
+        }
+        var year = $event[0].getFullYear();
+        var month = $event[0].getMonth() + 1;
+        var day = $event[0].getDate();
+        var fulldate1 = year + '-' + month + '-' + day;
+        var year = $event[1].getFullYear();
+        var month = $event[1].getMonth() + 1;
+        var day = $event[1].getDate();
+        var fulldate2 = year + '-' + month + '-' + day;
+        this.queryData[1].value = moment(fulldate1).format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[2].value = moment(fulldate2).format('YYYY-MM-DD HH:mm:ss');
     };
     PayMethodComponent.prototype.open = function (id) {
         var _this = this;
@@ -108,16 +136,28 @@ var PayMethodComponent = /** @class */ (function (_super) {
             _this.routelist = result.items;
         });
     };
+    PayMethodComponent.prototype.getticket = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetTicketsInput();
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._ticketService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.ticketarr = result.items;
+        });
+    };
     PayMethodComponent.prototype.getboat = function () {
         var _this = this;
         var formdata = new service_proxies_1.GetBoatsInput();
         formdata.queryData = [];
-        formdata.sorting = "";
+        formdata.sorting = null;
         formdata.maxResultCount = 999;
         formdata.skipCount = 0;
         this._boatService.getPaged(formdata)
             .subscribe(function (result) {
-            _this.boatlist = result.items;
+            _this.boatList = result.items;
         });
     };
     PayMethodComponent.prototype.getpaymethod = function () {
@@ -136,7 +176,8 @@ var PayMethodComponent = /** @class */ (function (_super) {
         __metadata("design:paramtypes", [core_1.Injector,
             service_proxies_1.PayMethodServiceProxy,
             service_proxies_1.RouteServiceProxy,
-            service_proxies_1.BoatServiceProxy])
+            service_proxies_1.BoatServiceProxy,
+            service_proxies_1.TicketServiceProxy])
     ], PayMethodComponent);
     return PayMethodComponent;
 }(paged_listing_component_base_1.PagedListingComponentBase));

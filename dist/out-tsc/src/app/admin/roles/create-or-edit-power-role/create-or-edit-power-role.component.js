@@ -57,8 +57,8 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
             var powerList = [];
             var hadmenu = 0;
             for (var i = 0; i < items.length; i++) {
-                for (var j = 0; j < powerList.length; j++) {
-                    if (items[i].isEnabled) {
+                if (items[i].isEnabled) {
+                    for (var j = 0; j < powerList.length; j++) {
                         if (items[i].menuId == powerList[j].menuId) {
                             powerList[j].child.push({
                                 label: items[i].powerName,
@@ -68,9 +68,7 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
                             hadmenu = 1;
                         }
                     }
-                }
-                if (hadmenu == 0) {
-                    if (items[i].isEnabled) {
+                    if (hadmenu == 0) {
                         powerList.push({
                             menuId: items[i].menuId,
                             menuname: items[i].menu.menuName,
@@ -81,14 +79,13 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
                                 }]
                         });
                     }
+                    if (hadmenu == 1) {
+                        hadmenu = 0;
+                    }
+                    if (items[i].isCheck) {
+                        _this.powerIdList.push(items[i].id);
+                    }
                 }
-                if (hadmenu == 1) {
-                    hadmenu = 0;
-                }
-                if (items[i].isEnabled && items[i].isCheck) {
-                    _this.powerIdList.push(items[i].id);
-                }
-                // console.log(hadmenu)
             }
             ;
             // console.log(powerList)
@@ -97,16 +94,22 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
         });
     };
     CreateOrEditPowerRoleComponent.prototype.ngModelChange = function (a) {
-        console.log(a);
+        // console.log(a)
+        // this.powerIdList=[]
+        // console.log(this.powerIdList)
         for (var i = 0; i < a.length; i++) {
             if (a[i].checked) {
-                // if(this.powerIdList.indexOf(a[i].value)==-1){
-                this.powerIdList.push(a[i].value);
-                // }
-                // }else{
-                //   this.powerIdList.splice(this.powerIdList.indexOf(a[i].value),1)
+                if (this.powerIdList.indexOf(a[i].value) == -1) {
+                    this.powerIdList.push(a[i].value);
+                }
+            }
+            else {
+                if (this.powerIdList.indexOf(a[i].value) > -1) {
+                    this.powerIdList.splice(this.powerIdList.indexOf(a[i].value), 1);
+                }
             }
         }
+        // console.log(this.powerIdList)
     };
     CreateOrEditPowerRoleComponent.prototype.allcheckChange = function () {
         var powerIdList = [];
@@ -132,6 +135,7 @@ var CreateOrEditPowerRoleComponent = /** @class */ (function (_super) {
     CreateOrEditPowerRoleComponent.prototype.submitForm = function () {
         var _this = this;
         this.saving = true;
+        console.log(this.powerIdList);
         this._powerRoleService.batchAddOrUpdate(this.id, this.powerIdList)
             .finally(function () { return (_this.saving = false); })
             .subscribe(function () {

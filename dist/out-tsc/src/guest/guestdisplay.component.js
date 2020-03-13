@@ -44,7 +44,10 @@ var GuestdisplayComponent = /** @class */ (function (_super) {
         var that = this;
         var query = window.location.href.split('=')[1];
         that.signalRService.startConnection(query);
+        that.signalRService.onclose();
+        console.log(that.signalRService);
         that.signalRService.hubConnection.on("messageReceived", function (username, message) {
+            // console.log(message)
             if (message == 'joinGroup' && that.groupid == 0) {
                 that.groupid = username;
                 return;

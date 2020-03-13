@@ -26,13 +26,15 @@ var core_1 = require("@angular/core");
 var routerTransition_1 = require("@shared/animations/routerTransition");
 var paged_listing_component_base_1 = require("@shared/component-base/paged-listing-component-base");
 var service_proxies_1 = require("@shared/service-proxies/service-proxies");
+var moment = require("moment");
 var ScheduleComponent = /** @class */ (function (_super) {
     __extends(ScheduleComponent, _super);
-    function ScheduleComponent(injector, _scheduleTicketService, _boatService, _routeService) {
+    function ScheduleComponent(injector, _scheduleTicketService, _boatService, _routeService, _ticketService) {
         var _this = _super.call(this, injector) || this;
         _this._scheduleTicketService = _scheduleTicketService;
         _this._boatService = _boatService;
         _this._routeService = _routeService;
+        _this._ticketService = _ticketService;
         _this.visible = false;
         _this.ticketinfo = [];
         _this.queryData = [{
@@ -51,16 +53,18 @@ var ScheduleComponent = /** @class */ (function (_super) {
                 value: "",
                 logic: "and"
             }, {
-                field: "schedule.starttime",
+                field: "StartTime ",
                 method: ">=",
                 value: "",
                 logic: "and"
             }, {
-                field: "schedule.endtime",
+                field: "StartTime ",
                 method: "<=",
                 value: "",
                 logic: "and"
             }];
+        _this.ticketId = '';
+        _this.ticketarr = [];
         _this.routequery = [];
         _this.routeList = [];
         _this.boatquery = [];
@@ -76,20 +80,44 @@ var ScheduleComponent = /** @class */ (function (_super) {
                 arr.push(new service_proxies_1.QueryData(this.queryData[i]));
             }
         }
-        this._scheduleTicketService.getPagedStat(arr, null, request.maxResultCount, request.skipCount)
+        this._scheduleTicketService.getPagedStat(arr, null, request.maxResultCount, request.skipCount, this.ticketId)
             .finally(function () {
             finishedCallback();
         })
             .subscribe(function (result) {
-            _this.dataList = result.items;
+            _this.dataList = result.items.concat(result.total);
             _this.showPaging(result);
         });
         this.getroute();
         this.getboat();
+        this.getticket();
+    };
+    ScheduleComponent.prototype.getticket = function () {
+        var _this = this;
+        var formdata = new service_proxies_1.GetTicketsInput();
+        formdata.queryData = [];
+        formdata.sorting = null;
+        formdata.maxResultCount = 999;
+        formdata.skipCount = 0;
+        this._ticketService.getPaged(formdata)
+            .subscribe(function (result) {
+            _this.ticketarr = result.items;
+        });
     };
     ScheduleComponent.prototype.datechange = function ($event) {
-        this.queryData[3].value = $event[0];
-        this.queryData[4].value = $event[1];
+        if ($event[0].getTime() == $event[1].getTime()) {
+            $event[1] = new Date($event[1].getTime() + 24 * 60 * 60 * 1000);
+        }
+        var year = $event[0].getFullYear();
+        var month = $event[0].getMonth() + 1;
+        var day = $event[0].getDate();
+        var fulldate1 = year + '-' + month + '-' + day;
+        var year = $event[1].getFullYear();
+        var month = $event[1].getMonth() + 1;
+        var day = $event[1].getDate();
+        var fulldate2 = year + '-' + month + '-' + day;
+        this.queryData[3].value = moment(fulldate1).format('YYYY-MM-DD HH:mm:ss');
+        this.queryData[4].value = moment(fulldate2).format('YYYY-MM-DD HH:mm:ss');
     };
     ScheduleComponent.prototype.getroute = function () {
         var _this = this;
@@ -136,7 +164,8 @@ var ScheduleComponent = /** @class */ (function (_super) {
         __metadata("design:paramtypes", [core_1.Injector,
             service_proxies_1.ScheduleTicketServiceProxy,
             service_proxies_1.BoatServiceProxy,
-            service_proxies_1.RouteServiceProxy])
+            service_proxies_1.RouteServiceProxy,
+            service_proxies_1.TicketServiceProxy])
     ], ScheduleComponent);
     return ScheduleComponent;
 }(paged_listing_component_base_1.PagedListingComponentBase));
