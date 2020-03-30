@@ -1,0 +1,12 @@
+.ant-form-item {
+	margin-bottom: 10px;
+}
+
+.my-form-label{
+  height: 40px;
+  line-height: 40px;
+}
+
+.my-form-control{
+  margin-top: 4px;
+}

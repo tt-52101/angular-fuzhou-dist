@@ -1,0 +1,121 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+    <!-- 模态框头部 -->
+    <div class="modal-header">
+        <div class="modal-title">
+            <!-- <i class="anticon anticon-medicine-box mr-sm"></i> -->
+            <span *ngIf="entity.id">{{l('Edit')}}</span>
+            <span *ngIf="!entity.id">{{l('Create')}}</span>
+        </div>
+    </div>
+    <!-- 模态框内容 -->
+    <fieldset>
+        <!-- 提示信息 -->
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="scenicspot" nzRequired>{{l('ScenicSpot')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+<!--                 <input nz-input name="scenicSpotId" #scenicSpotId="ngModel"
+                [(ngModel)]="entity.scenicSpotId"
+                [placeholder]="l('ScenicSpotId')"> -->
+
+                <nz-select required [(ngModel)]="entity.scenicSpotId" name="scenicspot" nzAllowClear (ngModelChange)="onChange1($event)">
+                    <nz-option *ngFor="let item of scenicspotList;let i = index;" [nzValue]="item.id" [nzLabel]="item.scenicSpotName"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="ticket" nzRequired>{{l('Ticket')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+<!--                 <input nz-input name="ticketId" #ticketId="ngModel"
+                [(ngModel)]="entity.ticketId"
+                [placeholder]="l('ticketId')"> -->
+
+                <nz-select required [(ngModel)]="entity.ticketId" name="ticket" nzAllowClear (ngModelChange)="onChange2($event)">
+                    <nz-option *ngFor="let item of ticketList;let i = index;" [nzValue]="item.id" [nzLabel]="item.ticketName"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="tradeName" nzRequired>{{l('TradeName')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="tradeName" #tradeName="ngModel" required
+                [(ngModel)]="entity.tradeName"
+                [placeholder]="l('TradeName')" >
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="tradeInfo" nzRequired>{{l('TradeInfo')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="tradeInfo" #tradeInfo="ngModel" required
+                [(ngModel)]="entity.tradeInfo"
+                [placeholder]="l('TradeInfo')" >
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="address">{{l('Address')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="address" #address="ngModel" required
+                [(ngModel)]="entity.address"
+                [placeholder]="l('Address')" >
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="coverMap">{{l('CoverMap')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+<!--                 <input nz-input name="coverMap" #coverMap="ngModel"
+                [(ngModel)]="entity.coverMap"
+                [placeholder]="l('CoverMap')" > -->
+                <nz-upload [nzAction]="uploadurl"
+                [nzShowUploadList]="false"
+                [nzHeaders]="hearder" required
+                nzName="file"
+                (nzChange)="handleChange($event)">
+                <!-- [nzBeforeUpload]="beforeUpload" -->
+                <button nz-button type="button"><span>{{l('Upload')}}</span></button>
+            </nz-upload>
+            <span style="margin-left: 10px">{{coverMap}}</span>
+
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="abstract">{{l('Abstract')}}</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+            <input nz-input name="abstract" #abstract="ngModel" required
+            [(ngModel)]="entity.abstract"
+            [placeholder]="l('Abstract')" >
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="notice">{{l('Notice')}}</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+            <textarea nz-input style="height: 100px;" [placeholder]="l('Notice')" required #lineInfo="ngModel" [(ngModel)]="entity.notice" name="notice" required></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="refundRule">{{l('RefundRule')}}</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+            <textarea nz-input style="height: 100px;" [placeholder]="l('RefundRule')" required #refundRule="ngModel" [(ngModel)]="entity.refundRule" name="refundRule" required></textarea>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="isOnLine">{{l('IsOnLine')}}</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+            <label nz-checkbox name="isOnLine" #isOnLine="ngModel"
+            [(ngModel)]="entity.isOnLine" >{{l('IsOnLine')}}</label>
+        </nz-form-control>
+    </nz-form-item>
+</fieldset>
+<!-- 模态框底部 -->
+<div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+        <!-- <i class="anticon anticon-close-circle-o"></i>  -->
+        {{l("Cancel")}}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">
+        <!-- <i class="anticon anticon-save" *ngIf="!saving"></i>  -->
+        {{l("Save")}}
+    </button>
+</div>
+</form>

@@ -1,0 +1,338 @@
+import { Component, OnInit, Injector } from '@angular/core';
+
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+import { CreateOrEditPassengerComponent } from './create-or-edit-passenger/create-or-edit-passenger.component';
+
+import { AppComponentBase } from '@shared/component-base/app-component-base';
+
+
+@Component({
+	selector: 'app-selltickets',
+	templateUrl: './selltickets.component.html',
+	styleUrls: ['./selltickets.component.less'],
+	animations: [appModuleAnimation()],
+})
+export class SellTicketsComponent extends AppComponentBase implements OnInit {
+
+	constructor(
+		injector: Injector,
+		) {
+		super(injector);
+	}
+
+
+	forminfo = {
+		info1: '',
+		info2: '',
+		info3: '',
+		info4: '',
+		info5: '',
+		info6: ''
+	};
+
+	hblist = [{
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}]
+	}, {
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket: false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}]
+
+	ordertickets = [{
+		name: '张三',
+		tname: '成人票',
+		cardtype: '台胞证',
+		price: 30
+	}, {
+		name: '张三',
+		tname: '成人票',
+		cardtype: '身份证',
+		price: 30
+	}, {
+		name: '张三',
+		tname: '成人票',
+		cardtype: '护照',
+		price: 30
+	}, {
+		name: '张三',
+		tname: '成人票',
+		cardtype: '护照',
+		price: 30
+	}]
+
+	timestamp=''
+	nowdate = ""
+	nowday = ''
+
+
+	constructor() {}
+
+	ngOnInit() {
+		this.timestamp = (new Date()).getTime();
+		this.settime(0)
+	}
+
+
+
+	settime(e) {
+
+		if (e == 1) {
+			this.timestamp = this.timestamp - 86400000
+		} else if (e == 2) {
+			this.timestamp = this.timestamp + 86400000
+		}
+		var now = new Date(this.timestamp)
+		var month = now.getMonth() + 1;
+		var day = now.getDate();
+		var week = now.getDay() + '';
+		switch (week) {
+			case '1':
+			week = '星期一';
+			break;
+			case '2':
+			week = '星期二';
+			break;
+			case '3':
+			week = '星期三';
+			break;
+			case '4':
+			week = '星期四';
+			break;
+			case '5':
+			week = '星期五';
+			break;
+			case '6':
+			week = '星期六';
+			break;
+			case '0':
+			week = '星期日';
+			break;
+		}
+		this.nowdate = month + "月" + day + "日";
+		this.nowday = week
+	}
+
+
+
+
+	showorhide(index) {
+    // console.log(index)
+    this.hblist[index].showticket = !this.hblist[index].showticket
+    // for (var i = this.hblist.length - 1; i >= 0; i--) {
+    // 	if(i == index){
+    // 		this.hblist[i].showticket=!this.hblist[i].showticket
+    // 	}else{
+    // 		this.hblist[i].showticket=false
+    // 	}
+    // }
+}
+
+
+
+createOrEdit(): void {
+	console.log(this.modalHelper)
+	this.modalHelper.static(CreateOrEditPassengerComponent)
+	.subscribe(result => {
+		if (result) {
+			this.refresh();
+		}
+	});
+}
+
+}

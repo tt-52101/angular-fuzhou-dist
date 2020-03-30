@@ -1,0 +1,229 @@
+<!-- <page-header [title]="l('TicketPrice')"></page-header> -->
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="16">
+      <!-- <nz-col nzMd="6" nzSm="6"> -->
+        <!-- <form nz-form [nzLayout]="'inline'"> -->
+      <!--         <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+              <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText" [placeholder]="l('SearchWithThreeDot')">
+              <ng-template #suffixSearchButton>
+                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                  <i class="anticon anticon-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item> -->
+        <!-- </form> -->
+        <!-- </nz-col> -->
+      <!--         <nz-col nzMd="6" nzSm="6" class="btn-gutter">
+          <button nz-button [nzType]="'primary'"  (click)="createOrEdit()">
+            <span>
+              {{l("Create")}}
+            </span>
+          </button>
+          <button nz-button [nzType]="'danger'"  (click)="batchDelete()">
+            <span>
+              {{l("BatchDelete")}}
+            </span>
+          </button>
+        </nz-col> -->
+      </nz-row>
+    </div>
+    <!-- 实体的表格内容 -->
+    <nz-row class="my-md">
+      <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize"
+      [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()"
+      [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false"
+      nzBordered [nzScroll]="{ x: '1345px', y: '600px' }" style="word-break:break-all">
+      <!-- 暂无数据组件 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate"
+          (nzCheckedChange)="checkAll($event)" nzWidth="60px" nzLeft="0px"></th>
+          <!--           <th nz-th class="text-center" nzShowSort nzSortKey="ScheduleId" nzWidth="120px" >
+            <span>{{l('ScheduleId')}}</span>
+          </th> -->
+
+          <!--           <th nz-th class="text-center" nzShowSort nzWidth="120px" nzSortKey="TicketId">
+            <span>{{l('TicketId')}}</span>
+          </th> -->
+          <th nz-th class="text-center" nzShowSort nzWidth="200px" nzSortKey="TicketId" nzLeft="60px">
+            <span>票价名称</span>
+          </th>
+
+          <th nz-th class="text-center" nzWidth="120px" nzLeft="60px">
+            <span>票型</span>
+          </th>
+
+          <th nz-th class="text-center" nzWidth="120px">
+            <span>舱位</span>
+          </th>
+
+<!--           <th nz-th class="text-center" nzShowSort nzWidth="120px" nzSortKey="Schedule">
+            <span>{{l('Schedule')}}</span>
+          </th> -->
+<!--           <th nz-th class="text-center" nzShowSort nzWidth="120px" nzSortKey="Sort">
+            <span>{{l('Sort')}}</span>
+          </th> -->
+          <th nz-th class="text-center" nzShowSort nzWidth="120px" nzSortKey="Price">
+            <span>{{l('Price')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="120px" nzSortKey="Discount">
+            <span>{{l('Discount')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="160px" nzSortKey="UpperTime">
+            <span>{{l('UpperTime')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="160px" nzSortKey="LowerTime">
+            <span>{{l('LowerTime')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="120px" nzSortKey="Position">
+            <span>{{l('Position')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="IsEnabled">
+            <span>{{l('IsEnabled')}}</span>
+          </th>
+          <th nzWidth="150px" class="text-center" nzRight="0px">
+            <span>{{l('Actions')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <!-- 全选框 -->
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)" nzWidth="60px"
+          nzLeft="0px"></td>
+          <!--           <td nz-td nzWidth="140px" nzLeft="120px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.scheduleId">
+                {{item.scheduleId}}
+              </span>
+            </ellipsis>
+          </td> -->
+
+          <!--           <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketId">
+                {{item.ticketId}}
+              </span>
+            </ellipsis>
+          </td> -->
+          <td nz-td nzWidth="120px" class="text-center" nzLeft="60px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticket">
+                {{item.ticketName}}
+              </span>
+            </ellipsis>
+          </td>
+
+          <td nz-td nzWidth="120px" class="text-center" nzLeft="60px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticket">
+                {{item.ticket.ticketName}}
+              </span>
+            </ellipsis>
+          </td>
+
+          <td nz-td nzWidth="120px" class="text-center" nzLeft="60px">
+            <span>
+              {{l(item.warePosition)}}
+            </span>
+          </td>
+
+            <!--             <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.isEnabled">
+                {{item.isEnabled}}
+              </span>
+            </ellipsis> -->
+
+<!--           <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.schedule" *ngIf="item.schedule">
+                {{item.schedule.scheduleCode}}
+              </span>
+            </ellipsis>
+          </td> -->
+<!--           <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.sort">
+                {{item.sort}}
+              </span>
+            </ellipsis>
+          </td> -->
+          <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.price">
+                {{item.price}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.discount">
+                {{item.discount}}
+              </span>
+            </ellipsis>
+          </td>
+          <td class="text-center" nz-td nzWidth="160px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.upperTimeStr">
+                {{item.upperTimeStr}}
+              </span>
+            </ellipsis>
+          </td>
+          <td class="text-center" nz-td nzWidth="160px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.lowerTimeStr">
+                {{item.lowerTimeStr}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.position">
+                {{l(item.position)}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="135px" class="text-center" [innerHTML]="item.isEnabled | yn"></td>
+          <td nz-td nzWidth="150px" class="text-center" nzRight="0px">
+            <ng-container *ngIf="!item.isEnabled">
+              <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="enabled(item.id)">
+                <span>{{l("Enabled")}}</span>
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="item.isEnabled">
+              <button nz-button [nzSize]="'small'" [nzType]="'danger'" (click)="notenabled(item.id)">
+                <span>{{l("NotEnabled")}}</span>
+              </button>
+            </ng-container>
+
+<!--                       <ng-container >
+              <a (click)="createOrEdit(item.id)">
+                <span>{{l('Edit')}}</span>
+              </a>
+              <nz-divider nzType="vertical"></nz-divider>
+            </ng-container> -->
+<!--             <ng-container >
+              <nz-popconfirm [nzTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)" [nzOkText]="l('Confirm')" [nzCancelText]="l('Cancel')">
+                <button nz-popconfirm nz-button [nzSize]="'small'" [nzType]="'danger'" >
+                  <span>{{l("Delete")}}</span>
+                </button>
+              </nz-popconfirm>
+            </ng-container> -->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

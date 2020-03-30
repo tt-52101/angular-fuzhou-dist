@@ -1,0 +1,103 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+  <div class="modal-header">
+    <div class="modal-title">
+      <span>航班控票</span>
+    </div>
+  </div>
+  <fieldset>
+    <div style="display: flex;">
+      <form nz-form [nzNoColon]="true" style="width:50%;display: inline-block;">
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('ScheduleCode')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span>{{entity.scheduleCode}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('Route')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span *ngIf="entity.route">{{entity.route.routeName}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('Boat')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span *ngIf="entity.boat">{{entity.boat.boatName}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('Wharf')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span *ngIf="entity.route">{{entity.route.startPosition}} - {{entity.route.endPosition}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('StartTime')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span>{{entity.startTimeStr}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('EndTime')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span>{{entity.endTimeStr}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('ScheduleStatus')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span>{{l(entity.scheduleStatus)}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('Ticket')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span *ngFor="let titem of entity.ticketPrices;let i = index" style="margin-right: 15px">{{titem.ticketName}}</span>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <form nz-form [nzNoColon]="true" style="width:50%;display: inline-block;">
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('SeatQuantity')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span>{{'标准舱' + entity.standardNum + '　VIP舱' + entity.vipNum + '　包间舱' + entity.compartmentNum}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7"><span>{{l('SurplusQuantity')}}</span></nz-form-label>
+          <nz-form-control [nzSm]="17">
+            <span>{{'标准舱' + entity.standardSurplusNum + '　VIP舱' + entity.vipSurplusNum + '　包间舱' + entity.compartmentSurplusNum}}</span>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7" nzFor="standardReserveNum"><span>标准舱预留数</span></nz-form-label>
+          <nz-form-control [nzSm]="17" style="margin-top: 4px;">
+            <input type="number" nz-input name="standardReserveNum" [(ngModel)]="entity.standardReserveNum" style="width: 250px">
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7" nzFor="vipReserveNum"><span>VIP舱预留数</span></nz-form-label>
+          <nz-form-control [nzSm]="17" style="margin-top: 4px;">
+            <input type="number" nz-input name="vipReserveNum" [(ngModel)]="entity.vipReserveNum" style="width: 250px">
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7" nzFor="compartmentReserveNum"><span>包间舱预留数</span></nz-form-label>
+          <nz-form-control [nzSm]="17" style="margin-top: 4px;">
+            <input type="number" nz-input name="compartmentReserveNum" [(ngModel)]="entity.compartmentReserveNum" style="width: 250px">
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem1">
+          <nz-form-label class="my-form-label" [nzSm]="7" nzFor="remark"><span>备注</span></nz-form-label>
+          <nz-form-control [nzSm]="17" style="margin-top: 4px;">
+            <textarea nz-input style="height: 100px;width: 250px" placeholder=请输入备注 required #remark="ngModel" [(ngModel)]="entity.remark" name="remark"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </fieldset>
+  <div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">取消</button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">确定</button>
+  </div>
+</form>

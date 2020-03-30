@@ -1,0 +1,200 @@
+<div class="normal-table-job">
+  <div *ngIf="enumName=='Faile'" class="alert alert-warning">
+    <strong>Failed jobs do not become expired</strong> to allow you to re-queue them without any time pressure. You
+    should
+    re-queue
+    or delete them manually, or apply
+    <code class="errorStyle">AutomaticRetry(OnAttemptsExceeded = AttemptsExceededAction.Delete)</code> attribute to
+    delete
+    them automatically.
+  </div>
+  <div>
+    <div class="my-md">
+      <nz-alert [nzType]="'info'" [nzMessage]="message">
+        <ng-template #message>
+          <nz-row>
+            <div nz-col [nzSpan]="6">
+              <span style="font-size: 18px;">{{title}}</span>&nbsp;
+              <strong class="text-primary">总共：{{totalItems}}</strong> 项
+            </div>
+            <div nz-col [nzSpan]="18" style="text-align:right;" *ngIf="enumName=='Success' || enumName=='Runing' 
+      || enumName=='Delete' || enumName=='Faile'">
+              <button nz-button nzType="primary" class="join-enqueue-button" (click)="onRetry()">
+                <i class="anticon anticon-setting"></i>重新加入队列</button>
+              <button *ngIf="enumName=='Runing' || enumName=='Faile'" nz-button nzType="primary"
+                class="delete-select-button" (click)="onDeleteJob()">
+                <i class="anticon anticon-delete"></i>删除选中
+              </button>
+            </div>
+
+            <div nz-col [nzSpan]="18" style="text-align:right;"
+              *ngIf="enumName=='Plan' || enumName=='Waiting' || enumName=='EnqueuedJob'">
+              <button nz-button nzType="primary" class="delete-select-button" (click)="onDeleteJob()">
+                <i class="anticon anticon-delete"></i>删除选中
+              </button>
+              <button *ngIf="enumName!='EnqueuedJob'" nz-button nzType="primary" class="join-enqueue-button"
+                (click)="onRunRetry()">
+                <i class="anticon anticon-caret-right"></i>加入队列</button>
+            </div>
+
+          </nz-row>
+        </ng-template>
+      </nz-alert>
+    </div>
+  </div>
+  <nz-table nzSize="middle" class="sms_table" #ajaxTable nzShowSizeChanger nzShowQuickJumper [nzData]="dataList"
+    [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading"
+    (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()" [nzFrontPagination]="false">
+    <thead>
+      <tr>
+        <th *ngIf="enumName!='Enqueued'" nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled"
+          [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+        <th *ngIf="enumName!='Enqueued' || enumName=='EnqueuedJob'">编号</th>
+        <th *ngIf="enumName!='Enqueued' || enumName=='EnqueuedJob'">作业</th>
+        <th *ngIf="enumName=='Success'">Total Duration</th>
+        <th *ngIf="enumName=='Plan'">队列</th>
+        <th *ngIf="enumName=='Runing'">服务器</th>
+        <th *ngIf="enumName=='Waiting'">选项</th>
+        <th *ngIf="enumName=='Waiting'">父级</th>
+        <th *ngIf="enumName!='Enqueued' || enumName=='EnqueuedJob'">时间</th>
+
+        <th *ngIf="enumName=='EnqueuedJob'">状态</th>
+        <th *ngIf="enumName=='Enqueued'">队列</th>
+        <th *ngIf="enumName=='Enqueued'">长度</th>
+        <th *ngIf="enumName=='Enqueued'">获取到</th>
+        <th *ngIf="enumName=='Enqueued'">下一个队列</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <ng-template ngFor let-data [ngForOf]="ajaxTable.data">
+        <tr>
+          <td *ngIf="enumName!='Enqueued'" nzShowCheckbox [(nzChecked)]="data.checked"
+            (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <td *ngIf="enumName!='Enqueued' || enumName=='EnqueuedJob'">
+            <a href="javascript:;" (click)="locationDetail(data.key)">#{{data.key}}</a>
+          </td>
+          <td *ngIf="enumName!='Enqueued' || enumName=='EnqueuedJob'">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="data.jobName"> {{data.jobName}} </span>
+            </ellipsis>
+            <div *ngIf="enumName=='Faile'">{{data.reson}}
+              <a href="javascript:;" (click)="toggleDetail(data.key)">
+                {{togglePara.state && togglePara.selectedKey==data.key?'Fewer details...':'More details...'}}</a>
+            </div>
+          </td>
+
+          <td *ngIf="enumName=='Success'">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="data.totalDuration"> {{data.totalDuration}} ms</span>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Plan'">
+            <ellipsis lines="1">
+              <nz-tag nz-tooltip [nzTitle]="data.enqueueAt | _date" [nzColor]="'#2db7f5'">
+                {{data.enqueueAt | momentFromNow}}</nz-tag>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Runing'">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="data.serverId"> {{data.serverId}} </span>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Waiting'">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="data.options"> {{data.options}} </span>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Waiting'">
+            <ellipsis lines="1">
+              <a href="/jobDetail/{{data.parentId}}">
+                <span nz-tooltip [nzTitle]="data.parentName"> {{data.parentName}} </span>
+              </a>
+            </ellipsis>
+          </td>
+
+          <td *ngIf="enumName!='Enqueued' || enumName=='EnqueuedJob'">
+            <ellipsis lines="1">
+              <nz-tag [nzColor]="'#5cb85c'" nz-tooltip [nzTitle]="data.createAt | _date">
+                {{data.createAt | momentFromNow}}
+              </nz-tag>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='EnqueuedJob'">
+            <nz-tag [nzColor]="'#2db7f5'">{{data.resultState}}</nz-tag>
+          </td>
+
+          <td *ngIf="enumName=='Enqueued'">
+            <ellipsis lines="1">
+              <a style="font-size: 16px;" href="javascript:;"
+                (click)="onSelectQueue(data.queueName)">{{data.queueName}}</a>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Enqueued'">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="data.length"> {{data.length}} </span>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Enqueued'">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="data.fetched"> {{data.fetched}} </span>
+            </ellipsis>
+          </td>
+          <td *ngIf="enumName=='Enqueued'">
+            <span *ngIf="!data.firstJobs">没有作业</span>
+            <span *ngIf="data.firstJobs">
+              <i class="anticon anticon-arrow-down"></i>
+            </span>
+          </td>
+        </tr>
+        <tr *ngIf="enumName=='Faile'" [nzExpand]="data.expand">
+          <td colspan="1"></td>
+          <td colspan="3">
+            <h4>{{data.exceptionType}}</h4>
+            <p class="text-muted">
+              {{data.exceptionMessage}}
+            </p>
+            <p class="exceptionDetail">
+              {{data.exceptionDetails}}
+            </p>
+          </td>
+        </tr>
+
+        <tr *ngIf="enumName=='Enqueued'">
+          <td colspan="4">
+            <table class="childTable">
+              <tbody>
+                <tr>
+                  <td class="childTableTd">编号</td>
+                  <td class="childTableTd">状态</td>
+                  <td class="childTableTd">作业</td>
+                  <td class="childTableTd">时间</td>
+                </tr>
+                <tr *ngFor="let itemdata of data.firstJobs">
+                  <td>
+                    <a href="javascript:;" (click)="locationDetail(itemdata.key)">#{{itemdata.key}}</a>
+                  </td>
+                  <td>
+                    <nz-tag *ngIf="itemdata.resultState=='Succeeded'" [nzColor]="'#87d068'">{{itemdata.resultState}}
+                    </nz-tag>
+                    <nz-tag *ngIf="itemdata.resultState=='Enqueued'" [nzColor]="'#5bc0de'">{{itemdata.resultState}}
+                    </nz-tag>
+                    <nz-tag *ngIf="itemdata.resultState=='Deleted'" [nzColor]="'#ccc'">{{itemdata.resultState}}</nz-tag>
+                    <nz-tag *ngIf="itemdata.resultState=='Failed'" [nzColor]="'#d9534f'">{{itemdata.resultState}}
+                    </nz-tag>
+                  </td>
+                  <td>{{itemdata.jobName}}</td>
+                  <td>
+                    <nz-tag [nzColor]="'#5cb85c'" nz-tooltip [nzTitle]="itemdata.createAt | _date">
+                      {{itemdata.createAt | momentFromNow}}</nz-tag>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </nz-table>
+</div>

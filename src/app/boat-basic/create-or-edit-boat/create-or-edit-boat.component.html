@@ -1,0 +1,158 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+  <div class="modal-header">
+    <div class="modal-title">
+      <span *ngIf="entity.id">{{l('Edit')}}</span>
+      <span *ngIf="!entity.id">{{l('Create')}}</span>
+    </div>
+  </div>
+  <fieldset>
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="boatName">{{l('BoatName')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="boatName" #boatName="ngModel" [(ngModel)]="entity.boatName" [placeholder]="l('BoatName')" required>
+        <nz-form-explain *ngIf="boatName.control.dirty&&boatName.control.errors">
+          <ng-container *ngIf="boatName.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="boatCode">船名简写</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="boatCode" #boatCode="ngModel" [(ngModel)]="entity.boatCode" [placeholder]="l('BoatCode')" required>
+        <nz-form-explain *ngIf="boatCode.control.dirty&&boatCode.control.errors">
+          <ng-container *ngIf="boatCode.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="Picture">游船照片</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <nz-upload [nzAction]="uploadurl"
+        [nzShowUploadList]="false"
+        [nzHeaders]="hearder"
+        nzName="file"
+        (nzChange)="handleChange($event)">
+        <button nz-button type="button"><span>{{l('Upload')}}</span></button>
+      </nz-upload>
+      <span style="margin-left: 10px">{{picture}}</span>
+    </nz-form-control>
+  </nz-form-item>
+
+
+
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="runStatus" nzRequired>{{l('RunStatus')}}</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-select [(ngModel)]="entity.runStatus" name="runStatus">
+        <nz-option [nzLabel]="l('Running')" nzValue="Running">{{l('Running')}}</nz-option>
+        <nz-option [nzLabel]="l('Maintenance')" nzValue="Maintenance">{{l('Maintenance')}}</nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="routeId">{{l('Route')}}</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-select name="routeId" [(ngModel)]="entity.routeId" nzAllowClear required>
+        <nz-option *ngFor="let item of routeList;let i = index;" [nzValue]="item.id" [nzLabel]="item.routeName"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item nz-row>
+    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="standardNum">标准舱座位数</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input nz-input name="standardNum" #standardNum="ngModel" [(ngModel)]="entity.standardNum" placeholder="标准舱座位数" required>
+      <nz-form-explain *ngIf="standardNum.control.dirty&&standardNum.control.errors">
+        <ng-container *ngIf="standardNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="vipNum">VIP舱座位数</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input nz-input name="vipNum" #vipNum="ngModel" [(ngModel)]="entity.vipNum" placeholder="VIP舱座位数" required>
+      <nz-form-explain *ngIf="vipNum.control.dirty&&vipNum.control.errors">
+        <ng-container *ngIf="vipNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="compartmentNum">包间舱座位数</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input nz-input name="compartmentNum" #compartmentNum="ngModel" [(ngModel)]="entity.compartmentNum" placeholder="包间舱座位数" required>
+      <nz-form-explain *ngIf="compartmentNum.control.dirty&&compartmentNum.control.errors">
+        <ng-container *ngIf="compartmentNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+      </nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="registryPort">船籍港</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input nz-input name="registryPort" #registryPort="ngModel" [(ngModel)]="entity.registryPort" placeholder="船籍港" required>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="callName">船舶呼号</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input nz-input name="callName" #callName="ngModel" [(ngModel)]="entity.callName" placeholder="船舶呼号" required>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="imoNumber">IMO编号</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input nz-input name="imoNumber" #imoNumber="ngModel" [(ngModel)]="entity.imoNumber" placeholder="IMO编号" required>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="createDate">建成日期</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <nz-date-picker required nzFormat="yyyy-MM-dd" name="createDate" (ngModelChange)="datechange($event)" [(ngModel)]="createDate" nzPlaceHolder="建成日期"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="grossWeight">总吨</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input type="number" nz-input name="grossWeight" #grossWeight="ngModel" [(ngModel)]="entity.grossWeight" placeholder="总吨" required>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="netWeight">净吨</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input type="number" nz-input name="netWeight" #netWeight="ngModel" [(ngModel)]="entity.netWeight" placeholder="净吨" required>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="grossPower">总功率</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <input type="number" nz-input name="grossPower" #grossPower="ngModel" [(ngModel)]="entity.grossPower" placeholder="总功率" required>
+    </nz-form-control>
+  </nz-form-item>
+
+
+</fieldset>
+<!-- 模态框底部 -->
+<div class="modal-footer">
+  <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+    {{l("Cancel")}}
+  </button>
+  <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">
+    {{l("Save")}}
+  </button>
+</div>
+</form>

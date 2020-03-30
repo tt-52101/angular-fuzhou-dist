@@ -1,0 +1,59 @@
+import { Component, OnInit, Injector, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { ModalComponentBase } from '@shared/component-base/modal-component-base';
+import { CreateOrUpdateMenuInput, MenuEditDto, MenuServiceProxy } from '@shared/service-proxies/service-proxies';
+import { Validators, AbstractControl, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'edit-control',
+  templateUrl: './edit-control.component.html',
+  styleUrls: [
+    'edit-control.component.less'
+  ],
+})
+
+export class EditControlComponent extends ModalComponentBase
+implements OnInit {
+
+
+  forminfo = {
+    info1: '',
+    info2: '',
+    info3: '',
+    info4: '',
+    info5: '',
+    info6: ''
+  };
+
+
+  /**
+   * 初始化的构造函数
+   */
+  constructor(
+    injector: Injector,
+  ) {
+    super(injector);
+  }
+
+  ngOnInit(): void {
+    this.init();
+  }
+
+  init(): void {
+
+  }
+
+
+
+  submitForm(): void {
+    const input = new CreateOrUpdateMenuInput();
+
+    this.saving = true;
+
+    // this._menuService.createOrUpdate(input)
+    //   .finally(() => (this.saving = false))
+    //   .subscribe(() => {
+    //     this.notify.success(this.l('SavedSuccessfully'));
+    //     this.success(true);
+    //   });
+  }
+}

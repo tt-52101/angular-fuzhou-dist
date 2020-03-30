@@ -1,0 +1,270 @@
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="16">
+      <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true">
+
+        <nz-form-item class="formitem">
+          <nz-form-label>航线</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="routeId" nzAllowClear style="width: 200px" name="route">
+              <nz-option *ngFor="let item of routeList;let i = index;" [nzValue]="item.id" [nzLabel]="item.routeName"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item class="formitem">
+          <nz-form-label>游船</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="boatId" nzAllowClear style="width: 200px" name="boat">
+              <nz-option *ngFor="let item of boatList;let i = index;" [nzValue]="item.id" [nzLabel]="item.boatName"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="formitem">
+          <nz-form-label>{{l('Date')}}</nz-form-label>
+          <nz-form-control>
+            <nz-range-picker style="width: 230px" nzFormat="yyyy-MM-dd" (ngModelChange)="datechange($event)" name="collectionTime" [nzDisabledDate]="disabledDate"
+            [(ngModel)]="collectionTime"></nz-range-picker>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item class="formitem" style="margin:0 8px 0 10px;">
+          <button nz-button [nzType]="'primary'" type="submit" (click)="refreshGoFirstPage()" style="padding: 0px 20px;height: 32px;">{{l("Query")}}</button>
+        </nz-form-item>
+      </form>
+    </nz-row>
+  </div>
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzPageSizeOptions]="pageSizes" nzBordered  [nzTotal]="totalItems" [nzFrontPagination]="false" >
+
+        <ng-template #noDataTemplate>
+          <no-data></no-data>
+        </ng-template>
+        <thead (nzSortChange)="gridSort($event)">
+          <tr>
+            <th nz-th class="text-center" nzLeft="0px"><span>{{l('Route')}}</span></th>
+            <th nz-th class="text-center"><span>{{l('Line')}}</span></th>
+            <th nz-th class="text-center"><span>{{l('游船数量')}}</span></th>
+
+            <th class="text-center"><span>{{l('TicketQuantity')}}</span></th>
+            <th class="text-center"><span>{{l('RefundQuantity')}}</span></th>
+            <th class="text-center"><span>{{l('QuantitySubtotal')}}</span></th>
+            <th class="text-center"><span>{{l('TicketAmount')}}</span></th>
+            <th class="text-center"><span>{{l('RefundAmount')}}</span></th>
+            <th class="text-center"><span>{{l('AmountSubtotal')}}</span></th>
+
+
+            <th class="text-center" nzRight="0px"><span>{{l('Action')}}</span></th>
+
+          </tr>
+        </thead>
+        <!-- 表格内容 -->
+        <tbody>
+          <tr *ngFor="let item of ajaxTable.data">
+
+            <td nz-td class="text-center" nzLeft="0px">
+              <span *ngIf="item.route">
+                {{item.route.routeName}}
+              </span>
+              <span *ngIf="!item.route">
+               合计
+             </span>
+           </td>
+           <td nz-td class="text-center">
+            <span *ngIf="item.route">
+              {{item.route.startPosition}}-{{item.route.endPosition}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.boatCount}}
+            </span>
+          </td>
+
+          <td nz-td class="text-center">
+            <span>
+              {{item.saleCount}}
+            </span>
+          </td>
+          <td nz-td class="text-center" [ngStyle]="{'color':item.refundCount > 0? 'red':'rgba(0,0,0,0.65)'}">
+            <span>
+              {{item.refundCount}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.totalCount}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              ￥{{item.saleAmount}}
+            </span>
+          </td>
+          <td nz-td class="text-center" [ngStyle]="{'color':item.refundAmount > 0? 'red':'rgba(0,0,0,0.65)'}">
+            <span>
+              ￥{{item.refundAmount}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              ￥{{item.totalAmount}}
+            </span>
+          </td>
+
+          <td class="text-center" nzRight="0px">
+            <ng-container>
+              <a (click)="open(item.route.id)" *ngIf="item.route">
+                <span>{{l('Detail')}}</span> </a>
+              </ng-container>
+            </td>
+          </tr>
+
+
+
+
+          <tr *ngFor="let item of total">
+
+            <td nz-td class="text-center" nzLeft="0px">
+              <span *ngIf="item.route">
+                {{item.route.routeName}}
+              </span>
+              <span *ngIf="!item.route">
+               合计
+             </span>
+           </td>
+           <td nz-td class="text-center">
+            <span *ngIf="item.route">
+              {{item.route.startPosition}}-{{item.route.endPosition}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.boatCount}}
+            </span>
+          </td>
+
+          <td nz-td class="text-center">
+            <span>
+              {{item.saleCount}}
+            </span>
+          </td>
+          <td nz-td class="text-center" [ngStyle]="{'color':item.refundCount > 0? 'red':'rgba(0,0,0,0.65)'}">
+            <span>
+              {{item.refundCount}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.totalCount}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              ￥{{item.saleAmount}}
+            </span>
+          </td>
+          <td nz-td class="text-center" [ngStyle]="{'color':item.refundAmount > 0? 'red':'rgba(0,0,0,0.65)'}">
+            <span>
+              ￥{{item.refundAmount}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              ￥{{item.totalAmount}}
+            </span>
+          </td>
+
+          <td class="text-center" nzRight="0px">
+            <ng-container>
+              <a (click)="open(item.route.id)" *ngIf="item.route">
+                <span>{{l('Detail')}}</span> </a>
+              </ng-container>
+            </td>
+          </tr>
+
+        </tbody>
+      </nz-table>
+    </nz-row>
+  </nz-card>
+
+
+  <nz-drawer [nzVisible]="visible" nzPlacement="bottom" [nzHeight]="700" [nzTitle]="l('Detail')" (nzOnClose)="close()">
+
+    <nz-table #ajaxTable2 [nzData]="ticketinfo" [nzScroll]="{ x: '970px',y:'600px' }" style="word-break:break-all;" nzBordered>
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <thead>
+        <tr>
+          <th class="text-center" style="font-weight: 600" nzWidth="150px">
+            <span>{{l('Schedule')}}</span>
+          </th>
+          <th class="text-center" style="font-weight: 600" nzWidth="200px">
+            <span>{{l('Ticket')}}</span>
+          </th>
+          <th class="text-center" style="font-weight: 600" nzWidth="120px">
+            <span>{{l('Boat')}}</span>
+          </th>
+          <th class="text-center" style="font-weight: 600" nzWidth="150px">
+            <span>{{l('StartTime')}}</span>
+          </th>
+          <th class="text-center" style="font-weight: 600" nzWidth="150px">
+            <span>{{l('EndTime')}}</span>
+          </th>
+          <th class="text-center" style="font-weight: 600" nzWidth="100px">
+            <span>{{l('SeatQuantity')}}</span>
+          </th>
+          <th class="text-center" style="font-weight: 600" nzWidth="100px">
+            <span>{{l('SaledCount')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ajaxTable2.data; let i = index;">
+          <td class="text-center" nzWidth="150px">
+            <span>
+              {{item.scheduleCode}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="180px">
+            <span *ngFor="let titem of item.tickets;let i = index">
+              <span *ngIf="i==0">
+                {{titem.ticketName}}
+              </span>
+              <span *ngIf="i!=0">
+                ,{{titem.ticketName}}
+              </span>
+            </span>
+          </td>
+          <td class="text-center" nzWidth="130px">
+            <span>
+              {{item.boat.boatName}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="150px">
+            <span>
+              {{item.startTime |_date}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="100px">
+            <span>
+              {{item.endTime |_date}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="100px">
+            <span>
+              {{item.seatQuantity}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="100px">
+            <span>
+              {{item.saledCount}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </nz-drawer>

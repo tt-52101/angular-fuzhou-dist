@@ -1,0 +1,222 @@
+<!-- <page-header [title]="l('Customer')"></page-header> -->
+<nz-card [nzBordered]="false">
+  <nz-row>
+    <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true">
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("Name")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input name="info1" [(ngModel)]="forminfo.info1">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("Mobile")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input name="info1" [(ngModel)]="forminfo.info1">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("Sex")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input name="info1" [(ngModel)]="forminfo.info1">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 下拉框 -->
+      <nz-form-item>
+        <nz-form-label>{{l("CertificateType")}}</nz-form-label>
+        <nz-form-control>
+          <nz-select [(ngModel)]="forminfo.info2" name="HasException" [nzPlaceHolder]="l('ErrorState')" nzAllowClear style="width: 180px">
+            <nz-option [nzLabel]="l('All')" nzValue=""></nz-option>
+            <nz-option [nzLabel]="l('PRCIdCard')" nzValue="1"></nz-option>
+            <nz-option [nzLabel]="l('TaiwanResidentCard')" nzValue="2"></nz-option>
+            <nz-option [nzLabel]="l('HongKongAndMacaoResidentCard')" nzValue="3"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("CertificatesNum")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input name="info1" [(ngModel)]="forminfo.info1">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin:0 0 0 10px">
+        <nz-form-control>
+          <button nz-button nzType="primary" style="margin:0 10px 0 0">{{l("Search")}}</button>
+          <button nz-button nzType="danger" style="margin:0 10px 0 0">{{l("BatchDelete")}}</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-row>
+  <!-- 实体的表格内容 -->
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" nzBordered [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzFrontPagination]="false" [nzScroll]="{ x: '1700px', y: '600px' }" style="word-break:break-all">
+      <!-- 暂无数据组件 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)" nzWidth="100px" nzLeft="0"></th>
+          <th nz-th nzWidth="100px" class="text-center" nzLeft="100px">
+            <span>{{l('CustomerName')}}</span>
+          </th>
+          <th nz-th nzWidth="120px" class="text-center">
+            <span>{{l('Mobile')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('LoginPwd')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('Sex')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('Country')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('Province')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('City')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('County')}}</span>
+          </th>
+          <th nz-th nzWidth="180px" class="text-center">
+            <span>{{l('CertificatesNum')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('VerifiableType')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('Job')}}</span>
+          </th>
+          <th nz-th nzWidth="100px" class="text-center">
+            <span>{{l('OpenID')}}</span>
+          </th>
+          <th nz-th nzWidth="150px" class="text-center">
+            <span>{{l('Photo')}}</span>
+          </th>
+          <th nz-th nzWidth="150px" class="text-center">
+            <span>{{l('DateOfBirth')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <!-- 全选框 -->
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)" nzWidth="100px" nzLeft="0"></td>
+          <td nz-td nzWidth="100px" class="text-center" nzLeft="100px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.customerName">
+                {{item.customerName}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="120px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.mobile">
+                {{item.mobile}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.loginPwd">
+                {{item.loginPwd}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.sex">
+                {{item.sex}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.country">
+                {{item.country}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.province">
+                {{item.province}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.city">
+                {{item.city}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.county">
+                {{item.county}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="180px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.certificatesNum">
+                {{item.certificatesNum}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.verifiableType">
+                {{item.verifiableType}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="100px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.job">
+                {{item.job}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="150px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.openID">
+                {{item.openID}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td nzWidth="200px" class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.photo">{{item.photo}}</span>
+            </ellipsis>
+            <!-- <img [src]="item.photo"> -->
+          </td>
+          <td class="text-center" nzWidth="150px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.dateOfBirth  |_date">
+                {{item.dateOfBirth |_date}}
+              </span>
+            </ellipsis>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

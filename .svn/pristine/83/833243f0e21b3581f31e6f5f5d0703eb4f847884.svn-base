@@ -1,0 +1,94 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+
+  <div class="modal-header">
+    <div class="modal-title">
+      <span>成人票</span>
+    </div>
+  </div>
+
+
+  <fieldset>
+    <div class="flexbox">
+      <div class="leftbox">
+        <div class="boxtitle">证件信息</div>
+
+        <div class="left-bottom-box">
+          <div class="formbox">
+            <nz-form-item nz-row>
+              <nz-form-label nz-col [nzSm]="6" nzRequired nzFor="iocName">证件类型</nz-form-label>
+              <nz-form-control nz-col [nzSm]="17" nzHasFeedback>
+                <nz-select [(ngModel)]="entity.iocName" name="iocName" (ngModelChange)="iconChange($event)">
+                  <nz-option *ngFor="let item of iconarr" [nzLabel]="item.title" [nzValue]="item.title" nzCustomContent >{{item.title}}</nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+              <nz-form-label nz-col [nzSm]="6" nzRequired nzFor="menuName">证件号码</nz-form-label>
+              <nz-form-control nz-col [nzSm]="17" nzHasFeedback>
+                <input nz-input name="menuName" #menuName="ngModel" [(ngModel)]="entity.menuName" [placeholder]="l('MenuName')" required>
+                <!-- 校验 -->
+                <nz-form-explain *ngIf="menuName.control.dirty&&menuName.control.errors">
+                  <ng-container *ngIf="menuName.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+              <nz-form-label nz-col [nzSm]="6" nzRequired nzFor="menuCode">姓名</nz-form-label>
+              <nz-form-control nz-col [nzSm]="17" nzHasFeedback>
+                <input nz-input name="menuCode" #menuCode="ngModel" [(ngModel)]="entity.menuCode" [placeholder]="l('MenuCode')" required>
+                <!-- 校验 -->
+                <nz-form-explain *ngIf="menuCode.control.dirty&&menuCode.control.errors">
+                  <ng-container *ngIf="menuCode.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+              <nz-form-label nz-col [nzSm]="6" nzRequired nzFor="iocName">性别</nz-form-label>
+              <nz-form-control nz-col [nzSm]="17" nzHasFeedback>
+                <nz-select [(ngModel)]="entity.iocName" name="iocName" (ngModelChange)="iconChange($event)">
+                  <nz-option *ngFor="let item of iconarr" [nzLabel]="item.title" [nzValue]="item.title" nzCustomContent >{{item.title}}</nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+              <nz-form-label [nzSm]="6" nzFor="sort">国籍</nz-form-label>
+              <nz-form-control nz-col [nzSm]="17" nzHasFeedback>
+                <input nz-input name="sort" #sort="ngModel" [(ngModel)]="entity.sort" [placeholder]="l('Sort')">
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row>
+              <nz-form-label [nzSm]="6" nzFor="level">手机号</nz-form-label>
+              <nz-form-control nz-col [nzSm]="17" nzHasFeedback>
+                <input nz-input name="level" #level="ngModel" [(ngModel)]="entity.level" [placeholder]="l('Level')">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div class="imgbox">
+           <button nz-button type="button" class="readfile">读取证件</button>
+           <img src="/assets/images/icons/defaultimg.png">
+         </div>
+       </div>
+
+     </div>
+
+     <div class="rightbox">
+       <div class="boxtitle">人脸信息</div>
+       <div class="prebox"></div>
+       <button nz-button type="button" class="imgbtn">拍照</button>
+     </div>
+   </div>
+
+ </fieldset>
+
+
+ <div class="modal-footer">
+  <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">取消</button>
+  <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">确认添加</button>
+</div>
+</form>

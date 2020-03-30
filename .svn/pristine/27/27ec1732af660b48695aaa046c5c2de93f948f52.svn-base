@@ -1,0 +1,50 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { SellManagementRoutingModule } from './sell-management-routing.module';
+
+import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '@shared/shared.module';
+
+import { AbpModule } from '@abp/abp.module';
+
+import { SellTicketsComponent } from './selltickets/selltickets.component';
+import { CreateOrEditPassengerComponent } from './selltickets/create-or-edit-passenger/create-or-edit-passenger.component';
+
+import { InternetTicketComponent } from './internetticket/internetticket.component';
+
+import { RefundTicketComponent } from './refundticket/refundticket.component';
+
+import { ControlTicketComponent } from './controlticket/controlticket.component';
+import { EditControlComponent } from './controlticket/edit-control/edit-control.component';
+
+import { PassengerInfoComponent } from './passengerinfo/passengerinfo.component';
+import { EditInfoComponent } from './passengerinfo/edit-info/edit-info.component';
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    SellManagementRoutingModule,
+    SharedModule,
+    AbpModule,
+  ],
+  declarations: [
+    SellTicketsComponent,
+    CreateOrEditPassengerComponent,
+    EditControlComponent,
+    EditInfoComponent,
+    InternetTicketComponent,
+    RefundTicketComponent,
+    ControlTicketComponent,
+    PassengerInfoComponent,
+  ],
+  entryComponents: [
+    CreateOrEditPassengerComponent,
+    EditControlComponent,
+    EditInfoComponent,
+  ],
+  providers: []
+})
+export class SellManagementModule {}

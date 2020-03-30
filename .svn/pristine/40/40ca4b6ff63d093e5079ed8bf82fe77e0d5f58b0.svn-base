@@ -1,0 +1,6 @@
+<div class="contentbox">
+  <nz-card [nzBordered]="false" class="leftcard">
+
+  </nz-card>
+
+</div>

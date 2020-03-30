@@ -1,0 +1,146 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+  <!-- 模态框头部 -->
+  <div class="modal-header">
+    <div class="modal-title">
+      <!-- <i class="anticon anticon-medicine-box mr-sm"></i> -->
+      <span *ngIf="entity.id">{{l('Edit')}}</span>
+      <span *ngIf="!entity.id">{{l('Create')}}</span>
+    </div>
+  </div>
+  <!-- 模态框内容 -->
+  <fieldset>
+    <!-- 提示信息 -->
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="saleDateStr" nzRequired>航班日期</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24">
+        <nz-date-picker nzFormat="yyyy-MM-dd" name="saleDateStr" [nzPlaceHolder]="l('SaleDate')" [(ngModel)]="sDStr" *ngIf="single"></nz-date-picker>
+        <nz-range-picker nzFormat="yyyy-MM-dd" (ngModelChange)="datechange($event)" name="collectionTime" [(ngModel)]="collectionTime" *ngIf="!single"></nz-range-picker>
+        <button style="margin-left: 20px" nz-button [nzType]="'primary'" *ngIf="single && !id" type="button" (click)="changetype()">批量添加</button>
+        <button style="margin-left: 20px" nz-button [nzType]="'primary'" *ngIf="!single && !id" type="button" (click)="changetype()">单日添加</button>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="startTimeStr">{{l('StartTime')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-time-picker nzFormat="HH:mm:ss" name="startTimeStr" [nzPlaceHolder]="l('StartTime')" [(ngModel)]="sStr" required></nz-time-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="endTimeStr">{{l('EndTime')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-time-picker nzFormat="HH:mm:ss" name="endTimeStr" [nzPlaceHolder]="l('EndTime')" [(ngModel)]="eStr" required></nz-time-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="checkStartTimeStr" nzRequired>{{l('CheckStartTime')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-time-picker name="checkStartTimeStr" [nzPlaceHolder]="l('CheckStartTime')" nzFormat="HH:mm:ss" required [(ngModel)]="cSStr"></nz-time-picker>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="checkEndTimeStr" nzRequired>{{l('CheckEndTime')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-time-picker name="checkEndTimeStr" [nzPlaceHolder]="l('CheckEndTime')" nzFormat="HH:mm:ss" required [(ngModel)]="cEStr"></nz-time-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="scheduleCode">{{l('ScheduleCode')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="scheduleCode" #scheduleCode="ngModel" [(ngModel)]="entity.scheduleCode" [placeholder]="l('ScheduleCode')" required>
+        <nz-form-explain *ngIf="scheduleCode.control.dirty&&scheduleCode.control.errors">
+          <ng-container *ngIf="scheduleCode.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="routeId">{{l('Route')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-select name="routeId" [(ngModel)]="entity.routeId" nzAllowClear required>
+          <nz-option *ngFor="let item of routeList;let i = index;" [nzValue]="item.id" [nzLabel]="item.routeName"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="boatId">{{l('Boat')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-select [(ngModel)]="entity.boatId" name="boatId" nzAllowClear (ngModelChange)="boatChange($event)" required>
+          <nz-option *ngFor="let item of boatList;let i = index;" [nzValue]="item.id" [nzLabel]="item.boatName + ' （'+ l(item.runStatus) + '）' + '　标准舱' + item.standardNum + '　VIP舱' + item.vipNum + '　包间舱' + item.compartmentNum "></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row *ngIf="!id">
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="standardNum">标准舱座位数</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="standardNum" #standardNum="ngModel" [(ngModel)]="entity.standardNum" placeholder="标准舱座位数" required>
+        <nz-form-explain *ngIf="standardNum.control.dirty&&standardNum.control.errors">
+          <ng-container *ngIf="standardNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row *ngIf="!id">
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="vipNum">VIP舱座位数</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="vipNum" #vipNum="ngModel" [(ngModel)]="entity.vipNum" placeholder="VIP舱座位数" required>
+        <nz-form-explain *ngIf="vipNum.control.dirty&&vipNum.control.errors">
+          <ng-container *ngIf="vipNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row *ngIf="!id">
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="compartmentNum">包间舱座位数</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <input nz-input name="compartmentNum" #compartmentNum="ngModel" [(ngModel)]="entity.compartmentNum" placeholder="包间舱座位数" required>
+        <nz-form-explain *ngIf="compartmentNum.control.dirty&&compartmentNum.control.errors">
+          <ng-container *ngIf="compartmentNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="ticketIds" nzRequired>票价</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24">
+        <nz-select name="ticketIds" nzMode="multiple" nzPlaceHolder="票价" [(ngModel)]="entity.ticketIds">
+          <nz-option *ngFor="let option of ticketlist" [nzLabel]="l(option.warePosition) +'　' + option.ticketName + '　￥' + option.price " [nzValue]="option.id"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="scheduleSaleStatus" nzRequired>售票状态</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-select [(ngModel)]="entity.scheduleSaleStatus" name="scheduleSaleStatus">
+          <nz-option nzLabel="正常售票" nzValue="ScheduleNormal"></nz-option>
+          <nz-option nzLabel="停售" nzValue="ScheduleStopSale"></nz-option>
+          <nz-option nzLabel="停航" nzValue="ScheduleNotSale"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="scheduleStatus">{{l('ScheduleStatus')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
+        <nz-select [(ngModel)]="entity.scheduleStatus" nzAllowClear name="scheduleStatus">
+          <nz-option nzValue="WaitCheck" [nzLabel]="l('WaitCheck')"></nz-option>
+          <nz-option nzValue="BeginCheck" [nzLabel]="l('BeginCheck')"></nz-option>
+          <nz-option nzValue="ScheduleRunning" [nzLabel]="l('ScheduleRunning')"></nz-option>
+          <nz-option nzValue="Ending" [nzLabel]="l('Ending')"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+  </fieldset>
+  <div class="modal-footer">
+    <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+      {{l("Cancel")}}
+    </button>
+    <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">
+      {{l("Save")}}
+    </button>
+  </div>
+</form>

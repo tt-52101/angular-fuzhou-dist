@@ -1,0 +1,237 @@
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="16">
+      <!-- <nz-col nzMd="6" nzSm="6" class="btn-gutter"> -->
+        <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true">
+          <nz-form-item class="formitem">
+            <nz-form-label nzFor="scheduleCode">航班班次</nz-form-label>
+            <nz-form-control>
+              <input type="text" nz-input name="scheduleCode" [(ngModel)]="scqueryData[0].value" style="width: 130px">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="formitem">
+            <nz-form-label>航线</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="scqueryData[1].value" nzAllowClear style="width: 130px" name="route">
+                <nz-option *ngFor="let item of routeList;let i = index;" [nzValue]="item.id" [nzLabel]="item.routeName"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="formitem">
+            <nz-form-label>游船</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="scqueryData[2].value" nzAllowClear style="width: 130px" name="boat">
+                <nz-option *ngFor="let item of boatList;let i = index;" [nzValue]="item.id" [nzLabel]="item.boatName"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="formitem">
+            <nz-form-label>行程状态</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="scqueryData[3].value" nzAllowClear style="width: 130px" name="status">
+                <nz-option nzValue="WaitCheck" [nzLabel]="l('WaitCheck')"></nz-option>
+                <nz-option nzValue="BeginCheck" [nzLabel]="l('BeginCheck')"></nz-option>
+                <nz-option nzValue="ScheduleRunning" [nzLabel]="l('ScheduleRunning')"></nz-option>
+                <nz-option nzValue="Ending" [nzLabel]="l('Ending')"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="formitem">
+            <nz-form-label>发船时间</nz-form-label>
+            <nz-form-control>
+              <nz-range-picker nzFormat="yyyy-MM-dd" (ngModelChange)="datechange($event)" name="boattime" [(ngModel)]="boattime"></nz-range-picker>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item class="formitem" style="margin:4px 8px 0 10px;">
+            <button nz-button [nzType]="'primary'" (click)="refreshGoFirstPage()" style="padding: 0px 20px;height: 32px;">{{l("Query")}}</button>
+          </nz-form-item>
+
+        </form>
+      </nz-row>
+    </div>
+    <nz-row class="my-md">
+      <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading"
+      (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false" nzBordered
+      [nzScroll]="{ x: '2950px',y: '620px'}" style="word-break:break-all">
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nz-th class="text-center" nzWidth="150px" nzLeft="0px">
+            <span>{{l('ScheduleCode')}}</span>
+          </th>
+
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>标准舱座位数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>标准舱剩余数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>标准舱预留数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>VIP舱座位数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>VIP舱剩余数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>VIP舱预留数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>包间舱座位数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>包间舱剩余数</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="130px">
+            <span>包间舱预留数</span>
+          </th>
+
+          <th nz-th class="text-center" nzWidth="135px">
+            <span>备注</span>
+          </th>
+
+
+          <th nz-th class="text-center" nzWidth="135px">
+            <span>{{l('Route')}}</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="135px">
+            <span>{{l('Boat')}}</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="300px">
+            <span>{{l('Ticket')}}</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="135px">
+            <span>{{l('ScheduleStatus')}}</span>
+          </th>
+
+          <th nz-th class="text-center" nzWidth="170px">
+            <span>{{l('StartTime')}}</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="170px">
+            <span>{{l('EndTime')}}</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="170px">
+            <span>{{l('CheckStartTime')}}</span>
+          </th>
+          <th nz-th class="text-center" nzWidth="170px">
+            <span>{{l('CheckEndTime')}}</span>
+          </th>
+
+          <th nz-th class="text-center" nzWidth="100px" nzRight="0px">
+            <span>{{l('Actions')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <td nz-td class="text-center" nzLeft="0px">
+            <span>
+              {{item.scheduleCode}}
+            </span>
+          </td>
+
+          <td nz-td class="text-center">
+            <span>
+              {{item.standardNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.standardSurplusNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.standardReserveNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.vipNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.vipSurplusNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.vipReserveNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.compartmentNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.compartmentSurplusNum}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.compartmentReserveNum}}
+            </span>
+          </td>
+
+          <td nz-td class="text-center">
+            <span>
+              {{item.route.remark}}
+            </span>
+          </td>
+
+          <td nz-td class="text-center">
+            <span>
+              {{item.route.routeName}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{item.boat.boatName}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span *ngFor="let titem of item.ticketPrices;let i = index">
+              <span *ngIf="i==0">
+                {{titem.ticketName}}
+              </span>
+              <span *ngIf="i!=0">
+                ,{{titem.ticketName}}
+              </span>
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span>
+              {{l(item.scheduleStatus)}}
+            </span>
+          </td>
+
+          <td nz-td class="text-center" [innerHTML]="item.startTimeStr">
+          </td>
+          <td nz-td class="text-center" [innerHTML]="item.endTimeStr">
+          </td>
+          <td nz-td class="text-center" [innerHTML]="item.checkStartTimeStr">
+          </td>
+          <td nz-td class="text-center" [innerHTML]="item.checkEndTimeStr">
+          </td>
+
+          <td nz-td class="text-center" nzRight="0px">
+            <ng-container *ngIf="isAllOperation || curmenupower.indexOf('CreateOrUpdate') > -1">
+              <a (click)="editcontrol(item)">
+                <span>{{l('Edit')}}</span>
+              </a>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

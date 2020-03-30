@@ -1,0 +1,102 @@
+.formitem {
+  margin: 0 8px 10px 0;
+}
+
+.datectrl {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dateinfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+}
+
+.dateinfo p {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.dateinfo span {
+  font-size: 20px;
+}
+
+
+.hblist {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 5px 20px;
+  overflow-y: scroll;
+  height: 550px;
+}
+
+.hblist::-webkit-scrollbar {
+  display: none;
+}
+
+.hbitem {
+
+}
+.infobox{
+    padding: 15px 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;  
+}
+.hb-item-left {
+  width: 50%;
+}
+
+.hb-item-left-top {
+  display: flex;
+  align-items: center;
+}
+
+.ycimg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.hb-item-left-top-right {}
+
+.hb-item-left-top-right-top {
+  display: flex;
+  align-items: center
+}
+
+.hb-item-left-bottom span {
+  margin-right: 25px;
+}
+
+.hb-item-right {
+  display: flex;
+  width: 50%;
+  height: 50px;
+  align-items: center;
+  border-left: 1px dashed #ccc;
+}
+
+.hb-item-right div {
+  padding: 0 25px;
+  border-right: 1px solid #eee;
+}
+
+.hb-item-right div:last-child {
+  border: none;
+}
+
+.loadmore {
+  width: 100px;
+  margin: 20px 0;
+  margin-left: calc(50% - 50px);
+}
+
+.ticketbox{
+
+}

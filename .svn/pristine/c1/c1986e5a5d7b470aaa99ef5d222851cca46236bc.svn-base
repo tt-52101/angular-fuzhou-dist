@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { ShipComponent } from './ship/ship.component';
+
+const routes: Routes = [
+{
+	path: '',
+	children: [
+	{ path: 'ship', component: ShipComponent ,data: { title: '船只管理' }},
+	{
+		path: '**',
+		redirectTo: 'ship'
+	}
+	]
+}
+];
+
+@NgModule({
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule]
+})
+export class ShippingManagementRoutingModule {}

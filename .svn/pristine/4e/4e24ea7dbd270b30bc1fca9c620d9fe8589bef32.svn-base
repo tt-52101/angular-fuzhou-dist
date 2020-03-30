@@ -1,0 +1,79 @@
+import { Component, OnInit, Injector, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { ModalComponentBase } from '@shared/component-base/modal-component-base';
+import { CreateOrUpdateMenuInput, MenuEditDto, MenuServiceProxy } from '@shared/service-proxies/service-proxies';
+import { Validators, AbstractControl, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'edit-ship',
+  templateUrl: './edit-ship.component.html',
+  styleUrls: [
+    'edit-ship.component.less'
+  ],
+})
+
+export class EditShipComponent extends ModalComponentBase
+implements OnInit {
+
+  /**
+   * 初始化的构造函数
+   */
+  constructor(
+    injector: Injector,
+  ) {
+    super(injector);
+  }
+
+  ngOnInit(): void {
+    this.init();
+  }
+
+  init(): void {
+
+  }
+
+
+  forminfo = {
+
+    info1: '',
+    info2: '',
+    info3: 1,
+    info4: [],
+    info5: '',
+    info6: '',
+    info7: [],
+    info8: false,
+  }
+
+  imageHandler() {
+    const Imageinput = document.createElement('input');
+    Imageinput.setAttribute('type', 'file');
+    Imageinput.setAttribute('accept', 'image/png, image/gif, image/jpeg, image/bmp, image/x-icon');
+    Imageinput.classList.add('ql-image');
+    Imageinput.addEventListener('change', () => {
+
+      // console.log(Imageinput.files[0])
+
+      // const file = Imageinput.files[0];
+      // const data: FormData = new FormData();
+      // data.append('file', file, file.name);
+      // const headers = new Headers();
+      // headers.append('Accept', 'application/json');
+      // const options = new RequestOptions({ headers: header });
+
+      // console.log(options)
+
+      if (Imageinput.files != null && Imageinput.files[0] != null) {
+        // this.http.post('http://xxxx/upload', data, options)
+        //   .subscribe(res => {
+        //     const range = this.editor.getSelection(true);
+        //     const index = range.index + range.length;
+        //     this.editor.insertEmbed(range.index, 'image', 'http://' + res.url);
+        //     //this.editor.insertEmbed(this.editor.getSelection(true).index, 'image', imageUrl);
+        //   });
+      }
+
+    });
+    Imageinput.click();
+  }
+
+}

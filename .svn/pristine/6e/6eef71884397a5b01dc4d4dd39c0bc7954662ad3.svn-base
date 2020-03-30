@@ -1,0 +1,402 @@
+
+
+<page-header [title]="l('ActivityTemp')"></page-header>
+
+<nz-card [nzBordered]="false">
+
+    <div class="mb-md">
+        <!-- 模糊搜索框 -->
+        <nz-row nzGutter="8">
+            <nz-col nzSm="24">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+                            <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText" [placeholder]="l('SearchWithThreeDot')">
+                            <ng-template #suffixSearchButton>
+                                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                                    <i class="anticon anticon-search"></i>
+                                </button>
+                            </ng-template>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <div class="mb-md">
+        <!-- 操作常规按钮部分 如： 添加、批量删除、导出Excel表 -->
+        <nz-row nzGutter="8">
+            <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+
+
+                <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.ActivityTemp.Create')" (click)="createOrEdit()">
+                    <i class="anticon anticon-plus"></i>
+                    <span>
+                        {{l("Create")}}
+                    </span>
+                </button>
+                <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.ActivityTemp.BatchDelete')" (click)="batchDelete()">
+                    <i class="anticon anticon-delete"></i>
+                    <span>
+                        {{l("BatchDelete")}}
+                    </span>
+                </button>
+                <button nz-button nzType="default" *ngIf="isGranted('Pages.ActivityTemp.ExportToExcel')" (click)="exportToExcel()">
+                    <i class="anticon anticon-file-excel"></i>
+                    <span>
+                        {{l("ExportToExcel")}}
+                    </span>
+                </button>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <!-- 复选框提示的内容数据部分 -->
+    <div class="my-md">
+        <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+            <ng-template #message>
+                <span [innerHTML]="l('GridSelectedXItemsTips',selectedDataItems.length)"></span>
+                <a (click)="restCheckStatus(dataList)" class="ml-md">
+                    {{l('ClearEmpty')}}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="refreshGoFirstPage()">
+                    {{l('Refresh')}}
+                </a>
+            </ng-template>
+        </nz-alert>
+    </div>
+
+    <!-- 实体的表格内容 -->
+    <nz-row class="my-md">
+        <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading"
+                  (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true"
+                  [nzNoResult]="noDataTemplate" [nzShowTotal]="showTotalTemplate" [nzFrontPagination]="false">
+            <!-- 暂无数据组件 -->
+            <ng-template #noDataTemplate>
+                <no-data></no-data>
+            </ng-template>
+            <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+            <ng-template #showTotalTemplate let-total let-range="range">
+                {{l('GridFooterDisplayText',pageNumber,totalPages,total,range[0],range[1])}}
+            </ng-template>
+            <!-- 表头 -->
+            <thead (nzSortChange)="gridSort($event)">
+                <tr>
+                    <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate"
+                        (nzCheckedChange)="checkAll($event)"></th>
+                    <th nz-th nzShowSort nzSortKey="ActivityNo">
+                        <span>{{l('ActivityNo')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="SourceId">
+                        <span>{{l('SourceId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Source">
+                        <span>{{l('Source')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="ScheduleId">
+                        <span>{{l('ScheduleId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Schedule">
+                        <span>{{l('Schedule')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="ActivityDate">
+                        <span>{{l('ActivityDate')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="PlayDate">
+                        <span>{{l('PlayDate')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="CustomerId">
+                        <span>{{l('CustomerId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Customer">
+                        <span>{{l('Customer')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="OrderType">
+                        <span>{{l('OrderType')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="PayStatus">
+                        <span>{{l('PayStatus')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Buyer">
+                        <span>{{l('Buyer')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Mobile">
+                        <span>{{l('Mobile')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="PayMethodId">
+                        <span>{{l('PayMethodId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="PayMethod">
+                        <span>{{l('PayMethod')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="VoucherNo">
+                        <span>{{l('VoucherNo')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Remark">
+                        <span>{{l('Remark')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="TotalQuantity">
+                        <span>{{l('TotalQuantity')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="TotalAmount">
+                        <span>{{l('TotalAmount')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="CollectionPwd">
+                        <span>{{l('CollectionPwd')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Collector">
+                        <span>{{l('Collector')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="CollectionCode">
+                        <span>{{l('CollectionCode')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="PayTime">
+                        <span>{{l('PayTime')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="ActivityId">
+                        <span>{{l('ActivityId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Activity">
+                        <span>{{l('Activity')}}</span>
+                    </th>
+                    <th nzWidth="230px" class="text-center">
+                        <span>{{l('Actions')}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <!-- 表格内容 -->
+            <tbody>
+                <tr *ngFor="let item of ajaxTable.data">
+                    <!-- 全选框 -->
+                    <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.activityNo">
+                                {{item.activityNo}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.sourceId">
+                                {{item.sourceId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.source">
+                                {{item.source}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.scheduleId">
+                                {{item.scheduleId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.schedule">
+                                {{item.schedule}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.activityDate  |_date">
+                                {{item.activityDate  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.playDate  |_date">
+                                {{item.playDate  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.customerId">
+                                {{item.customerId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.customer">
+                                {{item.customer}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.orderType">
+                                {{item.orderType}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.payStatus">
+                                {{item.payStatus}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.buyer">
+                                {{item.buyer}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.mobile">
+                                {{item.mobile}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.payMethodId">
+                                {{item.payMethodId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.payMethod">
+                                {{item.payMethod}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.voucherNo">
+                                {{item.voucherNo}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.remark">
+                                {{item.remark}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.totalQuantity">
+                                {{item.totalQuantity}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.totalAmount">
+                                {{item.totalAmount}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.collectionPwd">
+                                {{item.collectionPwd}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.collector">
+                                {{item.collector}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.collectionCode">
+                                {{item.collectionCode}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.payTime  |_date">
+                                {{item.payTime  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.activityId">
+                                {{item.activityId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.activity">
+                                {{item.activity}}
+                            </span>
+                        </ellipsis>
+                    </td>
+
+
+                    <td>
+                        <!-- 编辑 -->
+                        <ng-container *ngIf="isGranted('Pages.ActivityTemp.Edit')">
+                            <a (click)="createOrEdit(item.id)">
+                                <i class="anticon anticon-edit mr-sm"></i>
+                                <span>{{l('Edit')}}</span>
+                            </a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                        </ng-container>
+                        <!-- 删除 -->
+                        <ng-container *ngIf="isGranted('Pages.ActivityTemp.Delete')">
+                            <nz-popconfirm [nzTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)" [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+                                <a nz-popconfirm>
+                                    <i class="anticon anticon-delete mr-sm"></i>
+                                    <span>{{l('Delete')}}</span>
+                                </a>
+                            </nz-popconfirm>
+                        </ng-container>
+                        <!-- 更多 -->
+                        <ng-container *ngIf="isGrantedAny('Pages.ActivityTemp', 'Pages.ActivityTemp.Create', 'Pages.ActivityTemp.Edit')">
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <nz-dropdown>
+                                <a nz-dropdown>
+                                    <i class="anticon anticon-down"></i>
+                                    <span>{{l('More')}}</span>
+                                    
+                                </a>
+                                <!-- <ul nz-menu>
+                                    <li nz-menu-item  ngIf = "isGranted('Pages.ActivityTemp.Edit')"  (click)="createOrEdit(item.id) ">
+                                        <a>
+                                            <i class="anticon anticon-safety mr-sm"></i>
+                                            <span>{{l('Edit')}}</span>
+                                        </a>
+                                    </li>
+                                    <li nz-menu-item   *ngIf = "isGranted('Pages.ActivityTemp.Delete')"  (click)="delete(item) ">
+                                        <a>
+                                            <i class="anticon anticon-unlock mr-sm"></i>
+                                            <span>{{l('Delete')}}</span>
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </nz-dropdown>
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+
+    </nz-row>
+</nz-card>
+

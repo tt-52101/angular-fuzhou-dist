@@ -1,0 +1,19 @@
+@import "../../../../node_modules/@delon/theme/styles/default";
+:host ::ng-deep {
+
+  @media screen and (max-width: @screen-xl) and (min-width: @screen-lg) {
+
+  }
+  @media screen and (max-width: @screen-lg) {
+
+  }
+  @media screen and (max-width: @screen-md) {
+
+  }
+  @media screen and (max-width: @screen-sm) {
+
+  }
+  @media screen and (max-width: @screen-xs) {
+
+  }
+}

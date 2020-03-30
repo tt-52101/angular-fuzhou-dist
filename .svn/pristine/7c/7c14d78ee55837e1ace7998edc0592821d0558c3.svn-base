@@ -1,0 +1,49 @@
+import { Component, OnInit, Injector } from '@angular/core';
+
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+import { EditInfoComponent } from './edit-info/edit-info.component';
+
+import { AppComponentBase } from '@shared/component-base/app-component-base';
+
+import { ReuseTabService } from '@delon/abc';
+
+@Component({
+  selector: 'app-passengerinfo',
+  templateUrl: './passengerinfo.component.html',
+  styleUrls: ['./passengerinfo.component.less'],
+  animations: [appModuleAnimation()],
+})
+export class PassengerInfoComponent extends AppComponentBase implements OnInit {
+
+  constructor(
+    injector: Injector,
+    private _reuseTabService: ReuseTabService,
+  ) {
+    super(injector);
+    this._reuseTabService.title = this.l('乘客信息');
+  }
+
+  ngOnInit() {
+
+  }
+
+  forminfo = {
+    info1: '',
+    info2: '',
+    info3: '',
+    info4: '',
+    info5: '',
+    info6: ''
+  };
+
+editinfo(){
+  this.modalHelper.static(EditInfoComponent)
+    .subscribe(result => {
+      if (result) {
+        // this.refresh();
+      }
+    });
+}
+
+}

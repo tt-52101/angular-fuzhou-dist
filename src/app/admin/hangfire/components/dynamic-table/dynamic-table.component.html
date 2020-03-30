@@ -1,0 +1,35 @@
+<nz-table *ngIf="dataList" class="sms_table" #basicTable nzShowSizeChanger nzShowQuickJumper [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+  [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()" [nzFrontPagination]="false"
+  (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()">
+  <thead>
+    <tr>
+      <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate"
+        (nzCheckedChange)="checkAll($event)"></th>
+      <th *ngFor="let data of dataColumnList">{{l(data.propertyName)}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+      <td *ngFor="let property of dataColumnList">
+        <span [ngSwitch]="property.columnType">
+          <ellipsis lines="1">
+            <!-- list列表 -->
+            <span *ngSwitchCase="2">
+              <nz-tag *ngFor="let item of data[property.propertyName]" [nzColor]="'blue'">{{item}}</nz-tag>
+            </span>
+            <!-- 日期 -->
+            <span *ngSwitchCase="'dateType'">
+              <nz-tag nz-tooltip [nzTitle]="data[property.propertyName] | momentFromNow" [nzColor]="'#2db7f5'"> {{data[property.propertyName] | momentFromNow}}</nz-tag>
+            </span>
+            <!-- 链接 -->
+            <span *ngSwitchCase="4">
+              <a href="javascript:;" title="{{data[property.propertyName]}}" (click)="locationDetail(data[property.propertyName])">#{{data[property.propertyName]}}</a>
+            </span>
+            <span *ngSwitchDefault nz-tooltip [nzTitle]="data[property.propertyName]">{{data[property.propertyName]}}</span>
+          </ellipsis>
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

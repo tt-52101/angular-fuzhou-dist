@@ -1,0 +1,206 @@
+
+<nz-card [nzBordered]="false">
+
+  <nz-row>
+    <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true" style="border-bottom: 1px solid #ccc;">
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info1">航线</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="info1" [(ngModel)]="forminfo.info2" style="width: 150px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info2">航班班次</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="info2" [(ngModel)]="forminfo.info2" style="width: 150px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info3">游船</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="info3" [(ngModel)]="forminfo.info2" style="width: 150px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info5">行程状态</nz-form-label>
+        <nz-form-control>
+          <nz-select name="info5" [(ngModel)]="forminfo.info5" name="info5" nzAllowClear style="width: 150px">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="" nzLabel="正在检票"></nz-option>
+            <nz-option nzValue="" nzLabel="等待检票"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info6">日期</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="info6" [(ngModel)]="forminfo.info2" style="width: 150px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin:0 8px 0 10px;">
+        <button nz-button nzSize="small" style="width: 120px;margin-top: 4px;padding: 0px 20px;height: 32px;background: #3086c4;color: #fff">查询订单</button>
+      </nz-form-item>
+    </form>
+  </nz-row>
+
+  <nz-row style="display: flex;">
+    <nz-col style="width: 75%;margin-top: 20px">
+      <nz-table #ajaxTable [nzData]="dataList"  [nzScroll]="{ x: '920px',y:'480px' }">
+        <!-- 暂无数据 -->
+        <ng-template #noDataTemplate>
+          <no-data></no-data>
+        </ng-template>
+        <!-- 表头 -->
+        <thead>
+          <tr>
+            <!-- 选择框 -->
+            <!-- <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)" nzWidth="80px"></th> -->
+            <!-- 序号 -->
+            <th nzWidth="80px" class="text-center">
+              <span>#</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('UserName')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('Actives')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('CreationTime')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('Role')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('UserName')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('Actives')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('CreationTime')}}</span>
+            </th>
+            <th class="text-center" nzWidth="180px">
+              <span>{{l('Role')}}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ajaxTable.data; let i = index;">
+            <!-- 选择框 -->
+            <!-- <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td> -->
+            <!-- 序号 -->
+            <td class="text-center">{{i + 1}}</td>
+            <!-- 文本 -->
+            <td class="text-center">
+              <ellipsis lines="1">
+                <span nz-tooltip [nzTitle]="item.userName">
+                  {{item.userName}}
+                </span>
+              </ellipsis>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </td>
+          </tr>
+<!--           <tr>
+            <td class="text-center"></td>
+            <td class="text-center">合计</td>
+            <td class="text-center">1</td>
+            <td class="text-center">1</td>
+            <td class="text-center">1</td>
+            <td class="text-center">1</td>
+          </tr> -->
+        </tbody>
+      </nz-table>
+    </nz-col>
+
+    <nz-col style="width: 25%;">
+      <div class="borderbox">
+        <form nz-form class="mb-md my-form">
+
+          <nz-form-item class="formitem1">
+            <nz-form-label class="my-form-label" [nzSm]="6"><span>订单号</span></nz-form-label>
+            <nz-form-control [nzSm]="17">
+              <span>￥90</span>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="formitem1">
+            <nz-form-label class="my-form-label" [nzSm]="6"><span>航班</span></nz-form-label>
+            <nz-form-control [nzSm]="17">
+              <span>￥90</span>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="formitem1">
+            <nz-form-label class="my-form-label" [nzSm]="6"><span>支付方式</span></nz-form-label>
+            <nz-form-control [nzSm]="17">
+              <span>￥90</span>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="formitem1">
+            <nz-form-label class="my-form-label" [nzSm]="6"><span>退款方式</span></nz-form-label>
+            <nz-form-control [nzSm]="17">
+              <span>￥90</span>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="formitem1">
+            <nz-form-label class="my-form-label" [nzSm]="6"><span>应退金额</span></nz-form-label>
+            <nz-form-control [nzSm]="17">
+              <span>￥90</span>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="formitem1">
+            <nz-form-label class="my-form-label" [nzSm]="6" nzFor="info4"><span>退款备注</span></nz-form-label>
+            <nz-form-control [nzSm]="17" style="margin-top: 4px;">
+              <textarea nz-input placeholder="Autosize height" [(ngModel)]="value" [nzAutosize]="{ minRows: 2, maxRows: 6 }" name="info4" style="width: 220px;"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="formitem1">
+            <nz-form-control>
+              <button nz-button class="submitbtn">退款</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </nz-col>
+  </nz-row>
+
+</nz-card>

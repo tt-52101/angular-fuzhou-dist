@@ -1,0 +1,212 @@
+import { Component, OnInit, Injector } from '@angular/core';
+import { AppComponentBase } from '@shared/component-base/app-component-base';
+import { _HttpClient } from '@delon/theme';
+import { NzMessageService } from 'ng-zorro-antd';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+
+declare var echarts: any;
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.less'],
+
+  animations: [appModuleAnimation()],
+})
+export class DashboardComponent extends AppComponentBase implements OnInit {
+  peoplecount = 119000;
+  incomecount = 20006700.00;
+
+  range1 = 'day';
+  range2 = 'day';
+
+  tabbarindex = 0;
+  datepicker = '';
+
+  // theme = {}
+
+
+  flightData = [{
+    fname: 'HB001',
+    statu: '正在检票',
+    hname: '航线一',
+    bname: '海坛2号',
+    stime: '2019-10-15 10:00:00',
+    etime: '2019-10-15 12:00:00',
+  }, {
+    fname: 'HB001',
+    statu: '正在检票',
+    hname: '航线一',
+    bname: '海坛2号',
+    stime: '2019-10-15 10:00:00',
+    etime: '2019-10-15 12:00:00',
+  }, {
+    fname: 'HB001',
+    statu: '正在检票',
+    hname: '航线一',
+    bname: '海坛2号',
+    stime: '2019-10-15 10:00:00',
+    etime: '2019-10-15 12:00:00',
+  }, {
+    fname: 'HB001',
+    statu: '正在检票',
+    hname: '航线一',
+    bname: '海坛2号',
+    stime: '2019-10-15 10:00:00',
+    etime: '2019-10-15 12:00:00',
+  }, ];
+
+  constructor(
+    injector: Injector,
+    private http: _HttpClient,
+    public msg: NzMessageService,
+  ) {
+    super(injector);
+  }
+
+
+
+
+  ngOnInit(): void {
+
+    var that = this
+    setTimeout(function() {
+      that.setecharts1()
+      that.setecharts2()
+    }, 1000)
+  };
+
+  setecharts1(): void {
+    let date1 = [];
+    let data1 = [Math.random() * 24];
+
+    for (let i = 0; i < 11; i++) {
+      let now = new Date();
+      date1.push([now.getMinutes(), now.getSeconds() + i].join(':'));
+      data1.push(Math.round((Math.random() - 0.3) * 10));
+    }
+    // console.log(data1)
+
+    let option1 = {
+      tooltip: {
+        show: false,
+        trigger: 'axis',
+        position: 'top'
+      },
+      title: {
+        left: 'center',
+        text: '',
+        textStyle: {
+          fontSize: 25
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: date1
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%']
+      },
+      dataZoom: [{
+        type: 'inside',
+        start: 0,
+        end: 100
+      }],
+      series: [{
+        name: '',
+        type: 'line',
+        smooth: true,
+        symbol: 'none',
+        sampling: 'average',
+        itemStyle: {
+          color: '#495BE6'
+        },
+        areaStyle: {
+          color: echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: '#CAD2FC'
+          }, {
+            offset: 1,
+            color: '#F1EBFF'
+          }])
+        },
+        data: data1
+      }]
+    };
+
+    let chart1 = echarts.init(document.getElementById("container1")).setOption(option1, true)
+
+  };
+
+  setecharts2(): void {
+    let data2 = [
+      { value: 35, name: '老人票' },
+      { value: 30, name: '假日票' },
+      { value: 24, name: '儿童票' },
+      { value: 48, name: '成人票' },
+    ]
+
+    let option2 = {
+      title: {
+        text: '今日票型比例分析',
+        x: 'center',
+        textStyle: {
+          fontSize: 25
+        }
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: "{b} : {c}"
+      },
+      legend: {
+        orient: 'vertical',
+        type: 'scroll',
+        right: 'right',
+        data: data2
+      },
+      series: [{
+        name: '访问来源',
+        type: 'pie',
+        radius: '55%',
+        center: ['50%', '50%'],
+        data: data2,
+        itemStyle: {
+          normal: {
+            labelLine: {
+              length: 50,
+            },
+            label: {
+              textStyle: {
+                color: '#3C4353',
+                fontSize: 16
+              }
+            }
+          },
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
+      }]
+    };
+
+    let chart2 = echarts.init(document.getElementById("container2")).setOption(option2, true)
+
+  };
+
+
+
+  tabbarchange(): void {
+
+  };
+
+  datechange(): void {
+
+  };
+
+
+}

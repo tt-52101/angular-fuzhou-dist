@@ -1,0 +1,345 @@
+import {
+  Component,
+  ViewChild,
+  ComponentFactoryResolver,
+  ViewContainerRef,
+  AfterViewInit,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  Renderer2,
+  Inject,
+  Injector,
+  NgZone,
+  KeyValueDiffers
+} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+  Router,
+  NavigationEnd,
+  RouteConfigLoadStart,
+  NavigationError,
+  NavigationCancel
+} from '@angular/router';
+import { NzMessageService, NzIconService } from 'ng-zorro-antd';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { updateHostClass } from '@delon/util';
+import { ScrollService, MenuService, SettingsService } from '@delon/theme';
+
+// #region icons
+
+import {
+  MenuFoldOutline,
+  MenuUnfoldOutline,
+  SearchOutline,
+  SettingOutline,
+  FullscreenOutline,
+  FullscreenExitOutline,
+  BellOutline,
+  LockOutline,
+  PlusOutline,
+  UserOutline,
+  LogoutOutline,
+  EllipsisOutline,
+  GlobalOutline,
+  ArrowDownOutline,
+  // Optional
+  GithubOutline,
+  AppstoreOutline
+} from '@ant-design/icons-angular/icons';
+
+const ICONS = [
+  MenuFoldOutline,
+  MenuUnfoldOutline,
+  SearchOutline,
+  SettingOutline,
+  FullscreenOutline,
+  FullscreenExitOutline,
+  BellOutline,
+  LockOutline,
+  PlusOutline,
+  UserOutline,
+  LogoutOutline,
+  EllipsisOutline,
+  GlobalOutline,
+  ArrowDownOutline,
+  // Optional
+  GithubOutline,
+  AppstoreOutline
+];
+
+// #endregion
+
+import { environment } from '@env/environment';
+import { AppComponentBase } from '@shared/component-base';
+
+import { SignalRAspNetCoreHelper } from '@shared/helpers/SignalRAspNetCoreHelper';
+import { AppMenus } from 'abpPro/AppMenus';
+
+import { MenuServiceProxy } from '@shared/service-proxies/service-proxies';
+
+@Component({
+  selector: 'layout-default',
+  templateUrl: './layout-default.component.html',
+  preserveWhitespaces: false,
+  host: {
+    '[class.alain-pro]': 'true'
+  }
+})
+export class LayoutDefaultComponent extends AppComponentBase
+implements OnInit, AfterViewInit, OnDestroy {
+  private notify$: Subscription;
+  isFetching = false;
+  constructor(
+    injector: Injector,
+    iconSrv: NzIconService,
+    router: Router,
+    scroll: ScrollService,
+    public menuSrv: MenuService,
+    public settings: SettingsService,
+    private el: ElementRef,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private doc: any,
+    private _zone: NgZone,
+    private _menuService: MenuServiceProxy
+  ) {
+    super(injector);
+    iconSrv.addIcon(...ICONS);
+    // scroll to top in change page
+    router.events.subscribe(evt => {
+      if (!this.isFetching && evt instanceof RouteConfigLoadStart) {
+        this.isFetching = true;
+      }
+      if (evt instanceof NavigationError || evt instanceof NavigationCancel) {
+        this.isFetching = false;
+        if (evt instanceof NavigationError) {
+          this.message.error(`无法加载${evt.url}路由`);
+        }
+        return;
+      }
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      setTimeout(() => {
+        scroll.scrollToTop();
+        this.isFetching = false;
+      }, 100);
+    });
+
+
+    this._menuService.getMenuTree()
+      .subscribe(res => {
+        // console.log(res)
+        // this.menuarr = res
+        // var menu = [{
+        //       "id": "b4fe61ba-39e3-4acf-b6b7-08d795b04cfb",
+        //       "text": "Dashboard",
+        //       "i18n": "Dashboard",
+        //       "link": "/app/main/dashboard",
+        //       "icon": "anticon anticon-dashboard",
+        //       "acl": "",
+        //       "childrens": [{
+        //         "id": "51d1c8af-d26a-4a7f-0040-08d797d577c2",
+        //         "text": "test",
+        //         "i18n": "test",
+        //         "link": "/app/main/dashboard/test",
+        //         "icon": "test",
+        //         "acl": "",
+        //         "childrens": null
+        //       }]
+        //     },
+        //     {
+        //       "id": "b26d13fb-dc74-4b8c-0041-08d797d577c2",
+        //       "text": "menu",
+        //       "i18n": "menu",
+        //       "link": "/app/admin/power-management/menu",
+        //       "icon": "anticon anticon-dashboard",
+        //       "acl": "",
+        //       "childrens": null
+        //     },
+        //     {
+        //       "id": "e52df907-05bd-4b79-b6b8-08d795b04cfb",
+        //       "text": "Tenants",
+        //       "i18n": "Tenants",
+        //       "link": "/app/admin/tenants",
+        //       "icon": "anticon anticon-dashboard",
+        //       "acl": "",
+        //       "childrens": null
+        //     },
+        //     {
+        //       "id": "19400714-56c6-41e5-b6b9-08d795b04cfb",
+        //       "text": "Editions",
+        //       "i18n": "Editions",
+        //       "link": "/app/admin/editions",
+        //       "icon": "anticon anticon-dashboard",
+        //       "acl": "",
+        //       "childrens": null
+        //     },
+        //     {
+        //       "id": "7e05cb20-7b97-4ee0-b6ba-08d795b04cfb",
+        //       "text": "Administration",
+        //       "i18n": "Administration",
+        //       "link": "",
+        //       "icon": "anticon anticon-appstore",
+        //       "acl": "",
+        //       "childrens": [{
+        //           "id": "87f72730-216a-4ac9-b6bb-08d795b04cfb",
+        //           "text": "OrganizationUnits",
+        //           "i18n": "OrganizationUnits",
+        //           "link": "/app/admin/organization-units",
+        //           "icon": "anticon anticon-team",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "00d21d2b-9c2b-4c80-b6bc-08d795b04cfb",
+        //           "text": "Roles",
+        //           "i18n": "Roles",
+        //           "link": "/app/admin/roles",
+        //           "icon": "anticon anticon-safety",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "9ca72ff2-d50b-46c7-b6bd-08d795b04cfb",
+        //           "text": "Users",
+        //           "i18n": "Users",
+        //           "link": "/app/admin/users",
+        //           "icon": "anticon anticon-user",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "a9f2e6fc-ed9c-4b15-b6be-08d795b04cfb",
+        //           "text": "Languages",
+        //           "i18n": "Languages",
+        //           "link": "/app/admin/languages",
+        //           "icon": "anticon anticon-global",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "4fcc370c-bfc5-407d-b6bf-08d795b04cfb",
+        //           "text": "AuditLogs",
+        //           "i18n": "AuditLogs",
+        //           "link": "/app/admin/auditLogs",
+        //           "icon": "anticon anticon-book",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "9141cd55-e8c5-498e-b6c0-08d795b04cfb",
+        //           "text": "Maintenance",
+        //           "i18n": "Maintenance",
+        //           "link": "/app/admin/maintenance",
+        //           "icon": "anticon anticon-setting",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "2002d902-a08f-4958-b6c1-08d795b04cfb",
+        //           "text": "Settings",
+        //           "i18n": "Settings",
+        //           "link": "/app/admin/host-settings",
+        //           "icon": "anticon anticon-setting",
+        //           "acl": "",
+        //           "childrens": null
+        //         },
+        //         {
+        //           "id": "66f93562-fb33-4dfb-b6c2-08d795b04cfb",
+        //           "text": "HangfireSchedule",
+        //           "i18n": "HangfireSchedule",
+        //           "link": "/app/admin/hangfire",
+        //           "icon": "anticon anticon-setting",
+        //           "acl": "",
+        //           "childrens": null
+        //         }
+        //       ]
+        //     },
+        //     {
+        //       "id": "46e66a44-d84d-4147-b6c3-08d795b04cfb",
+        //       "text": "WechatManagement",
+        //       "i18n": "WechatManagement",
+        //       "link": "",
+        //       "icon": "anticon anticon-info-circle",
+        //       "acl": "",
+        //       "childrens": [{
+        //         "id": "f3d22633-4abe-4aa4-b6c4-08d795b04cfb",
+        //         "text": "WechatAppConfig",
+        //         "i18n": "WechatAppConfig",
+        //         "link": "/app/wechat/wechat-app-config",
+        //         "icon": "anticon anticon-dashboard",
+        //         "acl": "",
+        //         "childrens": null
+        //       }]
+        //     },
+        //     {
+        //       "id": "fb3a7aad-1d6c-41a3-b6c5-08d795b04cfb",
+        //       "text": "DemoManagement",
+        //       "i18n": "DemoManagement",
+        //       "link": "/app/demo/demoui",
+        //       "icon": "anticon anticon-info-circle",
+        //       "acl": "",
+        //       "childrens": null
+        //     },
+        //     {
+        //       "id": "fab11472-ac18-4bc9-b6c6-08d795b04cfb",
+        //       "text": "About",
+        //       "i18n": "About",
+        //       "link": "/app/main/about",
+        //       "icon": "anticon anticon-info-circle",
+        //       "acl": "",
+        //       "childrens": null
+        //     }
+        //   ],
+          // this.menuSrv.add(menu);
+          // this.menuSrv.add(AppMenus);
+          this.menuSrv.add(res);
+      });
+
+
+  }
+
+  get collapsed(): boolean {
+    return this.settings.layout.collapsed;
+  }
+
+  private setClass() {
+    const { el, renderer, settings } = this;
+    const layout = settings.layout;
+
+    updateHostClass(
+      el.nativeElement,
+      renderer, {
+        ['alain-pro']: true,
+        // [`alain-pro__fixed`]: layout.fixed,
+        [`alain-pro__boxed`]: layout.boxed,
+        [`alain-pro__collapsed`]: layout.collapsed
+      },
+      true
+    );
+
+    this.doc.body.classList[layout.colorWeak ? 'add' : 'remove']('color-weak');
+    this.doc.body.classList[layout.theme === undefined || layout.theme === "light" ? 'add' : 'remove']('alain-pro__light');
+    this.doc.body.classList[layout.theme === "dark" ? 'add' : 'remove']('alain-pro__dark');
+  }
+
+  ngAfterViewInit(): void {}
+
+  ngOnInit() {
+    this.notify$ = this.settings.notify.subscribe(_ => this.setClass());
+    this.setClass();
+
+    // 初始化SignalR连接
+    this.initiSignalR();
+  }
+
+  ngOnDestroy() {
+    this.notify$.unsubscribe();
+  }
+
+  initiSignalR() {
+    // 连接到signalR
+    SignalRAspNetCoreHelper.initSignalR(() => {});
+  }
+}

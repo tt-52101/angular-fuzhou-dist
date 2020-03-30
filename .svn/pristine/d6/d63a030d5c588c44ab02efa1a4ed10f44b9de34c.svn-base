@@ -1,0 +1,41 @@
+import { Component, OnInit, Injector } from '@angular/core';
+
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+import { AppComponentBase } from '@shared/component-base/app-component-base';
+
+import { ReuseTabService } from '@delon/abc';
+
+@Component({
+  selector: 'app-internetticket',
+  templateUrl: './internetticket.component.html',
+  styleUrls: ['./internetticket.component.less'],
+  animations: [appModuleAnimation()],
+})
+export class InternetTicketComponent extends AppComponentBase implements OnInit {
+
+  constructor(
+    injector: Injector,
+    private _reuseTabService: ReuseTabService,
+  ) {
+    super(injector);
+    this._reuseTabService.title = this.l('网络取票');
+  }
+
+
+  forminfo = {
+    info1: '',
+    info2: '',
+    info3: '',
+    info4: '',
+    info5: '',
+    info6: ''
+  };
+  dataList=[]
+  ngOnInit() {
+
+  }
+
+
+
+}

@@ -1,0 +1,114 @@
+<div class="detailJobdiv">
+  <h2>{{jobDetail.jobName}}</h2>
+
+  <div class="alert alert-info">
+    <strong>The job is finished</strong>. It will be removed automatically
+    <em>
+      <abbr title="{{jobDetail.expireAt | _date}}" data-container="body">{{jobDetail.expireAt | momentFromNow}}</abbr>
+    </em>.
+  </div>
+  <div class="job-snippet">
+    <div class="job-snippet-code">
+      <pre><code style="border:none"><span class="comment">// Job Id: #{{jobKey}}</span>
+    <span class="keyword">using</span> {{jobDetail.namespace}};
+    
+    <span class="keyword">var</span>  {{jobDetail.className}} = Activate&lt;<span class="type">{{jobDetail.methodName}}</span>&gt;();
+    {{jobDetail.className}}(<span class="keyword">null</span>);
+    </code></pre>
+    </div>
+
+    <div class="job-snippet-properties">
+      <dl>
+        <dt>CurrentCulture</dt>
+        <dd>
+          <pre *ngIf="jobDetail.properties"><code>{{jobDetail.properties.CurrentCulture}}</code></pre>
+        </dd>
+        <dt>CurrentUICulture</dt>
+        <dd>
+          <pre *ngIf="jobDetail.properties"><code>{{jobDetail.properties.CurrentUICulture}}</code></pre>
+        </dd>
+        <dt>RecurringJobId</dt>
+        <dd>
+          <pre *ngIf="jobDetail.properties"><code>{{jobDetail.properties.RecurringJobId}}</code></pre>
+        </dd>
+        <dt>RetryCount</dt>
+        <dd>
+          <pre *ngIf="jobDetail.properties"><code>{{jobDetail.properties.RetryCount}}</code></pre>
+        </dd>
+      </dl>
+    </div>
+  </div>
+  <h3 style="margin-bottom: 15px;">
+    <span class="job-snippet-buttons pull-right">
+      <button nz-button nzType="primary" style="background-color:#5bc0de;border-color: #46b8da;" (click)="onRetryData()">
+        <i class="anticon anticon-setting"></i>重试</button>
+      <button nz-button nzType="primary" style="background-color: #d9534f;border-color: #d43f3a;" (click)="onDeleteJobData()">
+        <i class="anticon anticon-delete"></i>删除选中
+      </button>
+    </span>
+    状态
+  </h3>
+  <div *ngFor="let item of jobDetail.history;let i=index" class="state-card" [ngStyle]="{color: item.stateName=='Succeeded'? '#5cb85c':'gray',borderColor:'#e5e5e5'}">
+    <h4 class="state-card-title" [ngStyle]="{color: item.stateName=='Succeeded'? '#5cb85c':item.stateName=='Failed'?'#d9534f':'black'}">
+      <small class="pull-right text-muted">
+        <span *ngIf="item.stateName=='Succeeded'" title="{{item.data.SucceededAt | _date}}" data-container="body">{{item.data.SucceededAt | momentFromNow}} ({{item.createdAt | momentFromNow}})</span>
+        <span *ngIf="item.stateName=='Processing'" title="{{item.data.StartedAt | _date}}" data-container="body">{{item.data.StartedAt | momentFromNow}} ({{item.createdAt | momentFromNow}})</span>
+        <span *ngIf="item.stateName=='Scheduled'" title="{{item.data.ScheduledAt | _date}}" data-container="body">{{item.data.ScheduledAt | momentFromNow}} ({{item.createdAt | momentFromNow}})</span>
+        <span *ngIf="item.stateName=='Enqueued'" title="{{item.data.EnqueuedAt | _date}}" data-container="body">{{item.data.EnqueuedAt | momentFromNow}} ({{item.createdAt | momentFromNow}})</span>
+        <span *ngIf="item.stateName=='Failed'" title="{{item.data.FailedAt | _date}}" data-container="body">{{item.data.FailedAt | momentFromNow}} ({{item.createdAt | momentFromNow}})</span>
+        <span *ngIf="item.stateName=='Deleted'" title="{{item.data.DeletedAt | _date}}" data-container="body">{{item.data.DeletedAt | momentFromNow}} ({{item.createdAt | momentFromNow}})</span>
+        <span *ngIf="item.stateName=='Created'" title="{{item.createdAt | _date}}" data-container="body">{{item.createdAt | momentFromNow}}</span>
+      </small>
+      {{item.stateName}}
+    </h4>
+    <div *ngIf="item.stateName=='Deleted'">
+      <p>{{item.reason}}</p>
+    </div>
+    <div *ngIf="item.stateName=='Succeeded'" class="state-card-body" [ngStyle]="{backgroundColor:'#EDF7ED'}">
+      <p>
+        <span class="spanStyle">Latency：</span>
+        <span>{{item.data.Latency}}</span>
+      </p>
+      <p>
+        <span class="spanStyle">Duration：</span>
+        <span>{{item.data.PerformanceDuration}} ms</span>
+      </p>
+    </div>
+    <div *ngIf="item.stateName=='Failed'">
+      <div class="state-card-body" style="background-color: #FAEBEA">
+        <p>{{item.reason}}</p>
+        <h4>{{item.data.ExceptionType}}</h4>
+        <p>{{item.data.ExceptionMessage}}</p>
+        <p class="exceptionDetail">
+          {{item.data.ExceptionDetails}}
+        </p>
+      </div>
+    </div>
+    <div *ngIf="item.stateName=='Processing'" class="state-card-body" style="background-color: #f5f5f5">
+      <p>
+        <span class="spanStyle">Server：</span>
+        <span>{{item.data.ServerId}}</span>
+      </p>
+      <p>
+        <span class="spanStyle">Worker：</span>
+        <span>{{item.data.WorkerId}}</span>
+      </p>
+    </div>
+    <div *ngIf="item.stateName=='Enqueued'">
+      <p>{{item.reason}}</p>
+      <div class="state-card-body" style="background-color: #f5f5f5">
+        <p>
+          <span class="spanStyle">Queue：</span>
+          <span>{{item.data.Queue}}</span>
+        </p>
+      </div>
+    </div>
+    <div *ngIf="item.stateName=='Scheduled'">
+      <div class="state-card-body" style="background-color: #f5f5f5">
+        <p>
+          <span class="spanStyle">Enqueue at：</span>
+          <span>{{item.data.EnqueueAt | momentFromNow}}</span>
+        </p>
+      </div>
+    </div>
+  </div>

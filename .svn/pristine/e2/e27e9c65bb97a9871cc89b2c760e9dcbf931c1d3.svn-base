@@ -1,0 +1,80 @@
+<!-- <page-header [title]="'福州游船票务系统'"></page-header>
+
+<nz-card style="width:500px;height: 300px">
+	<p>营收状况</p>
+
+	<button nz-button type="button" (click)="changerange1($event)" [nzType]="range1 == 'day'?primary:default">今天</button>
+	<button nz-button type="button" (click)="changerange1($event)" [nzType]="range1 == 'week'?primary:default">一周</button>
+	<button nz-button type="button" (click)="changerange1($event)" [nzType]="range1 == 'month'?primary:default">一月</button>
+	<button nz-button type="button" (click)="changerange1($event)" [nzType]="range1 == 'year'?primary:default">一年</button>
+
+
+	<nz-row [nzGutter]="16">
+		<nz-col [nzSpan]="12">
+			<nz-statistic [nzValue]="peoplecount | number" [nzTitle]="'今日游客数量'"></nz-statistic>
+		</nz-col>
+		<nz-col [nzSpan]="12">
+			<nz-statistic [nzValue]="incomecount | number" [nzTitle]="'今日收入（RMB）'"></nz-statistic>
+		</nz-col>
+	</nz-row>
+
+	<div id="container1" style="height: 200px"></div>
+
+</nz-card>
+
+
+<nz-card style="width:500px;height: 300px;margin-top: 10px">
+	<p>票型比例分析</p>
+
+	<button nz-button type="button" (click)="changerange2($event)" [nzType]="range2 == 'day'?primary:default">今天</button>
+	<button nz-button type="button" (click)="changerange2($event)" [nzType]="range2 == 'week'?primary:default">一周</button>
+	<button nz-button type="button" (click)="changerange2($event)" [nzType]="range2 == 'month'?primary:default">一月</button>
+	<button nz-button type="button" (click)="changerange2($event)" [nzType]="range2 == 'year'?primary:default">一年</button>
+
+
+	<div id="container2" style="height: 200px"></div>
+
+</nz-card>
+
+<nz-card style="width:500px;height: 600px;margin-left: 10px">
+	<p>可售航班信息</p>
+
+	<nz-tabset [nzTabBarExtraContent]="tabBarextra" (nzSelectedIndexChange)="tabbarchange()" [nzSelectedIndex]="tabbarindex" [nzAnimated]="false">
+		<nz-tab nzTitle="今天"></nz-tab>
+		<nz-tab nzTitle="一周"></nz-tab>
+		<nz-tab nzTitle="一月"></nz-tab>
+		<nz-tab nzTitle="一年"></nz-tab>
+	</nz-tabset>
+
+	<ng-template #tabBarextra>
+		<nz-range-picker [nzFormat]="yyyy/MM/dd" [ngModel]="datepicker" (nzOnOk)="datechange()" [nzDisabledDate]="disabledDate"></nz-range-picker>
+	</ng-template>
+
+
+	<nz-table #flight [nzData]="flightData" [nzFrontPagination]="false">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Fname</th>
+				<th>Statu</th>
+				<th>Hname</th>
+				<th>Bname</th>
+				<th>Stime</th>
+				<th>Etime</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let data of flight.data">
+				<td>{{$index+1}}</td>
+				<td>{{ data.fname }}</td>
+				<td>{{ data.statu }}</td>
+				<td>{{ data.hname }}</td>
+				<td>{{ data.bname }}</td>
+				<td>{{ data.stime }}</td>
+				<td>{{ data.etime }}</td>
+			</tr>
+		</tbody>
+	</nz-table>
+
+
+</nz-card> -->

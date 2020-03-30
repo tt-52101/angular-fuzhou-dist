@@ -1,0 +1,136 @@
+<page-header [title]="'Hangfire管理'">
+</page-header>
+<nz-card [nzBordered]="false" class="hangfire-body" style="min-height: 100vh">
+  <nz-tabset [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="tabSelectedIndexChange($event)">
+    <nz-tab *ngFor="let tab of tabList;let i=index" [nzTitle]="titleTemplate">
+      <ng-template #titleTemplate>
+        <span>{{ tab.name }}</span>&nbsp;
+        <nz-badge *ngIf="i!=0 && tab.name=='作业' && statisticsInfoDto.enqueued>0" [nzCount]="statisticsInfoDto.enqueued"
+          nzShowZero [nzOverflowCount]="statisticsInfoDto.enqueued" [nzStyle]="{ backgroundColor: '#5bc0de' }">
+        </nz-badge>
+        <nz-badge *ngIf="i!=0" [nzCount]="tab.count" nzShowZero [nzOverflowCount]="tab.count"
+          [nzStyle]="{ backgroundColor: tab.name=='作业'?'#d9534f':tab.name=='重试'? '#f0ad4e':'#ccc' }"></nz-badge>
+      </ng-template>
+      <!-- 服务 -->
+      <div *ngIf="i==4" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <h2 style="border-bottom: 1px solid #efefef;padding-bottom: 15px;">服务器</h2>
+          <app-dynamic-table [(tableData)]="serverResultList.hangfireServerListDtos"
+            [(tableColumnData)]="serverResultList.columnHeaders" [(isTableLoading)]="isTableLoading"
+             [(pageNumber)]="pageNumber" [(pageSize)]="serverCount" [(totalItems)]="serverCount">
+          </app-dynamic-table>
+        </div>
+      </div>
+      <!-- 周期性作业 -->
+      <div *ngIf="i==3" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <h2 style="border-bottom: 1px solid #efefef;padding-bottom: 15px;">定期作业</h2>
+          <div style="margin-bottom: 10px;">
+            <button nz-button nzType="primary" style="background-color: #d9534f;border-color: #d43f3a;"
+              (click)="onDeleteRecurring()">
+              <i class="anticon anticon-delete"></i>删除
+            </button>
+            <button [nzLoading]="loading" nz-button nzType="primary"
+              style="background-color:#5bc0de;border-color: #46b8da;" (click)="onRunRecurring()">
+              <i class="anticon anticon-setting"></i>立即执行</button>
+          </div>
+          <app-dynamic-table #dynamicTable (refreshEvent)="refreshRecurring($event)"
+            [(tableData)]="recurringListJobDtos.items" [(tableColumnData)]="recurringResultList.columnHeaders"
+            [(isTableLoading)]="isTableLoading" [(totalItems)]="recurringListJobDtos.totalCount"
+            [(pageNumber)]="pageNumber" [(pageSize)]="pageSize" [nzFrontPagination]="false"></app-dynamic-table>
+        </div>
+      </div>
+      <!-- 重试作业 -->
+      <div *ngIf="i==2" nz-row [nzGutter]="24">
+        <div nz-col [nzSpan]="24">
+          <h2 style="border-bottom: 1px solid #efefef;padding-bottom: 15px;">重试</h2>
+          <div style="margin-bottom: 10px;">
+            <button nz-button nzType="primary" style="background-color: #d9534f;border-color: #d43f3a;"
+              (click)="onDeleteJobRetry()">
+              <i class="anticon anticon-delete"></i>删除选中
+            </button>
+            <button [nzLoading]="loading" nz-button nzType="primary"
+              style="background-color:#5bc0de;border-color: #46b8da;" (click)="onRunRetryJob()">
+              <i class="anticon anticon-reload"></i>队列作业</button>
+          </div>
+          <app-dynamic-table #dynamicTable (refreshEvent)="refreshRetries($event)"
+            [(tableData)]="retriesJobListDto.items" [(tableColumnData)]="retriesResultList.columnHeaders"
+            [(isTableLoading)]="isTableLoading" [(totalItems)]="retriesJobListDto.totalCount"
+            [(pageNumber)]="pageNumber" [(pageSize)]="pageSize" [nzFrontPagination]="false" (outDetailTabEvent)="outDetailTabMethod($event)"></app-dynamic-table>
+        </div>
+      </div>
+      <!-- 作业 -->
+      <div *ngIf="i==1" nz-row [nzGutter]="24" class="jobdiv">
+        <div nz-col [nzSpan]="5">
+          <nz-list [nzDataSource]="listArray" [nzItemLayout]="'horizontal'" [nzRenderItem]="item" [nzBordered]=true
+            nzSize="small">
+            <ng-template #item let-item>
+              <nz-list-item [nzActions]="[statictisAction]" (click)="onSelectJob(item)">
+                <ng-template #statictisAction>
+                  <span>
+                    <nz-badge *ngIf="item.count>0" [nzCount]="item.count" [nzOverflowCount]="item.count"
+                      [nzStyle]="{ backgroundColor: item.state=='Faile'?'#d9534f':item.state=='Plan'? '#f0ad4e' : item.state=='Enqueued'? '#5bc0de':item.state=='Runing'?'#f0ad4e':'#ccc'}">
+                    </nz-badge>
+                    <nz-badge *ngIf="item.count==0" [nzCount]="0" nzShowZero [nzOverflowCount]="0"
+                      [nzStyle]="{ backgroundColor: '#ccc'}"></nz-badge>
+                    <span *ngIf="item.count>0 && item.state=='Enqueued'">
+                      /
+                      <nz-badge [nzCount]="statisticsInfoDto.queues" nzShowZero
+                        [nzOverflowCount]="statisticsInfoDto.queues" [nzStyle]="{ backgroundColor: '#5bc0de'}">
+                      </nz-badge>
+                    </span>
+                  </span>
+                </ng-template>
+
+                <nz-list-item-meta [nzTitle]="nzTitle">
+                  <ng-template #nzTitle>
+                    <span>{{item.title}}</span>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+
+          </nz-list>
+        </div>
+        <div nz-col [nzSpan]="19">
+          <app-jobcommontable *ngIf="!jobKey" #commonTable [dataList]="dataList"
+            [totalItems]="totalItems" (onDeleteJobEvent)="onDeleteJob($event)" (onRunRetryEvent)="onRunRetry($event)"
+            (onRetryEvent)="onRetry($event)" [state]="requestParameter.state" [enumName]="enumName"
+            [title]="requestParameter.title" [queuename]="queuename" (outDetailPageEvent)="outDetailPage($event)">
+          </app-jobcommontable>
+          <div *ngIf="jobKey">
+            <app-jobdetail [jobKey]="jobKey"></app-jobdetail>
+          </div>
+        </div>
+      </div>
+
+      <!-- 仪表盘 -->
+      <div *ngIf="i==0" nz-row [nzGutter]="24">
+        <nz-row>
+          <div nz-col nzSpan="12" style="text-align: center;">
+            <div style="margin-left: 30px;text-align: left">
+              <h3>实时图走势</h3>
+            </div>
+            <div style="padding-top:150px;">
+              <img src="../../../assets/images/content-empty.svg" title="暂无" />
+              <p>暂无...</p>
+            </div>
+          </div>
+          <div nz-col nzSpan="12">
+            <div style="float:left;margin-left: 30px;">
+              <h3>历史图表走势</h3>
+            </div>
+            <div style="float:right;margin-right: 30px;">
+              <nz-button-group>
+                <button nz-button (click)="searchType('day')">天</button>
+                <button nz-button nzType="primary" (click)="searchType('week')">周</button>
+              </nz-button-group>
+            </div>
+            <app-index-history-chart [(chartData)]="historyData"></app-index-history-chart>
+
+          </div>
+        </nz-row>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</nz-card>

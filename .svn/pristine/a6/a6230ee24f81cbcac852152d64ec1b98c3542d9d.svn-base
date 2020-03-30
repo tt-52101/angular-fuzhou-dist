@@ -1,0 +1,32 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { ShippingManagementRoutingModule } from './shipping-management-routing.module';
+
+import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '@shared/shared.module';
+
+import { AbpModule } from '@abp/abp.module';
+
+
+import { ShipComponent } from './ship/ship.component';
+
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    ShippingManagementRoutingModule,
+    SharedModule,
+    AbpModule,
+  ],
+  declarations: [
+    ShipComponent,
+  ],
+  entryComponents: [
+
+  ],
+  providers: []
+})
+export class ShippingManagementModule {}

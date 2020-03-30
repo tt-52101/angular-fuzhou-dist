@@ -1,0 +1,87 @@
+.hangfire-body{
+    li{
+        padding: 10px 20px;
+        display: inline;
+        color:rgba(0, 0, 0, 0.65);
+    }
+    ul{
+        padding-left:0px;
+    }
+    .hangfire-header{
+        border: 1px solid #91d5ff;
+        background-color: #e6f7ff;
+        height: 60px;
+        color:#5bc0de;
+        display: flex;//flex布局
+        //justify-content: center;//使子项目水平居中
+        align-items: center;//使子项目垂直居中
+    }
+    .header{
+        //display: flex;
+        /* justify-content: center; */
+        //align-items: center;
+    }
+    .alert-warning {
+        color: #8a6d3b;
+        background-color: #fcf8e3;
+        border-color: #faebcc;
+    }
+    .alert{
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .text-muted{
+        color:#777;
+    }
+    .exceptionDetail{
+        font-family: initial;
+        margin-bottom: 3px;
+    }
+    .errorStyle{
+        color:#c7254e;
+    }
+}
+
+:host ::ng-deep {
+    .page-header__title{
+        font-size: 16px;
+        font-weight: normal;
+    }
+    // .jobdiv{
+    //     .ant-tabs-nav-container{
+    //         width:260px;
+    //     }
+    // }
+
+    .ant-list-bordered{
+        border: 1px dashed #d9d9d9;
+        //height: 500px;
+        min-height: 60vh;
+    }
+    .ant-list-bordered .ant-list-item{
+        border-bottom: 1px dashed #e8e8e8;
+    }
+    .ant-list-bordered .ant-list-item:last-child{
+        border-bottom: none;
+    }
+    .ant-table-body{
+        min-height: 500px;
+        //border: 1px dashed #d9d9d9;
+        border-radius: 8px;
+        border-bottom: none;
+    }
+    .ant-table-tbody > tr > td{
+        //border-bottom: 1px dashed #e8e8e8;
+    }
+    .ant-table-thead > tr > th{
+        background: #d9edf7;
+    }
+}
+
+.jobdiv{
+    .ant-tabs-nav-container{
+        width:260px;
+    }
+}

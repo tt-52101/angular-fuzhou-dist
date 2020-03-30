@@ -1,0 +1,85 @@
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <nz-row>
+      <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group [nzSuffix]="suffixTemplate">
+                <input type="text" nz-input [(ngModel)]="queryData[0].value" (keyup.enter)="refresh()" name="filterText" placeholder="请输入代码或中文">
+            </nz-input-group>
+            <ng-template #suffixTemplate>
+                <i nz-icon
+                nz-tooltip
+                class="ant-input-clear-icon"
+                nzTheme="fill"
+                nzType="close-circle"
+                *ngIf="queryData[0].value"
+                (click)="queryData[0].value = null">
+            </i>
+        </ng-template>
+    </nz-form-control>
+</nz-form-item>
+
+<nz-form-item class="formitem" style="margin:4px 0 0 10px;">
+    <button nz-button [nzType]="'primary'" (click)="refreshGoFirstPage()">
+      <span>
+        {{l("Query")}}
+    </span>
+</button>
+</nz-form-item>
+</form>
+</nz-row>
+</div>
+
+
+
+<nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" nzBordered [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzNoResult]="noDataTemplate" [nzPageSizeOptions]="pageSizes" [nzTotal]="totalItems" [nzFrontPagination]="false">
+
+        <ng-template #noDataTemplate>
+            <no-data></no-data>
+        </ng-template>
+
+        <thead (nzSortChange)="gridSort($event)">
+            <tr>
+                <th class="text-center" nz-th>
+                    <span>代码</span>
+                </th>
+                <th class="text-center" nz-th>
+                    <span>中文名称</span>
+                </th>
+
+                <th nzWidth="230px" class="text-center">
+                    <span>{{l('Actions')}}</span>
+                </th>
+            </tr>
+        </thead>
+        <!-- 表格内容 -->
+        <tbody>
+            <tr *ngFor="let item of ajaxTable.data">
+
+                <td class="text-center" nz-td>
+                    <span >
+                        {{item.path}}
+                    </span>
+                </td>
+                <td class="text-center" nz-td>
+                    <span >
+                        {{item.value}}
+                    </span>
+                </td>
+
+                <td nz-td class="text-center">
+                    <ng-container  *ngIf="isAllOperation || curmenupower.indexOf('CreateOrUpdate') > -1">
+                        <a (click)="createOrEdit(item.path)">
+                            <span>{{l('Edit')}}</span>
+                        </a>
+                    </ng-container>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+
+</nz-row>
+</nz-card>
+

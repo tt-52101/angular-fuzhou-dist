@@ -1,0 +1,74 @@
+<!-- <page-header [title]="'福州游船票务系统'"></page-header> -->
+<div style="margin: 20px 50px 20px 50px;display: flex;justify-content: space-between;">
+	<div style="width: 37.5%">
+		<nz-card style="width:100%" class="my-card">
+			<p style="font-size: 20px;color: #3C4353">营收状况</p>
+			<nz-radio-group [(ngModel)]="range1" [nzButtonStyle]="'solid'" style="display: flex;margin: 20px 0;">
+				<label nz-radio-button nzValue="day">day</label>
+				<label nz-radio-button nzValue="week">week</label>
+				<label nz-radio-button nzValue="month">month</label>
+				<label nz-radio-button nzValue="year">year</label>
+			</nz-radio-group>
+			<nz-row [nzGutter]="16">
+				<nz-col [nzSpan]="12">
+					<nz-statistic [nzValue]="peoplecount | number" [nzTitle]="'今日游客数量'"></nz-statistic>
+				</nz-col>
+				<nz-col [nzSpan]="12">
+					<nz-statistic [nzValue]="incomecount | number" [nzTitle]="'今日收入(RMB)'"></nz-statistic>
+				</nz-col>
+			</nz-row>
+			<div id="container1" style="height: 300px"></div>
+		</nz-card>
+		<nz-card style="width:100%;margin-top: 10px" class="my-card">
+			<p style="font-size: 20px;color: #3C4353">票型比例分析</p>
+			<nz-radio-group [(ngModel)]="range2" [nzButtonStyle]="'solid'" style="display: flex;margin: 20px 0;">
+				<label nz-radio-button nzValue="day">day</label>
+				<label nz-radio-button nzValue="week">week</label>
+				<label nz-radio-button nzValue="month">month</label>
+				<label nz-radio-button nzValue="year">year</label>
+			</nz-radio-group>
+			<div id="container2" style="height: 300px"></div>
+		</nz-card>
+	</div>
+	<div style="width: 60%;margin-left: 10px">
+		<nz-card style="width: 100%;min-height: 600px;">
+			<p style="font-size: 20px;color: #3C4353">可售航班信息</p>
+			<nz-tabset [nzTabBarExtraContent]="tabBarextra" (nzSelectedIndexChange)="tabbarchange()" [nzSelectedIndex]="tabbarindex" [nzAnimated]="false">
+				<nz-tab nzTitle="今天"></nz-tab>
+				<nz-tab nzTitle="一周"></nz-tab>
+				<nz-tab nzTitle="一月"></nz-tab>
+				<nz-tab nzTitle="一年"></nz-tab>
+			</nz-tabset>
+			<ng-template #tabBarextra>
+				<nz-range-picker [nzFormat]="yyyy/MM/dd" [ngModel]="datepicker" (nzOnOk)="datechange()" [nzDisabledDate]="disabledDate"></nz-range-picker>
+			</ng-template>
+			<nz-table #flight [nzData]="flightData" [nzFrontPagination]="false">
+				<thead>
+					<tr>
+						<th class="text-center"></th>
+						<th class="text-center">Fname</th>
+						<th class="text-center">Statu</th>
+						<th class="text-center">Hname</th>
+						<th class="text-center">Bname</th>
+						<th class="text-center">Stime</th>
+						<th class="text-center">Etime</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let data of flight.data;let i = index;">
+						<td class="text-center">{{ i + 1 }}</td>
+						<td class="text-center">{{ data.fname }}</td>
+						<td class="text-center">{{ data.statu }}</td>
+						<td class="text-center">{{ data.hname }}</td>
+						<td class="text-center">{{ data.bname }}</td>
+						<td class="text-center">{{ data.stime }}</td>
+						<td class="text-center">{{ data.etime }}</td>
+					</tr>
+				</tbody>
+			</nz-table>
+		</nz-card>
+	</div>
+</div>
+
+<div style="background: #f8f8f8;width: 100%;height: 50px"></div>
+

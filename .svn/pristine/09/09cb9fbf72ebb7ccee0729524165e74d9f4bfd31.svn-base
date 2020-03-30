@@ -1,0 +1,42 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { TicketManagementRoutingModule } from './ticket-management-routing.module';
+
+import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '@shared/shared.module';
+
+import { AbpModule } from '@abp/abp.module';
+
+
+import { SellTicketsComponent } from './selltickets/selltickets.component';
+import { CreateOrEditPassengerComponent } from './selltickets/create-or-edit-passenger/create-or-edit-passenger.component';
+
+import { InternetTicketComponent } from './internetticket/internetticket.component';
+
+
+import { RefundTicketComponent } from './refundticket/refundticket.component';
+
+
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    TicketManagementRoutingModule,
+    SharedModule,
+    AbpModule,
+  ],
+  declarations: [
+    SellTicketsComponent,
+    CreateOrEditPassengerComponent,
+    InternetTicketComponent,
+    RefundTicketComponent,
+  ],
+  entryComponents: [
+    CreateOrEditPassengerComponent
+  ],
+  providers: []
+})
+export class TicketManagementModule {}

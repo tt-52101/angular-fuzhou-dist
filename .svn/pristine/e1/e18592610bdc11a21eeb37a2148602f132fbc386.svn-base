@@ -1,0 +1,234 @@
+
+
+<page-header [title]="l('Schedule')"></page-header>
+
+<nz-card [nzBordered]="false">
+
+    <div class="mb-md">
+        <!-- 模糊搜索框 -->
+        <nz-row nzGutter="8">
+            <nz-col nzSm="24">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+                            <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText" [placeholder]="l('SearchWithThreeDot')">
+                            <ng-template #suffixSearchButton>
+                                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                                    <i class="anticon anticon-search"></i>
+                                </button>
+                            </ng-template>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <div class="mb-md">
+        <!-- 操作常规按钮部分 如： 添加、批量删除、导出Excel表 -->
+        <nz-row nzGutter="8">
+            <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+
+
+                <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.Schedule.Create')" (click)="createOrEdit()">
+                    <i class="anticon anticon-plus"></i>
+                    <span>
+                        {{l("Create")}}
+                    </span>
+                </button>
+                <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.Schedule.BatchDelete')" (click)="batchDelete()">
+                    <i class="anticon anticon-delete"></i>
+                    <span>
+                        {{l("BatchDelete")}}
+                    </span>
+                </button>
+                <button nz-button nzType="default" *ngIf="isGranted('Pages.Schedule.ExportToExcel')" (click)="exportToExcel()">
+                    <i class="anticon anticon-file-excel"></i>
+                    <span>
+                        {{l("ExportToExcel")}}
+                    </span>
+                </button>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <!-- 复选框提示的内容数据部分 -->
+    <div class="my-md">
+        <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+            <ng-template #message>
+                <span [innerHTML]="l('GridSelectedXItemsTips',selectedDataItems.length)"></span>
+                <a (click)="restCheckStatus(dataList)" class="ml-md">
+                    {{l('ClearEmpty')}}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="refreshGoFirstPage()">
+                    {{l('Refresh')}}
+                </a>
+            </ng-template>
+        </nz-alert>
+    </div>
+
+    <!-- 实体的表格内容 -->
+    <nz-row class="my-md">
+        <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading"
+                  (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true"
+                  [nzNoResult]="noDataTemplate" [nzShowTotal]="showTotalTemplate" [nzFrontPagination]="false">
+            <!-- 暂无数据组件 -->
+            <ng-template #noDataTemplate>
+                <no-data></no-data>
+            </ng-template>
+            <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+            <ng-template #showTotalTemplate let-total let-range="range">
+                {{l('GridFooterDisplayText',pageNumber,totalPages,total,range[0],range[1])}}
+            </ng-template>
+            <!-- 表头 -->
+            <thead (nzSortChange)="gridSort($event)">
+                <tr>
+                    <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate"
+                        (nzCheckedChange)="checkAll($event)"></th>
+                    <th nz-th nzShowSort nzSortKey="SaleDate">
+                        <span>{{l('SaleDate')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="StartTime">
+                        <span>{{l('StartTime')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="EndTime">
+                        <span>{{l('EndTime')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="SeatQuantity">
+                        <span>{{l('SeatQuantity')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="SurplusQuantity">
+                        <span>{{l('SurplusQuantity')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="ScheduleStatus">
+                        <span>{{l('ScheduleStatus')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="AuditStatus">
+                        <span>{{l('AuditStatus')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Route">
+                        <span>{{l('Route')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="Boat">
+                        <span>{{l('Boat')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="RouteId">
+                        <span>{{l('RouteId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="BoatId">
+                        <span>{{l('BoatId')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="CheckStartTime">
+                        <span>{{l('CheckStartTime')}}</span>
+                    </th>
+                    <th nz-th nzShowSort nzSortKey="CheckEndTime">
+                        <span>{{l('CheckEndTime')}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <!-- 表格内容 -->
+            <tbody>
+                <tr *ngFor="let item of ajaxTable.data">
+                    <!-- 全选框 -->
+                    <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.saleDate  |_date">
+                                {{item.saleDate  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.startTime  |_date">
+                                {{item.startTime  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.endTime  |_date">
+                                {{item.endTime  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.seatQuantity">
+                                {{item.seatQuantity}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.surplusQuantity">
+                                {{item.surplusQuantity}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.scheduleStatus">
+                                {{item.scheduleStatus}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.auditStatus">
+                                {{item.auditStatus}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.route">
+                                {{item.route}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.boat">
+                                {{item.boat}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.routeId">
+                                {{item.routeId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.boatId">
+                                {{item.boatId}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.checkStartTime  |_date">
+                                {{item.checkStartTime  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.checkEndTime  |_date">
+                                {{item.checkEndTime  |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+
+                </tr>
+            </tbody>
+        </nz-table>
+
+    </nz-row>
+</nz-card>
+

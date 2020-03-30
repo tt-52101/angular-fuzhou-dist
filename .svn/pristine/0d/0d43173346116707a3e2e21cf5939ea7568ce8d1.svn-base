@@ -1,0 +1,57 @@
+import { Component, OnInit, Injector } from '@angular/core';
+
+import { ReuseTabService } from '@delon/abc';
+
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+import { EditShipComponent } from './edit-ship/edit-ship.component';
+
+import { AppComponentBase } from '@shared/component-base/app-component-base';
+
+
+@Component({
+  selector: 'app-ship',
+  templateUrl: './ship.component.html',
+  styleUrls: ['./ship.component.less'],
+  animations: [appModuleAnimation()],
+})
+export class ShipComponent extends AppComponentBase implements OnInit {
+
+  constructor(
+    injector: Injector,
+    private _reuseTabService: ReuseTabService,
+  ) {
+    super(injector);
+// console.log(this._reuseTabService)
+    this._reuseTabService.title = this.l('船只管理');
+
+  }
+
+  ngOnInit() {
+
+  }
+
+  init(): void {
+
+
+  }
+
+  forminfo = {
+    info1: '',
+    info2: '',
+    info3: '',
+    info4: '',
+    info5: '',
+    info6: ''
+  };
+
+    editinfo(){
+      this.modalHelper.static(EditShipComponent)
+        .subscribe(result => {
+          if (result) {
+
+          }
+        });
+    }
+
+}

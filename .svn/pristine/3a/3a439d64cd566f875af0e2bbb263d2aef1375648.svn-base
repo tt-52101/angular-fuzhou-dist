@@ -1,0 +1,191 @@
+
+
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+    <!-- 模态框头部 -->
+    <div class="modal-header">
+        <div class="modal-title">
+            <i class="anticon anticon-medicine-box mr-sm"></i>
+            <span *ngIf="entity.id">{{l('Edit')}}</span>
+            <span *ngIf="!entity.id">{{l('Create')}}</span>
+        </div>
+    </div>
+    <!-- 模态框内容 -->
+    <fieldset>
+        <!-- 提示信息 -->
+        <!-- <nz-alert nzType="info" nzCloseable [nzShowIcon]="true" nzMessage="l('我想提示点什么内容给你说')"></nz-alert> -->
+            <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="customerName">{{l('CustomerName')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="customerName" #customerName="ngModel"
+                                   [(ngModel)]="entity.customerName"
+                                   [placeholder]="l('CustomerName')"  required >
+
+                            <!-- 校验 -->
+                            <nz-form-explain *ngIf="customerName.control.dirty&&customerName.control.errors">
+                                                                <ng-container *ngIf="customerName.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                            </nz-form-explain>
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="mobile">{{l('Mobile')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="mobile" #mobile="ngModel"
+                                   [(ngModel)]="entity.mobile"
+                                   [placeholder]="l('Mobile')"  required >
+
+                            <!-- 校验 -->
+                            <nz-form-explain *ngIf="mobile.control.dirty&&mobile.control.errors">
+                                                                <ng-container *ngIf="mobile.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                            </nz-form-explain>
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="loginPwd">{{l('LoginPwd')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="loginPwd" #loginPwd="ngModel"
+                                   [(ngModel)]="entity.loginPwd"
+                                   [placeholder]="l('LoginPwd')"  required >
+
+                            <!-- 校验 -->
+                            <nz-form-explain *ngIf="loginPwd.control.dirty&&loginPwd.control.errors">
+                                                                <ng-container *ngIf="loginPwd.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                            </nz-form-explain>
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="sex">{{l('Sex')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="sex" #sex="ngModel"
+                                   [(ngModel)]="entity.sex"
+                                   [placeholder]="l('Sex')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="country">{{l('Country')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="country" #country="ngModel"
+                                   [(ngModel)]="entity.country"
+                                   [placeholder]="l('Country')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="province">{{l('Province')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="province" #province="ngModel"
+                                   [(ngModel)]="entity.province"
+                                   [placeholder]="l('Province')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="city">{{l('City')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="city" #city="ngModel"
+                                   [(ngModel)]="entity.city"
+                                   [placeholder]="l('City')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="county">{{l('County')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="county" #county="ngModel"
+                                   [(ngModel)]="entity.county"
+                                   [placeholder]="l('County')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="certificatesNum">{{l('CertificatesNum')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="certificatesNum" #certificatesNum="ngModel"
+                                   [(ngModel)]="entity.certificatesNum"
+                                   [placeholder]="l('CertificatesNum')"  required >
+
+                            <!-- 校验 -->
+                            <nz-form-explain *ngIf="certificatesNum.control.dirty&&certificatesNum.control.errors">
+                                                                <ng-container *ngIf="certificatesNum.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                            </nz-form-explain>
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="verifiableType">{{l('VerifiableType')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="verifiableType" #verifiableType="ngModel"
+                                   [(ngModel)]="entity.verifiableType"
+                                   [placeholder]="l('VerifiableType')"  required >
+
+                            <!-- 校验 -->
+                            <nz-form-explain *ngIf="verifiableType.control.dirty&&verifiableType.control.errors">
+                                                                <ng-container *ngIf="verifiableType.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                            </nz-form-explain>
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="job">{{l('Job')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="job" #job="ngModel"
+                                   [(ngModel)]="entity.job"
+                                   [placeholder]="l('Job')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="openID">{{l('OpenID')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="openID" #openID="ngModel"
+                                   [(ngModel)]="entity.openID"
+                                   [placeholder]="l('OpenID')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="photo">{{l('Photo')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <input nz-input name="photo" #photo="ngModel"
+                                   [(ngModel)]="entity.photo"
+                                   [placeholder]="l('Photo')" >
+
+
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="dateOfBirth">{{l('DateOfBirth')}}</nz-form-label>
+                <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                            <nz-time-picker name="dateOfBirth" #dateOfBirth="ngModel"
+                                            [(ngModel)]="entity.dateOfBirth" ></nz-time-picker>
+
+
+                </nz-form-control>
+            </nz-form-item>
+
+    </fieldset>
+    <!-- 模态框底部 -->
+    <div class="modal-footer">
+        <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+            <i class="anticon anticon-close-circle-o"></i> {{l("Cancel")}}
+        </button>
+        <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">
+            <i class="anticon anticon-save" *ngIf="!saving"></i> {{l("Save")}}
+        </button>
+    </div>
+</form>
+
+
+
+
+

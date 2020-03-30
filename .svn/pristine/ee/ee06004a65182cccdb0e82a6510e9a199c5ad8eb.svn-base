@@ -1,0 +1,51 @@
+import { Component, OnInit, Injector } from '@angular/core';
+
+import { appModuleAnimation } from '@shared/animations/routerTransition';
+
+import { EditControlComponent } from './edit-control/edit-control.component';
+
+import { AppComponentBase } from '@shared/component-base/app-component-base';
+
+import { ReuseTabService } from '@delon/abc';
+
+@Component({
+  selector: 'app-controlticket',
+  templateUrl: './controlticket.component.html',
+  styleUrls: ['./controlticket.component.less'],
+  animations: [appModuleAnimation()],
+})
+export class ControlTicketComponent extends AppComponentBase implements OnInit {
+
+  constructor(
+    injector: Injector,
+    private _reuseTabService: ReuseTabService,
+    ) {
+    super(injector);
+    
+    this._reuseTabService.title = this.l('控票管理');
+  }
+
+  ngOnInit() {
+
+  }
+
+  forminfo = {
+    info1: '',
+    info2: '',
+    info3: '',
+    info4: '',
+    info5: '',
+    info6: ''
+  };
+  dataList=[]
+
+  editcontrol(){
+    this.modalHelper.static(EditControlComponent)
+    .subscribe(result => {
+      if (result) {
+        // this.refresh();
+      }
+    });
+  }
+
+}

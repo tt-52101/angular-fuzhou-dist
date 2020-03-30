@@ -1,0 +1,107 @@
+<nz-card [nzBordered]="false" style="max-width: 1180px;">
+  <nz-row>
+    <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true">
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info1">航线</nz-form-label>
+        <nz-form-control>
+          <nz-select name="info1" [(ngModel)]="forminfo.info1" nzAllowClear nzSize="small" style="width: 130px">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="" nzLabel="航线1"></nz-option>
+            <nz-option nzValue="" nzLabel="航线2"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info2">航班班次</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="info2" [(ngModel)]="forminfo.info2" nzSize="small" style="width: 100px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info3">游船</nz-form-label>
+        <nz-form-control>
+          <nz-select name="info3" [(ngModel)]="forminfo.info3" name="info3" nzAllowClear nzSize="small" style="width: 130px">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="" nzLabel="游船1"></nz-option>
+            <nz-option nzValue="" nzLabel="游船2"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info4">码头</nz-form-label>
+        <nz-form-control>
+          <nz-select name="info4" [(ngModel)]="forminfo.info4" name="info4" nzAllowClear nzSize="small" style="width: 130px">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="" nzLabel="码头1"></nz-option>
+            <nz-option nzValue="" nzLabel="码头2"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info5">行程状态</nz-form-label>
+        <nz-form-control>
+          <nz-select name="info5" [(ngModel)]="forminfo.info5" name="info5" nzAllowClear nzSize="small" style="width: 130px">
+            <nz-option nzValue="" nzLabel="全部"></nz-option>
+            <nz-option nzValue="" nzLabel="正在检票"></nz-option>
+            <nz-option nzValue="" nzLabel="等待检票"></nz-option>
+            <nz-option nzValue="" nzLabel="航行中"></nz-option>
+            <nz-option nzValue="" nzLabel="行程结束"></nz-option>
+            <nz-option nzValue="" nzLabel="航班取消"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info6">日期</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker name="info6" [(ngModel)]="forminfo.info6" placeholder="请选择日期" nzSize="small"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin:0 8px 0 0;margin-left: 10px">
+        <nz-form-control>
+          <button nz-button nzType="primary" nzSize="small">查询</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-row>
+  <nz-row>
+    <div class="datectrl">
+      <button nz-button nzType="default">前一天</button>
+      <div class="dateinfo">
+        <span>12月21日</span>
+        <span>星期六</span>
+      </div>
+      <button nz-button nzType="default">后一天</button>
+    </div>
+    <div class="hblist">
+      <div class="hbitem" *ngFor="let item of hblist;let i = index;">
+        <div class="hb-item-left">
+          <div class="hb-item-left-top">
+            <img [src]="item.img" class="ycimg">
+            <div class="hb-item-left-top-right">
+              <div class="hb-item-left-top-right-top">
+                <div>{{item.number}}</div>
+                <div>{{item.ycname}}</div>
+                <div>{{item.state}}</div>
+              </div>
+              <div>
+                {{item.time}}
+              </div>
+            </div>
+          </div>
+          <div class="hb-item-left-bottom">
+            <span>航线名称：{{item.hxname}}</span>
+            <span>路线：{{item.lx}}</span>
+            <span>检票时间：{{item.jptime}}</span>
+          </div>
+        </div>
+        <div class="hb-item-right">
+          <div>座位数：{{item.seatcount}}</div>
+          <div>已售数：{{item.seatsele}}</div>
+          <div>预留数：{{item.seatlock}}</div>
+          <div>余票数：{{item.seatlast}}</div>
+        </div>
+      </div>
+      <button nz-button nzType="default" class="loadmore">加载更多</button>
+    </div>
+  </nz-row>
+</nz-card>

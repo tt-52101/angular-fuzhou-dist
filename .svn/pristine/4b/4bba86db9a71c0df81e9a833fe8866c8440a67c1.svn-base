@@ -1,0 +1,130 @@
+<nz-card [nzBordered]="false">
+  <nz-row>
+    <form nz-form (ngSubmit)="refreshGoFirstPage()" class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true">
+
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("UserName")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input [(ngModel)]="forminfo.info1" name="UserName" [placeholder]="l('UserName')">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("UserName")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input [(ngModel)]="forminfo.info1" name="UserName" [placeholder]="l('UserName')">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("UserName")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input [(ngModel)]="forminfo.info1" name="UserName" [placeholder]="l('UserName')">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 下拉框 -->
+      <nz-form-item>
+        <nz-form-label>{{l("ErrorState")}}</nz-form-label>
+        <nz-form-control>
+          <nz-select [(ngModel)]="forminfo.info2" name="HasException" [nzPlaceHolder]="l('ErrorState')" nzAllowClear
+            style="width: 130px">
+            <nz-option [nzLabel]="l('All')" nzValue=""></nz-option>
+            <nz-option [nzLabel]="l('Success')" nzValue="false"></nz-option>
+            <nz-option [nzLabel]="l('HasError')" nzValue="true"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- 文本 -->
+      <nz-form-item>
+        <nz-form-label>{{l("UserName")}}</nz-form-label>
+        <nz-form-control>
+          <nz-input-group>
+            <input type="text" nz-input [(ngModel)]="forminfo.info1" name="UserName" [placeholder]="l('UserName')">
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin:4px 0 0 10px">
+        <nz-form-control>
+          <button nz-button nzType="primary" style="margin:0 10px 0 0">查询</button>
+          <button nz-button nzType="primary" style="margin:0 10px 0 0" (click)="editinfo()">编辑</button>
+          <button nz-button nzType="danger" style="margin:0 10px 0 0">删除</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </nz-row>
+
+
+  <!-- 表格内容 -->
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" nzSize="default"
+      nzBordered [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()"
+      (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false"
+      [nzScroll]="{ x: '920px',y:'480px' }" style="width: 100%">
+      <!-- 暂无数据 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <!-- 选择框 -->
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate"
+            (nzCheckedChange)="checkAll($event)" nzWidth="80px"></th>
+          <!-- 序号 -->
+          <th nzWidth="80px" class="text-center">
+            <span>#</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('UserName')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('Actives')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('CreationTime')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data; let i = index;">
+          <!-- 选择框 -->
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <!-- 序号 -->
+          <td class="text-center">{{i + 1}}</td>
+          <!-- 文本 -->
+          <td class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.userName">
+                {{item.userName}}
+              </span>
+            </ellipsis>
+          </td>
+          <!-- boolean -->
+          <td class="text-center" [innerHTML]="item.isActive | yn"> </td>
+          <!-- 时间 -->
+          <td class="text-center">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.creationTime|_date">
+                {{item.creationTime|_date}}
+              </span>
+            </ellipsis>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

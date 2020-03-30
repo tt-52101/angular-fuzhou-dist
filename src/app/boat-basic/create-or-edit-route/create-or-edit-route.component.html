@@ -1,0 +1,104 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+  <!-- 模态框头部 -->
+  <div class="modal-header">
+    <div class="modal-title">
+      <!-- <i class="anticon anticon-medicine-box mr-sm"></i> -->
+      <span *ngIf="entity.id">{{l('Edit')}}</span>
+      <span *ngIf="!entity.id">{{l('Create')}}</span>
+    </div>
+  </div>
+  <!-- 模态框内容 -->
+  <fieldset>
+    <!-- 提示信息 -->
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="routeName">{{l('RouteName')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <input nz-input name="routeName" #routeName="ngModel" [(ngModel)]="entity.routeName" [placeholder]="l('RouteName')" required>
+        <!-- 校验 -->
+        <nz-form-explain *ngIf="routeName.control.dirty&&routeName.control.errors">
+          <ng-container *ngIf="routeName.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="lineCode">识别码</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <input nz-input name="lineCode" #lineCode="ngModel" [(ngModel)]="entity.lineCode" [placeholder]="l('LineCode')" required>
+        <!-- 校验 -->
+        <nz-form-explain *ngIf="lineCode.control.dirty&&lineCode.control.errors">
+          <ng-container *ngIf="lineCode.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="lineInfo">{{l('LineInfo')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+        <!-- <input nz-input name="lineInfo" #lineInfo="ngModel" [(ngModel)]="entity.lineInfo" [placeholder]="l('LineInfo')" required> -->
+        <textarea nz-input style="height: 100px;" [placeholder]="l('LineInfo')" required #lineInfo="ngModel" [(ngModel)]="entity.lineInfo" name="lineInfo"></textarea>
+        <!-- 校验 -->
+        <nz-form-explain *ngIf="lineInfo.control.dirty&&lineInfo.control.errors">
+          <ng-container *ngIf="lineInfo.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+
+
+    <nz-form-item nz-row>
+      <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="lineImage">{{l('LineImage')}}</nz-form-label>
+      <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+        <!-- <input nz-input name="lineImage" #lineImage="ngModel" [(ngModel)]="entity.lineImage" [placeholder]="l('LineImage')" required> -->
+        <nz-upload [nzAction]="uploadurl"
+        [nzShowUploadList]="false"
+        [nzHeaders]="hearder"
+        [nzLimit]="1"
+        [nzMultiple]="true"
+        nzName="file"
+        (nzChange)="handleChange($event)">
+        <!-- [nzBeforeUpload]="beforeUpload" -->
+        <button nz-button type="button"><span>{{l('Upload')}}</span></button>
+      </nz-upload>
+      <span style="margin-left: 10px">{{lineImage}}</span>
+    </nz-form-control>
+  </nz-form-item>
+
+
+
+  <nz-form-item nz-row>
+    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="startWharfId">{{l('StartPosition')}}</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <!--         <input nz-input name="startPosition" #startPosition="ngModel" [(ngModel)]="entity.startPosition" [placeholder]="l('StartPosition')" required> -->
+      <nz-select  [(ngModel)]="entity.startWharfId" name="startWharfId" nzAllowClear (ngModelChange)="onChange1($event)">
+        <nz-option *ngFor="let item of wharfList;let i = index;" [nzValue]="item.id" [nzLabel]="item.wharfName"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
+  <nz-form-item nz-row>
+    <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="endWharfId">{{l('EndPosition')}}</nz-form-label>
+    <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+      <!--         <input nz-input name="endPosition" #endPosition="ngModel" [(ngModel)]="entity.endPosition" [placeholder]="l('EndPosition')" required> -->
+      <nz-select [(ngModel)]="entity.endWharfId" name="endWharfId" nzAllowClear (ngModelChange)="onChange2($event)">
+        <nz-option *ngFor="let item of wharfList;let i = index;" [nzValue]="item.id" [nzLabel]="item.wharfName"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+
+
+</fieldset>
+<!-- 模态框底部 -->
+<div class="modal-footer">
+  <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+    <!-- <i class="anticon anticon-close-circle-o"></i>  -->
+    {{l("Cancel")}}
+  </button>
+  <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving">
+    <!-- <i class="anticon anticon-save" *ngIf="!saving"></i> -->
+    {{l("Save")}}
+  </button>
+</div>
+</form>

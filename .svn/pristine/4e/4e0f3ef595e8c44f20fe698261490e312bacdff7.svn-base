@@ -1,0 +1,167 @@
+<!-- <page-header [title]="l('TravelAgency')"></page-header> -->
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="16">
+      <nz-col nzMd="6" nzSm="6">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+              <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText" [placeholder]="l('SearchWithThreeDot')">
+              <ng-template #suffixSearchButton>
+                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                  <i class="anticon anticon-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzMd="6" nzSm="6" class="btn-gutter">
+        <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.TravelAgency.Create')" (click)="createOrEdit()">
+          <span>
+            {{l("Create")}}
+          </span>
+        </button>
+        <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.TravelAgency.BatchDelete')" (click)="batchDelete()">
+          <span>
+            {{l("BatchDelete")}}
+          </span>
+        </button>
+      </nz-col>
+    </nz-row>
+  </div>
+  
+  <!-- 实体的表格内容 -->
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" nzBordered [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false">
+      <!-- 暂无数据组件 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th nz-th>
+            <span>{{l('TravelName')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('Mobile')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('Contacts')}}</span>
+          </th>
+          <th nz-th nzWidth="135px">
+            <span>{{l('IsEnabled')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('Discount')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('PayMethod')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('TotalSum')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('PrepaidAmount')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('AlarmAmount')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('UpperLimit')}}</span>
+          </th>
+          <th nz-th>
+            <span>{{l('Lowerlimit')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <!-- 全选框 -->
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.travelName">
+                {{item.travelName}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.mobile">
+                {{item.mobile}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.contacts">
+                {{item.contacts}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.isEnabled">
+                {{item.isEnabled}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.discount">
+                {{item.discount}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.payMethod">
+                {{item.payMethod}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.totalSum">
+                {{item.totalSum}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.prepaidAmount">
+                {{item.prepaidAmount}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.alarmAmount">
+                {{item.alarmAmount}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.upperLimit">
+                {{item.upperLimit}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td>
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.lowerlimit">
+                {{item.lowerlimit}}
+              </span>
+            </ellipsis>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

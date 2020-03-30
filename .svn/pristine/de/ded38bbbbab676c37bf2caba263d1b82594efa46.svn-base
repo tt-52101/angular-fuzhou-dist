@@ -1,0 +1,379 @@
+@import "../../../../node_modules/@delon/theme/styles/default";
+
+@media screen and (min-width: @screen-xxl) {
+  .leftcard {
+    width: 70%;
+    height: 100%;
+  }
+
+  .rightcard {
+    width: 30%;
+    float: right;
+    border: 1px solid #ccc;
+    border-width: 0 1px 0 1px;
+  }
+
+  .hblist {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 5px 20px;
+    overflow-y: scroll;
+    height: 550px;
+  }
+
+  .hb-item-left {
+    width: 50%;
+  }
+
+  .ycimg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 20px 10px 0;
+  }
+
+  .hb-item-left-bottom span {
+    margin-right: 25px;
+  }
+
+  .hb-item-right {
+    display: flex;
+    width: 50%;
+    height: 50px;
+    align-items: center;
+    border-left: 1px dashed #ccc;
+  }
+
+  .hb-item-right div {
+    padding: 0 25px;
+    border-right: 1px solid #eee;
+  }
+
+  .rd-top {
+    border: 1px solid #ccc;
+    width: 100%;
+    /*height: 480px;*/
+    padding: 20px;
+  }
+
+  .rd-top-list {
+    height: 300px;
+    overflow-y: scroll;
+    margin: 15px 0;
+  }
+
+}
+
+
+
+
+
+@media screen and (max-width: @screen-xxl) and (min-width: @screen-xl) {
+  .leftcard {
+    width: 65%;
+    height: 100%;
+  }
+
+  .rightcard {
+    width: 35%;
+    float: right;
+    border: 1px solid #ccc;
+    border-width: 0 1px 0 1px;
+  }
+
+  .hblist {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    overflow-y: scroll;
+    height: 375px;
+  }
+
+  .hb-item-left {
+    width: 45%;
+  }
+
+  .ycimg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .hb-item-left-bottom span {
+    margin-right: 15px;
+  }
+
+  .hb-item-right {
+    display: flex;
+    width: 55%;
+    height: 50px;
+    align-items: center;
+    border-left: 1px dashed #ccc;
+  }
+
+  .hb-item-right div {
+    padding: 0 8px;
+    border-right: 1px solid #eee;
+  }
+
+  .rd-top {
+    border: 1px solid #ccc;
+    width: 100%;
+    height: 325px;
+    padding: 20px;
+  }
+
+  .rd-top-list {
+    height: 214px;
+    overflow-y: scroll;
+    margin: 15px 0;
+  }
+
+}
+
+
+
+
+
+@media screen and (max-width: @screen-xl) and (min-width: @screen-lg) {}
+
+@media screen and (max-width: @screen-lg) {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ant-card-body {
+  padding: 10px;
+}
+
+.contentbox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.ant-card {
+  margin: 0;
+}
+
+
+
+.formitem {
+  margin: 0 8px 10px 0;
+}
+
+.formitem1 {
+  margin: 0 0px 10px 0;
+}
+
+.datectrl {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dateinfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 300px;
+}
+
+.dateinfo p {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.dateinfo span {
+  font-size: 20px;
+}
+
+
+
+
+.hblist::-webkit-scrollbar {
+  display: none;
+}
+
+.hbitem {
+  border-bottom: 1px solid #ccc;
+}
+
+.infobox {
+  padding: 15px 0;
+  display: flex;
+  align-items: center;
+
+}
+
+.hb-item-left-top {
+  display: flex;
+  align-items: center;
+}
+
+
+.hb-item-left-top-right {}
+
+.hb-item-left-top-right-top {
+  display: flex;
+  align-items: flex-end;
+}
+
+.hb-item-left-top-right-top div:nth-child(1) {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.hb-item-left-top-right-top div:nth-child(2) {
+  font-size: 14px;
+  margin: 0 10px;
+}
+
+
+
+.hb-item-left-top-right-middle {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.hb-item-right div:last-child {
+  font-weight: bold;
+  border: none;
+}
+
+
+.ticketbox {
+  padding: 10px 15px;
+  background: #eee;
+}
+
+.ticketitem {
+  background: orange;
+  color: #fff;
+  border: none;
+  margin: 0 10px 6px 0;
+}
+
+
+
+.loadmore {
+  margin: 20px 0;
+  margin-left: calc(50% - 50px);
+  background: #3086c4;
+  color:#fff;
+}
+
+.rd-top-top span:nth-child(1) {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.rd-top-top span:nth-child(2) {
+  font-size: 12px;
+}
+
+
+.rd-top-list::-webkit-scrollbar {
+  display: none;
+}
+
+.rd-top-item {
+  border-bottom: 1px solid #ccc;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+}
+
+.rd-top-item div:nth-child(1) {
+  width: 10%;
+}
+
+.rd-top-item div:nth-child(2) {
+  width: 23%;
+  text-align: left;
+}
+
+.rd-top-item div:nth-child(3) {
+  width: 23%;
+  text-align: left;
+}
+
+.rd-top-item div:nth-child(4) {
+  font-size: 14px;
+  width: 17%;
+  border: 1px solid #ccc;
+  border-radius: 13px;
+  height: 25px;
+  line-height: 25px;
+}
+
+.rd-top-item div:nth-child(5) {
+  width: 17%;
+}
+
+.deleteicon {
+  width: 10%;
+}
+
+.rd-top-bottom {
+  font-size: 16px;
+  text-align: right;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.rd-top-bottom span:nth-child(2) {
+  margin-left: 30px;
+}
+
+.ant-form-item-label {
+  line-height: 40px;
+}
+
+.ant-form-item-control {
+  line-height: 40px;
+}
+
+.my-form {
+  margin: 20px 0 0 0;
+}
+
+.my-form-label span {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.redtext {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.submitbtn {
+  width: 80%;
+  margin: 0 10%;
+  background: #3086c4;
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+}

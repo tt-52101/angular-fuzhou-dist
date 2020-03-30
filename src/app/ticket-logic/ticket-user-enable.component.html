@@ -1,0 +1,51 @@
+<nz-card [nzBordered]="false">
+
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" nzBordered [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false">
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th nz-th class="text-center">
+            <span>{{l('Seller')}}</span>
+          </th>
+          <th nz-th class="text-center">
+            <span>{{l('Ticket')}}</span>
+          </th>
+          <th class="text-center">
+            <span>{{l('Actions')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <td nz-td class="text-center">
+            <span *ngIf="item.saleUser">
+              {{item.saleUser.name}}
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <span *ngFor="let titem of item.ticket;let i = index">
+              <span *ngIf="i==0">
+                {{titem.ticketName}}
+              </span>
+              <span *ngIf="i!=0">
+                ,{{titem.ticketName}}
+              </span>
+            </span>
+          </td>
+          <td nz-td class="text-center">
+            <ng-container >
+              <a (click)="createOrEdit(item.id)">
+                <span>{{l('Edit')}}</span>
+              </a>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

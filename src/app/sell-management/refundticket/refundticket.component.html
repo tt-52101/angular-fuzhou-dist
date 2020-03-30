@@ -1,0 +1,272 @@
+<nz-card [nzBordered]="false">
+  <nz-row>
+    <form nz-form class="mb-md" [nzLayout]="'inline'" [nzNoColon]="true" style="border-bottom: 1px solid #ccc;">
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info1">{{l("TicketNo")}}</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="OrderNumber" [placeholder]="l('TicketNo')" [(ngModel)]="queryData[0].value" style="width: 180px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info2">{{l("Qrcode")}}</nz-form-label>
+        <nz-form-control>
+          <input type="text" nz-input name="Qrcode" [placeholder]="l('Qrcode')" [(ngModel)]="queryData[1].value" style="width: 180px">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info3">{{l("Buyer")}}</nz-form-label>
+        <nz-form-control>
+          <input nz-input name="Buyer" [placeholder]="l('Buyer')" [(ngModel)]="queryData[4].value" style="width: 180px">
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="info3">{{l("Mobile")}}</nz-form-label>
+        <nz-form-control>
+          <input nz-input name="Mobile" [placeholder]="l('Mobile')" [(ngModel)]="queryData[2].value" style="width: 180px">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem">
+        <nz-form-label nzFor="CertificatesNum">{{l("CertificatesNum")}}</nz-form-label>
+        <nz-form-control>
+          <input type="text" style="width: 180px" nz-input name="CertificatesNum" [placeholder]="l('CertificatesNum')" [(ngModel)]="certificatesNum">
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item style="margin:0 8px 0 10px;">
+        <button nz-button (click)="query()" nzSize="small" style="margin-top: 4px;padding: 0px 20px;height: 32px;background: #3086c4;color: #fff">查询订单</button>
+      </nz-form-item>
+    </form>
+  </nz-row>
+  <nz-row style="display: flex;" >
+    <nz-col style="width: 100%;margin-top: 20px" *ngIf="!single">
+      <nz-table #ajaxTable1 [nzData]="orderlist" [nzScroll]="{ x: '1180px' }" style="word-break:break-all" nzShowPagination='false' nzBordered>
+        <ng-template #noDataTemplate>
+          <no-data></no-data>
+        </ng-template>
+        <thead>
+          <tr>
+
+            <th class="text-center" nzWidth="200px">
+              <span>{{l('ActivityNo')}}</span>
+            </th>
+            <th class="text-center" nzWidth="130px">
+              <span>{{l('Name')}}</span>
+            </th>
+            <th class="text-center" nzWidth="150px">
+              <span>{{l('Mobile')}}</span>
+            </th>
+            <th class="text-center" nzWidth="160px">
+              <span>{{l('CertificatesNum')}}</span>
+            </th>
+            <th class="text-center" nzWidth="80px">
+              <span>{{l('TotalQuantity')}}</span>
+            </th>
+            <th class="text-center" nzWidth="80px">
+              <span>{{l('TotalAmount')}}</span>
+            </th>
+            <th class="text-center" nzWidth="130px">
+              <span>{{l('PayMethod')}}</span>
+            </th>
+            <th class="text-center" nzWidth="130px">
+              <span>{{l('PayStatus')}}</span>
+            </th>
+            <th class="text-center" nzWidth="120px" nzRight="0px">
+              <span>{{l('Actions')}}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ajaxTable1.data; let i = index;">
+            <td class="text-center" nzWidth="200px">
+              <span>
+                {{item.activityNo}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="130px">
+              <span>
+                {{item.buyer}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="150px">
+              <span>
+                {{item.mobile}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="160px">
+              <span *ngIf="item.customer">
+                {{item.customer.certificatesNum}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="80px">
+              <span>
+                {{item.totalQuantity}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="80px">
+              <span>
+                {{item.totalAmount}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="130px">
+              <span>
+                {{item.payMethod.payName}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="130px">
+              <span>
+                {{l(item.payStatus)}}
+              </span>
+            </td>
+            <td class="text-center" nzWidth="120px" nzRight="0px">
+              <ng-container>
+                <a (click)="select(item)">
+                  <span>{{l('Select')}}</span>
+                </a>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-col>
+
+
+
+
+
+    <nz-col style="width: 70%;margin-top: 20px" *ngIf="single">
+      <nz-table #ajaxTable [nzData]="orderticket" [nzScroll]="{ x: '860px',y:'460px' }" style="word-break:break-all"
+      nzShowPagination='false' nzBordered>
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <thead>
+        <tr>
+          <th  [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)" nzWidth="60px" nzLeft="0px">
+           <!-- <th nz-th nzWidth="60px" nzLeft="0px"></th> -->
+           <th class="text-center" nzWidth="150px">
+            <span>{{l('Ticket')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('TicketNo')}}</span>
+          </th>
+          <th class="text-center" nzWidth="130px">
+            <span>{{l('Name')}}</span>
+          </th>
+          <th class="text-center" nzWidth="150px">
+            <span>{{l('Mobile')}}</span>
+          </th>
+          <th class="text-center" nzWidth="100px">
+            <span>{{l('UnitPrice')}}</span>
+          </th>
+          <th class="text-center" nzWidth="100px" nzRight="0px">
+            <span>{{l('TicketStatus')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data; let i = index;">
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(orderticket)"></td>
+          <!-- <td nz-td nzShowCheckbox [(nzChecked)]="item.checked" [nzDisabled]="item.ticketStatus!=='Activate'" (nzCheckedChange)="checkticket(i,item)" nzLeft="0px"></td> -->
+
+          <td class="text-center" nzWidth="200px">
+            <span>
+              {{item.ticket.ticketName}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="80px">
+            <span>
+              {{item.ticketNo}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="130px">
+            <span>
+              {{item.customer.customerName}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="150px">
+            <span>
+              {{item.customer.mobile}}
+            </span>
+          </td>
+          <td class="text-center" nzWidth="100px">
+            <span>
+              {{item.activityDetail.unitPrice}}
+            </span>
+          </td>
+          <td nz-td class="text-center" nzWidth="100px" nzRight="0px">
+            <span>
+              {{l(item.ticketStatus)}}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-col>
+
+
+
+
+
+  <nz-col style="width: 30%;" *ngIf="single">
+    <div class="borderbox">
+      <form nz-form class="mb-md">
+       <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8"><span>订单号</span></nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <span>{{orderinfo.activityNo}}</span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8"><span>航班</span></nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <span *ngIf="orderticket[0]">{{orderticket[0].schedule.scheduleCode}}</span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8"><span>支付方式</span></nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <span *ngIf="orderinfo.payMethod">{{l(orderinfo.payMethod.payName)}}</span>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8"><span>退款方式</span></nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <span *ngIf="orderinfo.payMethod">{{l(orderinfo.payMethod.payName)}}</span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8"><span>应退金额</span></nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <span style="color: red;font-size: 20px;">￥{{this.refundcount}}</span>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8"><span>退款折扣</span></nz-form-label>
+        <nz-form-control [nzSm]="16">
+          <nz-select [(ngModel)]="rDiscount" name="rDiscount" [nzPlaceHolder]="l('退款折扣')" (ngModelChange)="countprice()" style="width: 200px">
+            <nz-option nzValue="0.9" [nzLabel]="('9折')"></nz-option>
+            <nz-option nzValue="1" [nzLabel]="l('全款')"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item class="formitem1">
+        <nz-form-label class="my-form-label" [nzSm]="8" nzFor="remark"><span>退款备注</span></nz-form-label>
+        <nz-form-control [nzSm]="16" style="margin-top: 4px;">
+          <textarea nz-input [(ngModel)]="remark" rows="4" name="remark"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <button nz-button class="submitbtn" (click)="printticket()" style="margin-top: 20px" *ngIf="isAllOperation || curmenupower.indexOf('Refund') > -1">退款</button>
+
+    </form>
+  </div>
+</nz-col>
+</nz-row>
+</nz-card>

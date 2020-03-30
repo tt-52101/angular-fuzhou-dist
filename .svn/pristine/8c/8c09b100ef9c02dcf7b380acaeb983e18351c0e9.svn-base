@@ -1,0 +1,78 @@
+<nz-card [nzBordered]="false">
+  <!-- 操作常规按钮部分 -->
+  <nz-row nzGutter="8">
+    <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+      <button nz-button [nzType]="'primary'" (click)="create()">
+        <span>{{l("Create")}}</span>
+      </button>
+      <button nz-button [nzType]="'primary'" (click)="edit()">
+        <span>{{l("Edit")}}</span>
+      </button>
+      <button nz-button [nzType]="'danger'" (click)="batchDelete()">
+        <span>{{l("Delete")}}</span>
+      </button>
+    </nz-col>
+  </nz-row>
+  <!-- 表格内容 -->
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" nzSize="default" nzBordered [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false" [nzScroll]="{ x: '920px',y:'480px' }" style="width: 100%">
+      <!-- 暂无数据 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <!-- 选择框 -->
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)" nzWidth="80px"></th>
+          <!-- 序号 -->
+          <th nzWidth="80px" class="text-center">
+            <span>#</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('ID')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('MenuName')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('MenuText')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('Icon')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('Link')}}</span>
+          </th>
+          <th class="text-center" nzWidth="180px">
+            <span>{{l('Permission')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data; let i = index;">
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+          <td class="text-center">{{i + 1}}</td>
+          <td class="text-center">
+            <span nz-tooltip [nzTitle]="item.id">{{item.id}}</span>
+          </td>
+          <td class="text-center">
+            <span nz-tooltip [nzTitle]="item.i18n">{{item.i18n}}</span>
+          </td>
+          <td class="text-center">
+            <span nz-tooltip [nzTitle]="item.text">{{item.text}}</span>
+          </td>
+          <td class="text-center">
+            <i class="{{item.text}}"></i>
+          </td>
+          <td class="text-center">
+            <span nz-tooltip [nzTitle]="item.link">{{item.link}}</span>
+          </td>
+          <td class="text-center">
+            <span nz-tooltip [nzTitle]="item.acl">{{item.acl}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

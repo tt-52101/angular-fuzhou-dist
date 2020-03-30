@@ -1,0 +1,262 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+	selector: 'app-selltickets',
+	templateUrl: './selltickets.component.html',
+	styleUrls: ['./selltickets.component.less']
+})
+export class SellTicketsComponent implements OnInit {
+
+	forminfo = {
+		info1: '',
+		info2: '',
+		info3: '',
+		info4: '',
+		info5: '',
+		info6: ''
+	};
+
+	hblist = [{
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}]
+	}, {
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}, {
+		showticket:false,
+		number: 'HB1001',
+		ycname: '海坛1号',
+		state: '检票中',
+		time: '10:20 - 11:20',
+		img: '/assets/images/test.png',
+		hxname: '航线1',
+		lx: '码头1 - 码头2 - 码头3',
+		jptime: '09:40 - 10:10',
+		seatcount: 100,
+		seatsele: 100,
+		seatlock: 100,
+		seatlast: 100,
+		tickets: [{
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, {
+			name: '成人票',
+			price: 30
+		}, ]
+	}]
+
+	ordertickets = [{
+		name: '张三',
+		tname: '成人票',
+		cardtype: '护照',
+		price: 30
+	},{
+		name: '张三',
+		tname: '成人票',
+		cardtype: '护照',
+		price: 30
+	},{
+		name: '张三',
+		tname: '成人票',
+		cardtype: '护照',
+		price: 30
+	},{
+		name: '张三',
+		tname: '成人票',
+		cardtype: '护照',
+		price: 30
+	}]
+
+
+	constructor() {}
+
+	ngOnInit() {}
+
+
+	showorhide(index){
+		console.log(index)
+		this.hblist[index].showticket=!this.hblist[index].showticket
+		// for (var i = this.hblist.length - 1; i >= 0; i--) {
+		// 	if(i == index){
+		// 		this.hblist[i].showticket=!this.hblist[i].showticket
+		// 	}else{
+		// 		this.hblist[i].showticket=false
+		// 	}
+		// }
+	}
+
+}

@@ -1,0 +1,257 @@
+<!-- <page-header [title]="l('Ticket')"></page-header> -->
+<nz-card [nzBordered]="false">
+  <div class="mb-md">
+    <!-- 模糊搜索框 -->
+    <nz-row nzGutter="16">
+      <nz-col nzMd="6" nzSm="6">
+        <!-- <form nz-form [nzLayout]="'inline'"> -->
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+              <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText" [placeholder]="l('SearchWithThreeDot')">
+              <ng-template #suffixSearchButton>
+                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                  <i class="anticon anticon-search"></i>
+                </button>
+              </ng-template>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- </form> -->
+      </nz-col>
+      <nz-col nzMd="6" nzSm="6" class="btn-gutter">
+        <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.Menu.Create')" (click)="createOrEdit()">
+          <!-- <i class="anticon anticon-plus"></i> -->
+          <span>
+            {{l("Create")}}
+          </span>
+        </button>
+        <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.Menu.BatchDelete')" (click)="batchDelete()">
+          <!-- <i class="anticon anticon-delete"></i> -->
+          <span>
+            {{l("BatchDelete")}}
+          </span>
+        </button>
+        <!--         <button nz-button nzType="default" *ngIf="isGranted('Pages.Menu.ExportToExcel')" (click)="exportToExcel()">
+          <span>
+            {{l("ExportToExcel")}}
+          </span>
+      </button> -->
+      </nz-col>
+    </nz-row>
+  </div>
+  <!-- 实体的表格内容 -->
+  <nz-row class="my-md">
+    <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()" [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzFrontPagination]="false" nzBordered [nzScroll]="{ x: '2515px', y: '600px' }" style="word-break:break-all">
+      <!-- 暂无数据组件 -->
+      <ng-template #noDataTemplate>
+        <no-data></no-data>
+      </ng-template>
+      <!-- 表头 -->
+      <thead (nzSortChange)="gridSort($event)">
+        <tr>
+          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate" (nzCheckedChange)="checkAll($event)" nzWidth="125px" nzLeft="0px"></th>
+          <th nz-th class="text-center" nzShowSort nzSortKey="TicketName" nzWidth="140px" nzLeft="125px">
+            <span>{{l('TicketName')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="TicketCode">
+            <span>{{l('TicketCode')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="TicketMode">
+            <span>{{l('TicketMode')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="TicketType">
+            <span>{{l('TicketType')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="CheckMethod">
+            <span>{{l('CheckMethod')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="TicketClassify">
+            <span>{{l('TicketClassify')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="CheckNum">
+            <span>{{l('CheckNum')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="160px" nzSortKey="EffectiveLong">
+            <span>{{l('EffectiveLong')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="UnitPrice">
+            <span>{{l('UnitPrice')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="TicketLength">
+            <span>{{l('TicketLength')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="160px" nzSortKey="UpperLimit">
+            <span>{{l('UpperLimit')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="160px" nzSortKey="LowerLimit">
+            <span>{{l('LowerLimit')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="AudioName">
+            <span>{{l('AudioName')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="AuditStatus">
+            <span>{{l('AuditStatus')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="IsEnabled">
+            <span>{{l('IsEnabled')}}</span>
+          </th>
+          <th nz-th class="text-center" nzShowSort nzWidth="135px" nzSortKey="Sort">
+            <span>{{l('Sort')}}</span>
+          </th>
+          <th nzWidth="150px" class="text-center" nzRight="0px">
+            <span>{{l('Actions')}}</span>
+          </th>
+        </tr>
+      </thead>
+      <!-- 表格内容 -->
+      <tbody>
+        <tr *ngFor="let item of ajaxTable.data">
+          <!-- 全选框 -->
+          <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)" nzWidth="125px" nzLeft="0px"></td>
+          <td nz-td class="text-center" nzWidth="140px" nzLeft="125px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketName">
+                {{item.ticketName}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketCode">
+                {{item.ticketCode}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketMode">
+                {{item.ticketMode}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketType">
+                {{item.ticketType}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.checkMethod">
+                {{item.checkMethod}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketClassify">
+                {{item.ticketClassify}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.checkNum">
+                {{item.checkNum}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="160px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.effectiveLong">
+                {{item.effectiveLong}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.unitPrice">
+                {{item.unitPrice}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.ticketLength">
+                {{item.ticketLength}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="160px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.upperLimit">
+                {{item.upperLimit}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="160px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.lowerLimit">
+                {{item.lowerLimit}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.audioName">
+                {{item.audioName}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.auditStatus">
+                {{item.auditStatus}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzWidth="135px" [innerHTML]="item.IsEnabled | yn">
+<!--             <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.isEnabled">
+                {{item.isEnabled}}
+              </span>
+            </ellipsis> -->
+          </td>
+          <td nz-td class="text-center" nzWidth="135px">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="item.sort">
+                {{item.sort}}
+              </span>
+            </ellipsis>
+          </td>
+          <td nz-td class="text-center" nzRight="0px" nzWidth="150px">
+            <!-- 编辑 -->
+            <ng-container *ngIf="isGranted('Pages.Ticket.Edit')">
+              <a (click)="createOrEdit(item.id)">
+                <!-- <i class="anticon anticon-edit mr-sm"></i> -->
+                <span>{{l('Edit')}}</span>
+              </a>
+              <nz-divider nzType="vertical"></nz-divider>
+            </ng-container>
+            <!-- 删除 -->
+            <ng-container *ngIf="isGranted('Pages.Ticket.Delete')">
+              <nz-popconfirm [nzTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)" [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+                <a nz-popconfirm>
+                  <!-- <i class="anticon anticon-delete mr-sm"></i> -->
+                  <span>{{l('Delete')}}</span>
+                </a>
+              </nz-popconfirm>
+            </ng-container>
+            <!-- 更多 -->
+            <!--             <ng-container *ngIf="isGrantedAny('Pages.Ticket', 'Pages.Ticket.Create', 'Pages.Ticket.Edit')">
+              <nz-divider nzType="vertical"></nz-divider>
+              <nz-dropdown>
+                <a nz-dropdown>
+                  <i class="anticon anticon-down"></i>
+                  <span>{{l('More')}}</span>
+                </a>
+              </nz-dropdown>
+          </ng-container> -->
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-row>
+</nz-card>

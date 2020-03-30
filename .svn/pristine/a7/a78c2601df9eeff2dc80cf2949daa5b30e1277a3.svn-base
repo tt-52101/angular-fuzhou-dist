@@ -1,0 +1,149 @@
+import { Menu } from '@delon/theme'
+
+export class AppMenus {
+  static Menus: Menu[] = [
+  // {
+  //     text: '',
+  //     i18n: 'menu',
+  //     acl: undefined,
+  //     icon: 'anticon anticon-dashboard',
+  //     link: '/app/admin/power-management/menu'
+  //   },
+  //   {
+
+  //     text: '',
+  //     i18n: 'Dashboard',
+  //     acl: undefined,
+  //     icon: 'anticon anticon-dashboard',
+  //     link: '/app/main/dashboard'
+  //   },
+  //   // {
+  //   //   text: '',
+  //   //   i18n: 'TryIt',
+  //   //   icon: 'anticon anticon-sync',
+  //   //   link: '/app/main/test'
+  //   // },
+  //   // {
+  //   //   text: '',
+  //   //   i18n: 'retryTime',
+  //   //   icon: 'anticon anticon-sync',
+  //   //   link: '/app/try/test'
+  //   // },
+  //   {
+  //     text: '',
+  //     i18n: 'Tenants',
+  //     acl: 'Pages.Tenants',
+  //     icon: 'anticon anticon-dashboard',
+  //     link: '/app/admin/tenants'
+  //   },
+  //   {
+  //     text: '',
+  //     i18n: 'Editions',
+  //     acl: 'Pages.Editions.Query',
+  //     icon: 'anticon anticon-dashboard',
+  //     link: '/app/admin/editions'
+  //   },
+  //   {
+  //     text: '',
+  //     i18n: 'Administration',
+  //     acl: 'Pages.Administration',
+  //     icon: 'anticon anticon-appstore',
+  //     children: [{
+  //         text: '',
+  //         i18n: 'OrganizationUnits',
+  //         acl: 'Pages.Administration.OrganizationUnits',
+  //         icon: 'anticon anticon-team',
+  //         link: '/app/admin/organization-units'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'Roles',
+  //         acl: 'Pages.Administration.Roles',
+  //         icon: 'anticon anticon-safety',
+  //         link: '/app/admin/roles'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'Users',
+  //         acl: 'Pages.Administration.Users',
+  //         icon: 'anticon anticon-user',
+  //         link: '/app/admin/users'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'Languages',
+  //         acl: 'Pages.Administration.Languages',
+  //         icon: 'anticon anticon-global',
+  //         link: '/app/admin/languages'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'AuditLogs',
+  //         acl: 'Pages.Administration.AuditLogs',
+  //         icon: 'anticon anticon-book',
+  //         link: '/app/admin/auditLogs'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'Maintenance',
+  //         acl: 'Pages.Administration.Host.Maintenance',
+  //         icon: 'anticon anticon-setting',
+  //         link: '/app/admin/maintenance'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'Settings',
+  //         acl: 'Pages.Administration.Tenant.Settings',
+  //         icon: 'anticon anticon-setting',
+  //         link: '/app/admin/tenant-settings'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'Settings',
+  //         acl: 'Pages.Administration.Host.Settings',
+  //         icon: 'anticon anticon-setting',
+  //         link: '/app/admin/host-settings'
+  //       },
+  //       {
+  //         text: '',
+  //         i18n: 'HangfireSchedule',
+  //         acl: 'Pages.Administration.HangfireDashboard',
+  //         link: '/app/admin/hangfire',
+  //         icon: { type: 'icon', value: 'setting' }
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     text: '',
+  //     i18n: 'WechatManagement',
+  //     icon: 'anticon anticon-info-circle',
+  //     children: [{
+  //       text: undefined,
+  //       i18n: 'WechatAppConfig',
+  //       acl: 'Pages.WechatAppConfig',
+  //       icon: 'anticon anticon-dashboard',
+  //       link: '/app/wechat/wechat-app-config'
+  //     }]
+  //   },
+  //   {
+  //     text: '',
+  //     i18n: 'DemoManagement',
+  //     icon: 'anticon anticon-info-circle',
+  //     link: '/app/demo/demoui'
+  //   },
+  //   {
+  //     text: 'Books',
+  //     i18n: 'Books',
+  //     acl: 'Pages.Books.Book',
+  //     icon: 'anticon anticon-dashboard',
+  //     link: '/app/main/books/book'
+  //   },
+  //   {
+  //     text: '',
+  //     i18n: 'About',
+  //     icon: 'anticon anticon-info-circle',
+  //     link: '/app/main/about'
+  //   },
+
+  ];
+}
