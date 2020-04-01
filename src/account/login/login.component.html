@@ -14,7 +14,7 @@
             <nz-form-control style="width: 100%;">
               <nz-input-group [nzSuffix]="suffixTemplateInf">
                 <img src="/assets/images/login/user.png" class="icon-diy">
-                <input class="login-input" nz-input name="userNameOrEmailAddress" #userNameOrEmailAddressInput="ngModel" [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" [placeholder]="l('UserNameOrEmail')" required maxlength="32" />
+                <input class="login-input" nz-input name="userNameOrEmailAddress" #userNameOrEmailAddressInput="ngModel" [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" placeholder="用户名" required maxlength="32" />
               </nz-input-group>
               <ng-template #suffixTemplateInf>
               </ng-template>

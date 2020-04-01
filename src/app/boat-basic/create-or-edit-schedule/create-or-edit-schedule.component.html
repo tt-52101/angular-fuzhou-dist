@@ -44,7 +44,7 @@
       </nz-form-control>
     </nz-form-item>
 
-    <nz-form-item nz-row>
+    <nz-form-item nz-row *ngIf="single && !id">
       <nz-form-label nz-col [nzSm]="5" [nzXs]="24" nzRequired nzFor="scheduleCode">{{l('ScheduleCode')}}</nz-form-label>
       <nz-form-control nz-col [nzSm]="17" [nzXs]="24" nzHasFeedback>
         <input nz-input name="scheduleCode" #scheduleCode="ngModel" [(ngModel)]="entity.scheduleCode" [placeholder]="l('ScheduleCode')" required>
